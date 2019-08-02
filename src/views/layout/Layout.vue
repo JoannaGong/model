@@ -4,7 +4,6 @@
     <sidebar class="sidebar-container"/>
     <div class="main-container">
       <navbar/>
-      <tags-view/>
       <app-main/>
     </div>
   </div>
@@ -19,8 +18,7 @@ export default {
   components: {
     Navbar,
     Sidebar,
-    AppMain,
-    TagsView: () => import('./components/TagsView')
+    AppMain
   },
   mixins: [ResizeMixin],
   computed: {

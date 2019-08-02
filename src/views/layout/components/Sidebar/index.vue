@@ -1,9 +1,5 @@
 <template>
   <div class="sider-bar">
-    <div class="logo">
-      <img src="../../../../../static/logo.png" alt="">
-      <span>12312312</span>
-    </div>
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="$route.path"
@@ -47,16 +43,6 @@ export default {
 <style lang="scss" scoped>
 .sider-bar{
   background-color: #304255;
-}
-.logo{
-  height: 83px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #304354;
-  img{
-    width: 65%;
-  }
 }
 </style>
 

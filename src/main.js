@@ -14,6 +14,13 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+// 图片旋转/缩放/翻转等操作
+import Viewer from 'v-viewer'
+import 'viewerjs/dist/viewer.css'
+Vue.use(Viewer)
+Viewer.setDefaults({
+  Options: { 'inline': true, 'button': true, 'navbar': true, 'title': true, 'toolbar': true, 'tooltip': true, 'movable': true, 'zoomable': true, 'rotatable': true, 'scalable': true, 'transition': true, 'fullscreen': true, 'keyboard': true, 'url': 'data-source' }
+})
 
 /**
  * This project originally used easy-mock to simulate data,

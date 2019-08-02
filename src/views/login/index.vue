@@ -1,10 +1,7 @@
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-      <!-- <h3 class="title">雷励中国</h3> -->
-      <div class="logo">
-        <img src="../../../static/logo.png" alt="">
-      </div>
+      <h3 class="title">模 特 后 台</h3>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -31,10 +28,6 @@
           登录
         </el-button>
       </el-form-item>
-      <!-- <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: admin</span>
-      </div> -->
     </el-form>
   </div>
 </template>
@@ -65,8 +58,8 @@ export default {
         password: 'admin'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePass }]
+        username: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
+        password: [{ required: true, trigger: 'blur', message: '请输入密码', validator: validatePass }]
       },
       loading: false,
       pwdType: 'password',

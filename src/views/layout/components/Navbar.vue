@@ -3,53 +3,24 @@
     <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
     <breadcrumb />
     <div class="user-name">
-      <span>{{role_name}}</span>
-    </div>
-    <div class="notice"@click="$router.push('/setup/notice')">
-      <el-badge :value="noticeCount" :max="99" class="item" @click="$router.push('setup/notice')">
-        <svg-icon icon-class="notice_top" />
-      </el-badge>
+      <span>{{userName}}</span>
     </div>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img :src="avatarUrl" class="user-avatar">
+        <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
         <i class="el-icon-caret-bottom"/>
       </div>
       <el-dropdown-menu slot="dropdown" class="user-dropdown">
         <router-link class="inlineBlock" to="/">
-          <el-dropdown-item>
+          <el-dropdown-item align="center">
             首页
           </el-dropdown-item>
         </router-link>
-        <el-dropdown-item>
-          <span style="display:block;" @click="dialogVisible = true">修改密码</span>
-        </el-dropdown-item>
         <el-dropdown-item divided>
-          <span style="display:block;" @click="logout">登出</span>
+          <span style="display:block;" @click="logout">退出登录</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <el-dialog
-      title="密码修改"
-      :visible.sync="dialogVisible"
-      width="30%">
-      <el-form :model="form" label-width="100px" ref="form" :rules="rules">
-        <el-form-item label="原密码" prop="old_password">
-          <el-input type="password" v-model="form.old_password" placeholder=""></el-input>
-        </el-form-item>
-        <el-form-item label="新密码" prop="new_password">
-          <el-input type="password" v-model="form.new_password" placeholder=""></el-input>
-        </el-form-item>
-        <el-form-item label="重复新密码" prop="new_password_repeat">
-          <el-input type="password" v-model="form.new_password_repeat" placeholder=""></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="changePassword">确 定</el-button>
-      </span>
-    </el-dialog>
-
   </div>
 </template>
 
@@ -57,7 +28,7 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import { getUnreadEventCount, getUserInfo, updatePassword } from '@/api/table'
+import { getInfo } from '@/api/login'
 export default {
   components: {
     Breadcrumb,
@@ -69,107 +40,32 @@ export default {
       'avatar'
     ])
   },
-  data () {
-    let validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'));
-      } else {
-        if (this.form.new_password_repeat !== '') {
-          this.$refs.form.validateField('new_password_repeat');
-        }
-        callback();
-      }
-    };
-    let validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'));
-      } else if (value !== this.form.new_password) {
-        callback(new Error('两次输入密码不一致!'));
-      } else {
-        callback();
-      }
-    };
+  data(){
     return {
-      dialogVisible: false,
-      noticeCount: 0,
-      role_name: '',
-      avatarUrl: '',
-      form: {
-        id: '',
-        old_password: '',
-        new_password: '',
-        new_password_repeat: ''
-      },
-      rules: {
-        old_password: [
-          { required: true, message: '请输入原密码', trigger: 'blur' }
-        ],
-        new_password: [
-          { validator: validatePass, trigger: 'blur' }
-        ],
-        new_password_repeat: [
-          { validator: validatePass2, trigger: 'blur' }
-        ],
-      }
+      userName: ''
     }
   },
-  created () {
-    this.getNotice()
-    // setInterval(() => {
-    //   this.getNotice()
-    // }, 3000);
+  created(){
     this.getUserInfo()
   },
   methods: {
     getUserInfo () {
-      getUserInfo({
+      getInfo({
         token: sessionStorage.getItem('token')
       })
         .then(res => {
-          if (res.status === 1) {
-            this.role_name = res.data.role_name
-            this.form.id = res.data.id
-            this.avatarUrl = res.data.avatar
+          if (res.code === 101) {
+            this.userName = res.data.userInfo.userName
+            this.avatarUrl = res.data.userInfo.headUrl
           }
         })
-    },
-    changePassword () {
-      console.log(123132)
-      let that = this
-      this.$refs['form'].validate((valid) => {
-        if (valid) {
-          updatePassword(this.form)
-            .then(res => {
-              if (res.status === 1) {
-                this.$message({
-                  message: '修改密码成功',
-                  type: 'success',
-                  duration: 1500,
-                  onClose () {
-                    that.dialogVisible = false
-                  }
-                })
-              } else {
-                this.$message({
-                  message: '修改密码失败',
-                  type: 'error',
-                })
-              }
-            })
-        }
-      })
     },
     toggleSideBar() {
       this.$store.dispatch('ToggleSideBar')
     },
     logout() {
       this.$store.dispatch('LogOut').then(() => {
-        location.reload() // 为了重新实例化vue-router对象 避免bug
-      })
-    },
-    getNotice () {
-      getUnreadEventCount().then(res => {
-        this.noticeCount = res.data
+        location.reload()
       })
     }
   }

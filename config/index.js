@@ -9,14 +9,7 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {
-      '/api': {
-        target: 'https://raleigh.zkong.me', // 接口的域名
-        // target: 'http://raleigh-api.zkong.me',
-        // secure: false,  // 如果是https接口，需要配置这个参数
-        changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
-      }
-    },
+    proxyTable: {},
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

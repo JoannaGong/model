@@ -1,4 +1,4 @@
-import { login, getInfo } from '@/api/login'
+import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -30,10 +30,10 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
-          if (response.status === 1) {
-            setToken(response.token)
-            commit('SET_TOKEN', response.token)
-            sessionStorage.setItem('token', response.token)
+          if (response.code === 101) {
+            setToken(response.data.token)
+            commit('SET_TOKEN', response.data.token)
+            sessionStorage.setItem('token', response.data.token)
             resolve()
           } else {
             reject(response.msg)
@@ -48,7 +48,6 @@ const user = {
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getInfo(state.token).then(response => {
-          console.log(response)
           const data = response.data
           sessionStorage.setItem('permission', JSON.stringify(data.permissions))
           data.roles = ['admin']
@@ -73,14 +72,14 @@ const user = {
         commit('SET_ROLES', [])
         removeToken()
         resolve()
-        // logout(state.token).then(() => {
-        //   commit('SET_TOKEN', '')
-        //   commit('SET_ROLES', [])
-        //   removeToken()
-        //   resolve()
-        // }).catch(error => {
-        //   reject(error)
-        // })
+        logout(state.token).then(() => {
+          commit('SET_TOKEN', '')
+          commit('SET_ROLES', [])
+          removeToken()
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
       })
     },
 
