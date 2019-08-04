@@ -42,7 +42,7 @@ export const constantRouterMap = [
         path: 'role',
         component: () => import('@/views/role/index'),
         name: 'RoleList',
-        meta: { title: '会员管理', icon: 'user' }
+        meta: { title: '会员列表', icon: 'user' }
       },
       {
         path: 'role/:id/',
@@ -220,21 +220,29 @@ export const constantRouterMap = [
   //     }
   //   ]
   // },
-  // {
-  //   path: '/location',
-  //   name: 'location',
-  //   component: Layout,
-  //   redirect: '/role/index',
-  //   meta: { title: '拍摄地管理', icon: 'user' },
-  //   children: [
-  //     {
-  //       path: 'location',
-  //       component: () => import('@/views/role/index'),
-  //       name: 'Location',
-  //       meta: { title: '拍摄地管理', icon: 'location' }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/location',
+    name: 'location',
+    component: Layout,
+    redirect: '/location/index',
+    meta: { title: '拍摄地管理', icon: 'location' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/location/index'),
+        name: 'LocationList',
+        hidden: true,
+        meta: { title: '拍摄地列表', icon: 'location' }
+      },
+      {
+        path: 'index/:id',
+        component: () => import('@/views/location/detail'),
+        name: 'LocationTable',
+        hidden: true,
+        meta: { title: '拍摄地表单', icon: 'location' }
+      }
+    ]
+  },
   // {
   //   path: '/dataStatistic',
   //   name: 'dataStatistic',

@@ -67,25 +67,27 @@
 </template>
 
 <script>
-import { getMemberInfo, getPhotoInfo } from "@/api/table";
+import { getMemberInfo, getPhotoInfo, getLabel } from "@/api/table";
 export default {
   data() {
     return {
       tags: ["标签一", "标签二", "标签三"],
       imgs: [],
       form: {
-        
       }
     };
   },
   created() {
     getMemberInfo({ id: this.$route.params.id }).then(res => {
-      // console.log(res)
+      console.log(res)
       this.form = res.data.user
     });
     getPhotoInfo({ id: this.$route.params.id }).then(res => {
-      console.log(res)
+      // console.log(res)
       this.imgs = res.data.userPhotoAlbumList
+    })
+    getLabel({ id: this.$route.params.id }).then(res => {
+      console.log(res)
     })
   },
   methods: {

@@ -74,7 +74,6 @@
         align="center"
         background
         layout="total, prev, pager, next, jumper"
-        @size-change="handleSizeChange"
         @current-change="currentChange"
       />
     </div>
@@ -84,6 +83,7 @@
 <script>
 import { getMemberList } from "@/api/table";
 import { getToken } from "@/utils/auth";
+import { constants } from 'fs';
 
 export default {
   components: {
@@ -93,7 +93,7 @@ export default {
     return {
       tableKey: 0,
       total: 0,
-      list: null,
+      list: [],
       listLoading: true,
       selectList: [
         {
@@ -113,8 +113,6 @@ export default {
           value: 4
         }
       ],
-      form: {
-      },
       pageTotal: 0,
       listQuery: {
         limit: 10,
@@ -131,7 +129,7 @@ export default {
   },
   methods: {
     fetchData(tag) {
-      if (tag && tag === "init") {
+      if (tag === "init") {
         this.listQuery.page = 1;
       }
       this.listLoading = true;
@@ -164,10 +162,6 @@ export default {
     },
     currentChange(val) {
       this.listQuery.page = val;
-      this.fetchData();
-    },
-    handleSizeChange(val) {
-      this.listQuery.limit = val;
       this.fetchData();
     }
   }

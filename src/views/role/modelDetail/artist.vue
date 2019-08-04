@@ -13,13 +13,13 @@
         <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.page - 1) + 1 }}</template>
       </el-table-column>
       <el-table-column align="center" label="作品名称">
-        <template slot-scope="scope">{{ scope.row.nickname }}</template>
+        <template slot-scope="scope">{{ scope.row.name }}</template>
       </el-table-column>
       <el-table-column align="center" label="收费价格(￥)" width="160">
-        <template slot-scope="scope">{{ scope.row.member_no }}</template>
+        <template slot-scope="scope">{{ scope.row.chargeFlag === 0 ? "不需要付费" : scope.row.chargeCount }}</template>
       </el-table-column>
       <el-table-column align="center" label="创建时间" width="200">
-        <template slot-scope="scope">{{ scope.row.total_integral }}</template>
+        <template slot-scope="scope">{{ scope.row.updatedTime === null ? scope.row.createdTime : scope.row.updatedTime }}</template>
       </el-table-column>
       <el-table-column align="center" prop="created_at" label="操作" width="100">
         <template slot-scope="scope">
@@ -36,7 +36,6 @@
         align="center"
         background
         layout="total, prev, pager, next, jumper"
-        @size-change="handleSizeChange"
         @current-change="currentChange"
       />
     </div>
@@ -44,7 +43,7 @@
 </template>
 
 <script>
-import { getMemberList } from "@/api/table";
+import { getMemberList, getWorks } from "@/api/table";
 import { getToken } from "@/utils/auth";
 
 export default {
@@ -88,13 +87,16 @@ export default {
         this.listQuery.page = 1;
       }
       this.listLoading = true;
-      getMemberList(this.listQuery).then(response => {
-        this.list = response.data
-        this.pageTotal = response.count
-        this.listLoading = false
+      // getMemberList(this.listQuery).then(response => {
+      //   this.list = response.data
+      //   this.pageTotal = response.count
+      //   this.listLoading = false
+      // })
+      getWorks({id: this.$route.params.id}).then(response => {
+        console.log(response)
+        this.list = response.data.worksDetailsList
       })
     },
-
     showInfo(id) {
       this.form.showId = id
       this.form.formTag = true
@@ -107,10 +109,6 @@ export default {
       this.listQuery.page = val;
       this.fetchData();
     },
-    handleSizeChange(val) {
-      this.listQuery.limit = val;
-      this.fetchData();
-    }
   }
 }
 </script>
