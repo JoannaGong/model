@@ -1,19 +1,17 @@
 <template>
-  <div class="sider-bar">
-    <el-scrollbar wrap-class="scrollbar-wrapper">
-      <el-menu
-        :default-active="$route.path"
-        :collapse="isCollapse"
-        :background-color="variables.menuBg"
-        :text-color="variables.menuText"
-        :active-text-color="variables.menuActiveText"
-        :collapse-transition="false"
-        mode="vertical"
-      >
-        <sidebar-item v-for="route in permission_routes" :key="route.path" :item="route" :base-path="route.path"/>
-      </el-menu>
-    </el-scrollbar>
-  </div>
+  <el-scrollbar wrap-class="scrollbar-wrapper">
+    <el-menu
+      :default-active="$route.path"
+      :collapse="isCollapse"
+      :background-color="variables.menuBg"
+      :text-color="variables.menuText"
+      :active-text-color="variables.menuActiveText"
+      :collapse-transition="false"
+      mode="vertical"
+    >
+      <sidebar-item v-for="route in permission_routes" :key="route.path" :item="route" :base-path="route.path"/>
+    </el-menu>
+  </el-scrollbar>
 </template>
 
 <script>
@@ -28,9 +26,6 @@ export default {
       'permission_routes',
       'sidebar'
     ]),
-    routes() {
-      return this.$router.options.routes
-    },
     variables() {
       return variables
     },
@@ -40,9 +35,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.sider-bar{
-  background-color: #304255;
-}
-</style>
-

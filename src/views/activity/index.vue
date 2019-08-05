@@ -1,8 +1,18 @@
 <template>
   <div class="app-container">
-    <div class="filter-container clearfix" style="float: right;">
+    <div class="filter-container">
+      <div class="search">
+        <el-input
+          v-model="listQuery.queryString"
+          placeholder="请输入名称、城市进行搜索"
+          @keyup.enter.native="handleFilter"
+          style="width: 200px;"
+          class="filter-item"
+        />
+        <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
+      </div>
       <div class="handle-create">
-        <el-button type="primary" @click="showInfo(0)">新增角色</el-button>
+        <el-button type="primary" @click="showInfo(0)">新建拍摄地</el-button>
       </div>
     </div>
     <el-table
@@ -18,11 +28,17 @@
       <el-table-column align="center" label="序号" width="80">
         <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
       </el-table-column>
-      <el-table-column align="center" label="角色名称">
-        <template slot-scope="scope">{{ scope.row.name }}</template>
+      <el-table-column align="center" label="拍摄地名称">
+        <template slot-scope="scope">{{ scope.row.address }}</template>
       </el-table-column>
-      <el-table-column align="center" label="角色显示名称">
-        <template slot-scope="scope">{{ scope.row.displayName }}</template>
+      <el-table-column align="center" label="城市" width="180">
+        <template slot-scope="scope">{{ scope.row.areaId }}</template>
+      </el-table-column>
+      <el-table-column align="center" label="是否推荐" width="100">
+        <template slot-scope="scope">
+          <span v-if="scope.row.recommendedFlug == '0'">不推荐</span>
+          <span v-if="scope.row.recommendedFlug == '1'">推荐</span>
+        </template>
       </el-table-column>
       <el-table-column align="center" label="创建时间" width="190">
         <template slot-scope="scope">{{ scope.row.updatedTime === null ? scope.row.createdTime : scope.row.updatedTime }}</template>
@@ -50,7 +66,7 @@
 </template>
 
 <script>
-import { getRole, delRole } from "@/api/table";
+import { getLocation, delLocation } from "@/api/table";
 import { getToken } from "@/utils/auth";
 import { constants } from 'fs';
 
@@ -82,7 +98,7 @@ export default {
         this.listQuery.page = 1;
       }
       this.listLoading = true;
-      getRole(this.listQuery).then(response => {
+      getLocation(this.listQuery).then(response => {
         // console.log(response)
         this.list = response.data.pageInfo.list
         this.pageTotal = response.data.pageInfo.total
@@ -90,13 +106,13 @@ export default {
       })
     },
     del(id) {
-      this.$confirm("此操作将删除该角色, 是否继续?", "提示", {
+      this.$confirm("此操作将删除该拍摄地, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          delRole({id: id}).then(response => {
+          delLocation({id: id}).then(response => {
             if (response.code === 101) {
               this.$message({
                 message: "删除成功",
@@ -114,7 +130,7 @@ export default {
     },
     showInfo(id) {
       this.$router.push({
-        path: '/setup/auth/' + id,
+        path: '/location/index/' + id,
         query: {
           pageNum: this.listQuery.pageNum
         }

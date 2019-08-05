@@ -5,7 +5,7 @@
         <el-input v-model="form.name" placeholder="请输入角色名称" />
       </el-form-item>
       <el-form-item label="角色显示名称：" prop="displayName">
-        <el-input v-model="form.displayName" placeholder="请输入所属地区" />
+        <el-input v-model="form.displayName" placeholder="请输入角色显示名称" />
       </el-form-item>
       <el-form-item label="权限设置:">
         <el-tree :data="roleName" show-checkbox node-key="id" ref="tree"></el-tree>
@@ -19,9 +19,9 @@
 </template>
 <script>
 import {
-  addLocation,
-  updateLocation,
-  getLocationInfo,
+  addRole,
+  updateRole,
+  getRoleInfo,
   getPermissionList
 } from "@/api/table";
 import { getToken } from "@/utils/auth";
@@ -33,49 +33,26 @@ export default {
   },
   data() {
     return {
-      urlHeaders: { token: getToken() },
-      imageUrl: "",
-      options: [],
       form: {
         roleId: []
       },
       roleName: [],
       rules: {
         name: [
-          { required: true, message: "请输入拍摄地名称", trigger: "blur" }
+          { required: true, message: "请输入角色名称", trigger: "blur" }
         ],
-        areaId: [
-          { required: true, message: "请输入所属地区", trigger: "blur" }
-        ],
-        address: [
-          { required: true, message: "请输入详细地址", trigger: "blur" }
+        displayName: [
+          { required: true, message: "请输入角色显示名称", trigger: "blur" }
         ],
         score: [{ required: true, message: "请输入评分", trigger: "blur" }],
-        // shootingPlaceLableList: [{required: true, message: "请选择所属类型，可多选", trigger: "blur"}],
-        coverPicUrl: [
-          { required: true, message: "请上传封面图片", trigger: "blur" }
-        ]
-        // introduce: [{required: true, message: "请输入拍摄地介绍", trigger: "blur"}],
-      },
-      config: {
-        // 编辑器不自动被内容撑高
-        autoHeightEnabled: true,
-        // 初始容器高度
-        initialFrameHeight: 240,
-        // 初始容器宽度
-        initialFrameWidth: "100%",
-        // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
-        serverUrl:
-          "https://kingwoodapi.zkong.me/jd_api/ueditorHandler/ueditorConfig"
       }
     };
   },
   created() {
     if (this.$route.params.id != 0) {
-      getLocationInfo({ id: this.$route.params.id }).then(res => {
+      getRoleInfo({ id: this.$route.params.id }).then(res => {
         // console.log(res)
-        this.form = res.data.shootingPlace;
-        this.imageUrl = res.data.shootingPlace.coverPicUrl;
+        this.form = res.data.permission;
       });
     }
     getPermissionList().then(res => {
@@ -87,7 +64,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.$route.params.id == 0) {
-            addLocation(this.form).then(res => {
+            addRole(this.form).then(res => {
               if (res.code === 101) {
                 this.$message({
                   message: "新增成功",
@@ -95,7 +72,7 @@ export default {
                 });
                 setTimeout(() => {
                   this.$router.push({
-                    path: "/location/index",
+                    path: "/setup/auth",
                     query: {
                       pageNum: this.$route.query.pageNum
                     }
@@ -109,7 +86,7 @@ export default {
               }
             });
           } else {
-            updateLocation(this.form).then(res => {
+            updateRole(this.form).then(res => {
               if (res.code === 101) {
                 this.$message({
                   message: "修改成功",
@@ -117,7 +94,7 @@ export default {
                 });
                 setTimeout(() => {
                   this.$router.push({
-                    path: "/location/index",
+                    path: "/setup/auth/index",
                     query: {
                       pageNum: this.$route.query.pageNum
                     }
@@ -171,13 +148,16 @@ export default {
 </script>
 <style lang="scss" scoped>
 /deep/.el-form-item__label {
-  width: 106px !important;
-  margin-left: -16px;
+  width: 120px !important;
+  margin-left: -23px;
 }
 .demo-form .el-form-item {
   padding: 0 15px;
 }
 .el-form-item {
   width: 40%;
+}
+/deep/.el-form-item__content {
+  margin-left: 98px !important;
 }
 </style>

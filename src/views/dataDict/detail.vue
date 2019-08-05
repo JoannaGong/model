@@ -1,71 +1,18 @@
 <template>
   <div class="app-container">
     <el-form :model="form" ref="form" label-width="90px" :rules="rules" class="demo-form">
-      <h3>基础信息</h3>
-      <el-row :gutter="100">
-        <el-col :span="9">
-          <el-form-item label="拍摄地名称：" prop="name">
-            <el-input v-model="form.name" placeholder="请输入拍摄地名称" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="9">
-          <el-form-item label="所属地区：" prop="areaId">
-            <el-input v-model="form.areaId" placeholder="请输入所属地区" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="9">
-          <el-form-item label="详细地址：" prop="address">
-            <el-input v-model="form.address" placeholder="请输入详细地址" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="9">
-          <el-form-item label="所属类型：" prop="shootingPlaceLableList">
-            <el-select v-model="form.shootingPlaceLableList" multiple placeholder="请选择所属类型">
-              <el-option
-                v-for="item in form.shootingPlaceLableList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="9">
-          <el-form-item label="评分：" prop="score">
-            <el-input type="number" v-model="form.score" placeholder="请输入评分" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="是否推荐：" >
-            <el-radio-group v-model="form.score">
-              <el-radio :label="0">推荐</el-radio>
-              <el-radio :label="1">不推荐</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-form-item label="封面展示：" prop="coverPicUrl">
-        <el-upload
-          class="avatar-uploader"
-          :action="fileUrl()"
-          :headers="urlHeaders"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-        >
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
+      <el-form-item label="标签名称：" prop="dataValue">
+        <el-input class="label-name" v-model="form.dataValue" placeholder="请输入标签名称" />
       </el-form-item>
-      <h3>拍摄地介绍</h3>
-      <el-form-item prop="introduce">
-        <vue-ueditor-wrap
-          ref="ueditor"
-          v-model="form.introduce"
-          :destroy="false"
-          :config="config"
-          style="line-height:20px"
-        ></vue-ueditor-wrap>
+      <el-form-item label="标签类型：" prop="dataKey">
+        <el-select v-model="form.dataKey" placeholder="请选择标签类型">
+          <el-option
+            v-for="item in groupNameList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('form')">保存</el-button>
@@ -75,7 +22,7 @@
   </div>
 </template>
 <script>
-import { addLocation, updateLocation, getLocationInfo } from "@/api/table";
+import { addDataDict, updateDataDict, getLocationInfo } from "@/api/table";
 import { getToken } from "@/utils/auth";
 import VueUeditorWrap from "vue-ueditor-wrap";
 
@@ -85,37 +32,40 @@ export default {
   },
   data() {
     return {
-      urlHeaders: { token: getToken() },
-      imageUrl: "",
-      options: [],
+      groupNameList: [{
+        name: "风格标签",
+        value: "风格标签"
+      },{
+        name: "外貌标签",
+        value: "外貌标签"
+      },{
+        name: "体型标签",
+        value: "体型标签"
+      },{
+        name: "魅力标签",
+        value: "魅力标签"
+      },{
+        name: "热门地区",
+        value: "热门地区"
+      },{
+        name: "作品标签",
+        value: "作品标签"
+      },{
+        name: "拍摄地标签",
+        value: "拍摄地标签"
+      }],
       form: {},
       rules: {
         name: [{required: true, message: "请输入拍摄地名称", trigger: "blur"}],
         areaId: [{required: true, message: "请输入所属地区", trigger: "blur"}],
-        address: [{required: true, message: "请输入详细地址", trigger: "blur"}],
-        score: [{required: true, message: "请输入评分", trigger: "blur"}],
-        // shootingPlaceLableList: [{required: true, message: "请选择所属类型，可多选", trigger: "blur"}],
-        coverPicUrl: [{required: true, message: "请上传封面图片", trigger: "blur"}],
-        // introduce: [{required: true, message: "请输入拍摄地介绍", trigger: "blur"}],
       },
-      config: {
-        // 编辑器不自动被内容撑高
-        autoHeightEnabled: true,
-        // 初始容器高度
-        initialFrameHeight: 240,
-        // 初始容器宽度
-        initialFrameWidth: "100%",
-        // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
-        serverUrl: "https://kingwoodapi.zkong.me/jd_api/ueditorHandler/ueditorConfig"
-      }
     };
   },
   created() {
     if(this.$route.params.id != 0){
-      getLocationInfo({ id: this.$route.params.id }).then(res => {
+      getDataDictInfo({ id: this.$route.params.id }).then(res => {
         // console.log(res)
-        this.form = res.data.shootingPlace;
-        this.imageUrl = res.data.shootingPlace.coverPicUrl
+        this.form = res.data.dataDictionary;
       });
     } 
   },
@@ -124,7 +74,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if(valid){
           if(this.$route.params.id == 0){
-            addLocation(this.form).then(res => {
+            addDataDict(this.form).then(res => {
               if(res.code === 101){
                 this.$message({
                   message: "新增成功",
@@ -132,7 +82,7 @@ export default {
                 });
                 setTimeout(() => {
                   this.$router.push({
-                    path: "/location/index",
+                    path: "/dataDict/index",
                     query: {
                       pageNum: this.$route.query.pageNum
                     }
@@ -146,7 +96,7 @@ export default {
               }
             })
           }else{
-            updateLocation(this.form).then(res => {
+            updateDataDict(this.form).then(res => {
               if(res.code === 101){
                 this.$message({
                   message: "修改成功",
@@ -154,7 +104,7 @@ export default {
                 });
                 setTimeout(() => {
                   this.$router.push({
-                    path: "/location/index",
+                    path: "/dataDict/index",
                     query: {
                       pageNum: this.$route.query.pageNum
                     }
@@ -174,30 +124,9 @@ export default {
         }
       })
     },
-    fileUrl() {
-      return `${process.env.BASE_API}/uploadHandler/upload`;
-    },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-      this.form.coverPicUrl = res.data.url;
-    },
-    beforeAvatarUpload(file) {
-      const isJPG =
-        file.type === "image/png" ||
-        file.type === "image/jpeg" ||
-        file.type === "image/gif";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isJPG) {
-        this.$message.error("上传的图片只能是 jpg/png/jpeg/gif 格式!");
-      }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
-    },
     back() {
       this.$router.push({
-        path: "/location/index",
+        path: "/dataDict/index",
         query: {
           page: this.$route.query.page
         }
@@ -213,5 +142,8 @@ export default {
 }
 .demo-form .el-form-item{
   padding: 0 15px;
+}
+/deep/.label-name {
+  width: 40% !important;
 }
 </style>

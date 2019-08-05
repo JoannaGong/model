@@ -1,16 +1,16 @@
 <template>
   <div class="app-container">
-    <div class="filter-container"  style="float: right;">
-      <!-- <div class="search">
-        <el-input
-          v-model="listQuery.queryString"
-          placeholder="请输入名称、城市进行搜索"
-          @keyup.enter.native="handleFilter"
-          style="width: 200px;"
-          class="filter-item"
-        />
-        <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
-      </div> -->
+    <div class="filter-container" style="display: flex">
+      <div class="filter">
+        <el-select @change="fetchData('init')" v-model="listQuery.groupName" placeholder="选择数据类别">
+          <el-option
+            v-for="(item, index) in groupNameList"
+            :key="index"
+            :label="item.name"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+      </div>
       <div class="handle-create">
         <el-button type="primary" @click="showInfo(0)">新建</el-button>
       </div>
@@ -29,10 +29,10 @@
         <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
       </el-table-column>
       <el-table-column align="center" label="名称">
-        <template slot-scope="scope">{{ scope.row.address }}</template>
+        <template slot-scope="scope">{{ scope.row.dataValue }}</template>
       </el-table-column>
       <el-table-column align="center" label="类型">
-        <template slot-scope="scope">{{ scope.row.areaId }}</template>
+        <template slot-scope="scope">{{ scope.row.dataKey }}</template>
       </el-table-column>
       <el-table-column align="center" label="创建时间">
         <template slot-scope="scope">{{ scope.row.updatedTime === null ? scope.row.createdTime : scope.row.updatedTime }}</template>
@@ -57,36 +57,50 @@
         @current-change="currentChange"
       />
     </div>
-    <form-dialog v-if="form.formTag" :showId="form.showId" @close="form.formTag=false"/>
   </div>
 </template>
 
 <script>
 import { getDataDict, delDataDict } from "@/api/table";
 import { getToken } from "@/utils/auth";
-import { constants } from 'fs';
 
 export default {
-  components: {
-    formDialog: () => import('./dialog.vue')
-  },
   data() {
     return {
       tableKey: 0,
       total: 0,
       list: [],
+      groupNameList: [{
+        name: "风格标签",
+        value: "风格标签"
+      },{
+        name: "外貌标签",
+        value: "外貌标签"
+      },{
+        name: "体型标签",
+        value: "体型标签"
+      },{
+        name: "魅力标签",
+        value: "魅力标签"
+      },{
+        name: "热门地区",
+        value: "热门地区"
+      },{
+        name: "作品标签",
+        value: "作品标签"
+      },{
+        name: "拍摄地标签",
+        value: "拍摄地标签"
+      }],
       listLoading: true,
       pageTotal: 0,
       listQuery: {
         limit: 10,
         pageNum: 1,
         keyword: "",
+        groupName: "风格标签"
       },
-      form: {
-        formTag: false,
-        showId: 0,
-        dialogTag: false
-      },
+      form: {},
     };
   },
   created() {
@@ -104,8 +118,8 @@ export default {
       this.listLoading = true;
       getDataDict(this.listQuery).then(response => {
         console.log(response)
-        // this.list = response.data.pageInfo.list
-        // this.pageTotal = response.data.pageInfo.total
+        this.list = response.data.pageInfo.list
+        this.pageTotal = response.data.pageInfo.total
         this.listLoading = false
       })
     },
@@ -134,7 +148,7 @@ export default {
     },
     showInfo(id) {
       this.$router.push({
-        path: '/location/index/' + id,
+        path: '/dataDict/index/' + id,
         query: {
           pageNum: this.listQuery.pageNum
         }

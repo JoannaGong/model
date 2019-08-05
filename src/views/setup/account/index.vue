@@ -32,10 +32,10 @@
       <el-table-column align="center" label="创建时间" width="190">
         <template slot-scope="scope">{{ scope.row.updatedTime === null ? scope.row.createdTime : scope.row.updatedTime }}</template>
       </el-table-column>
-      <el-table-column align="center" label="操作" width="300">
+      <el-table-column align="center" label="操作" width="180">
         <template slot-scope="scope">
           <el-button size="mini" type="default" @click="showInfo(scope.row.id)">编辑</el-button>
-          <el-button size="mini" type="primary" @click="editRole(scope.row.permissionsId)">修改角色</el-button>
+          <!-- <el-button size="mini" type="primary" @click="editRole(scope.row.permissionsId)">修改角色</el-button> -->
           <el-button size="mini" type="danger" @click="del(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -52,7 +52,7 @@
         @current-change="currentChange"
       />
     </div>
-
+<!-- 
     <el-dialog
       title="修改角色"
       :visible.sync="dialogVisible"
@@ -86,6 +86,7 @@
           <el-button @click="back()">取消</el-button>
         </span>
     </el-dialog>
+-->
   </div>
 </template>
 

@@ -81,6 +81,22 @@ import { getToken } from "@/utils/auth";
 
 export default {
   data() {
+    var checkEmail = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("请输入邮箱"));
+      }
+      setTimeout(() => {
+        if (
+          !/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(
+            value
+          )
+        ) {
+          callback(new Error("请输入正确格式的邮箱"));
+        } else {
+          callback();
+        }
+      }, 500);
+    };
     var validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入密码"));
@@ -122,6 +138,7 @@ export default {
         headUrl: [
           { required: true, message: "请上传头像图片", trigger: "blur" }
         ],
+        email: [{ validator: checkEmail, trigger: "blur" }],
         // password: [{ required: true, validator: validatePass, trigger: "blur" }],
         // repassword: [
         //   {

@@ -57,220 +57,54 @@ export const constantRouterMap = [
       }
     ]
   },
-  // {
-  //   path: '/finance',
-  //   component: Layout,
-  //   redirect: '/finance/financeFlow',
-  //   name: 'finance',
-  //   meta: { title: '财务管理', icon: 'finance' },
-  //   children: [
-  //     {
-  //       path: 'financeFlow',
-  //       component: () => import('@/views/finance/financeFlow/index'),
-  //       name: 'FinanceFlow',
-  //       meta: { title: '财务流水记录', icon: 'financeFlow' }
-  //     },
-  //     {
-  //       path: 'financeStatistic',
-  //       component: () => import('@/views/finance/financeStatistic/index'),
-  //       name: 'FinanceStatistic',
-  //       meta: { title: '财务统计', icon: 'financeStatistic' }
-  //     },
-  //     {
-  //       path: 'withdrawAudit',
-  //       component: () => import('@/views/role/index'),
-  //       name: 'WithdrawAudit',
-  //       meta: { title: '提现审核', icon: 'withdrawAudit' }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/annoucement',
-  //   name: 'annoucement',
-  //   component: Layout,
-  //   redirect: '/role/index',
-  //   meta: { title: '通告管理', icon: 'guide' },
-  //   children: [
-  //     {
-  //       path: 'annoucement',
-  //       component: () => import('@/views/role/index'),
-  //       name: 'Annoucement',
-  //       meta: { title: '通告管理', icon: 'annoucement' }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/production',
-  //   name: 'production',
-  //   component: Layout,
-  //   redirect: '/role/index',
-  //   meta: { title: '作品管理', icon: 'user' },
-  //   children: [
-  //     {
-  //       path: 'production',
-  //       component: () => import('@/views/role/index'),
-  //       name: 'Profile',
-  //       meta: { title: '作品管理', icon: 'production' }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/certification',
-  //   name: 'certification',
-  //   component: Layout,
-  //   redirect: '/role/index',
-  //   meta: { title: '认证管理', icon: 'user' },
-  //   children: [
-  //     {
-  //       path: 'certification',
-  //       component: () => import('@/views/role/index'),
-  //       name: 'Certification',
-  //       meta: { title: '认证管理', icon: 'certification' }
-  //     }
-  //   ]
-  // },
   {
-    path: '/dataDict',
-    name: 'dataDict',
+    path: '/finance',
     component: Layout,
-    redirect: '/dataDict/index',
-    meta: { title: '数据字典', icon: 'dataDict' },
+    redirect: '/finance/financeFlow',
+    name: 'finance',
+    meta: { title: '财务管理', icon: 'finance' },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/dataDict/index'),
-        name: 'DataDict',
-        hidden: true,
-        meta: { title: '数据字典列表' }
+        path: 'financeFlow',
+        component: () => import('@/views/finance/financeFlow/index'),
+        name: 'FinanceFlow',
+        meta: { title: '财务流水记录', icon: 'financeFlow' }
+      },
+      // {
+      //   path: 'financeFlow/:id',
+      //   component: () => import('@/views/finance/financeFlow/detail'),
+      //   name: 'FinanceFlowTable',
+      //   hidden: true,
+      //   meta: { title: '财务流水记录表单', icon: 'financeFlow' }
+      // },
+      {
+        path: 'financeStatistic',
+        component: () => import('@/views/finance/financeStatistic/index'),
+        name: 'FinanceStatistic',
+        meta: { title: '财务统计', icon: 'financeStatistic' }
       },
       {
-        path: 'index/:id',
-        component: () => import('@/views/dataDict/detail'),
-        name: 'dataDictTable',
-        hidden: true,
-        meta: { title: '数据字典表单' }
-      }
-    ]
-  },
-  // {
-  //   path: '/afterSales',
-  //   name: 'afterSales',
-  //   component: Layout,
-  //   redirect: '/role/index',
-  //   meta: { title: '售后管理', icon: 'user' },
-  //   children: [
-  //     {
-  //       path: 'afterSales',
-  //       component: () => import('@/views/role/index'),
-  //       name: 'AfterSales',
-  //       meta: { title: '售后管理', icon: 'afterSales' }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/service',
-  //   name: 'service',
-  //   component: Layout,
-  //   redirect: '/role/index',
-  //   meta: { title: '服务管理', icon: 'user' },
-  //   children: [
-  //     {
-  //       path: 'service',
-  //       component: () => import('@/views/role/index'),
-  //       name: 'Service',
-  //       meta: { title: '服务管理', icon: 'service' }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/banner',
-  //   name: 'banner',
-  //   component: Layout,
-  //   redirect: '/role/index',
-  //   meta: { title: 'banner管理', icon: 'user' },
-  //   children: [
-  //     {
-  //       path: 'banner',
-  //       component: () => import('@/views/role/index'),
-  //       name: 'Banner',
-  //       meta: { title: 'banner管理', icon: 'banner' }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/module',
-  //   name: 'module',
-  //   component: Layout,
-  //   redirect: '/role/index',
-  //   meta: { title: '首页模块管理', icon: 'user' },
-  //   children: [
-  //     {
-  //       path: 'module',
-  //       component: () => import('@/views/role/index'),
-  //       name: 'Module',
-  //       meta: { title: '首页模块管理', icon: 'module' }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/activity',
-  //   name: 'activity',
-  //   component: Layout,
-  //   redirect: '/role/index',
-  //   meta: { title: '活动管理', icon: 'user' },
-  //   children: [
-  //     {
-  //       path: 'activity',
-  //       component: () => import('@/views/role/index'),
-  //       name: 'Activity',
-  //       meta: { title: '活动管理', icon: 'activity' }
-  //     }
-  //   ]
-  // },
-  {
-    path: '/location',
-    name: 'location',
-    component: Layout,
-    redirect: '/location/index',
-    meta: { title: '拍摄地管理', icon: 'location' },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/location/index'),
-        name: 'LocationList',
-        hidden: true,
-        meta: { title: '拍摄地列表', icon: 'location' }
+        path: 'withdrawAudit',
+        component: () => import('@/views/finance/withdrawAudit/index'),
+        name: 'WithdrawAudit',
+        meta: { title: '提现审核', icon: 'withdrawAudit' }
       },
-      {
-        path: 'index/:id',
-        component: () => import('@/views/location/detail'),
-        name: 'LocationTable',
-        hidden: true,
-        meta: { title: '拍摄地表单', icon: 'location' }
-      }
+      // {
+      //   path: 'withdrawAudit/:id',
+      //   component: () => import('@/views/finance/withdrawAudit/detail'),
+      //   name: 'WithdrawAuditTable',
+      //   hidden: true,
+      //   meta: { title: '财务流水记录表单', icon: 'withdrawAudit' }
+      // }
     ]
   },
-  // {
-  //   path: '/dataStatistic',
-  //   name: 'dataStatistic',
-  //   component: Layout,
-  //   redirect: '/role/index',
-  //   meta: { title: '数据统计', icon: 'user' },
-  //   children: [
-  //     {
-  //       path: 'dataStatistic',
-  //       component: () => import('@/views/role/index'),
-  //       name: 'DataStatistic',
-  //       meta: { title: '数据统计', icon: 'dataStatistic' }
-  //     }
-  //   ]
-  // },
+
   {
     path: '/setup',
     name: 'setup',
     component: Layout,
-    redirect: '/setup/account/index',
-    meta: { title: '设置', icon: 'setUp' },
+    redirect: '/setup/account',
+    meta: { title: '基础功能', icon: 'setUp' },
     children: [
       {
         path: 'account',
@@ -303,6 +137,251 @@ export const constantRouterMap = [
         component: () => import('@/views/setup/person/index'),
         name: 'Setup',
         meta: { title: '个人信息', icon: 'user' }
+      }
+    ]
+  },
+
+  {
+    path: '/annoucement',
+    name: 'annoucement',
+    component: Layout,
+    redirect: '/annoucement/index',
+    meta: { title: '通告管理', icon: 'guide' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/annoucement/index'),
+        name: 'Annoucement',
+        meta: { title: '通告管理', icon: 'annoucement' }
+      },
+      {
+        path: 'index/:id',
+        component: () => import('@/views/annoucement/detail'),
+        name: 'AnnoucementTable',
+        hidden: true,
+        meta: { title: '通告管理表单' }
+      }
+    ]
+  },
+  {
+    path: '/production',
+    name: 'production',
+    component: Layout,
+    redirect: '/production/index',
+    meta: { title: '作品管理', icon: 'user' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/production/index'),
+        name: 'Production',
+        meta: { title: '作品管理', icon: 'production' }
+      },
+      {
+        path: 'index/:id',
+        component: () => import('@/views/production/detail'),
+        name: 'ProductionTable',
+        hidden: true,
+        meta: { title: '作品管理表单' }
+      }
+    ]
+  },
+  {
+    path: '/certification',
+    name: 'certification',
+    component: Layout,
+    redirect: '/certification/index',
+    meta: { title: '认证管理', icon: 'user' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/certification/index'),
+        name: 'Certification',
+        meta: { title: '认证管理', icon: 'certification' }
+      },
+      {
+        path: 'index/:id',
+        component: () => import('@/views/dataDict/detail'),
+        name: 'CertificationTable',
+        hidden: true,
+        meta: { title: '认证管理表单' }
+      }
+    ]
+  },
+  {
+    path: '/dataDict',
+    name: 'dataDict',
+    component: Layout,
+    redirect: '/dataDict/index',
+    meta: { title: '数据字典', icon: 'dataDict' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/dataDict/index'),
+        name: 'DataDict',
+        hidden: true,
+        meta: { title: '数据字典列表' }
+      },
+      {
+        path: 'index/:id',
+        component: () => import('@/views/dataDict/detail'),
+        name: 'dataDictTable',
+        hidden: true,
+        meta: { title: '数据字典表单' }
+      }
+    ]
+  },
+  {
+    path: '/afterSales',
+    name: 'afterSales',
+    component: Layout,
+    redirect: '/afterSales/index',
+    meta: { title: '售后管理', icon: 'user' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/afterSales/index'),
+        name: 'AfterSales',
+        meta: { title: '售后管理', icon: 'afterSales' }
+      },
+      {
+        path: 'index/:id',
+        component: () => import('@/views/afterSales/detail'),
+        name: 'AfterSalesTable',
+        hidden: true,
+        meta: { title: '售后管理表单', icon: 'afterSales' }
+      }
+    ]
+  },
+  {
+    path: '/service',
+    name: 'service',
+    component: Layout,
+    redirect: '/service/index',
+    meta: { title: '服务管理', icon: 'user' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/service/index'),
+        name: 'Service',
+        meta: { title: '服务管理', icon: 'service' }
+      },
+      {
+        path: 'index/:id',
+        component: () => import('@/views/service/detail'),
+        name: 'ServiceTable',
+        hidden: true,
+        meta: { title: '服务管理表单', icon: 'service' }
+      }
+    ]
+  },
+  {
+    path: '/banner',
+    name: 'banner',
+    component: Layout,
+    redirect: '/banner/index',
+    meta: { title: 'banner管理', icon: 'user' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/banner/index'),
+        name: 'Banner',
+        meta: { title: 'banner管理', icon: 'banner' }
+      },
+      {
+        path: 'index/:id',
+        component: () => import('@/views/banner/detail'),
+        name: 'BannerTable',
+        hidden: true,
+        meta: { title: 'banner管理表单', icon: 'banner' }
+      }
+    ]
+  },
+  {
+    path: '/module',
+    name: 'module',
+    component: Layout,
+    redirect: '/module/index',
+    meta: { title: '首页模块管理', icon: 'user' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/module/index'),
+        name: 'Module',
+        meta: { title: '首页模块管理', icon: 'module' }
+      },
+      {
+        path: 'index/:id',
+        component: () => import('@/views/module/detail'),
+        name: 'moduleTable',
+        hidden: true,
+        meta: { title: '首页模块管理表单', icon: 'module' }
+      }
+    ]
+  },
+  {
+    path: '/activity',
+    name: 'activity',
+    component: Layout,
+    redirect: '/activity/index',
+    meta: { title: '活动管理', icon: 'user' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/activity/index'),
+        name: 'Activity',
+        meta: { title: '活动管理', icon: 'activity' }
+      },
+      {
+        path: 'index/:id',
+        component: () => import('@/views/activity/detail'),
+        name: 'activityTable',
+        hidden: true,
+        meta: { title: '活动管理表单', icon: 'activity' }
+      }
+    ]
+  },
+  {
+    path: '/location',
+    name: 'location',
+    component: Layout,
+    redirect: '/location/index',
+    meta: { title: '拍摄地管理', icon: 'location' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/location/index'),
+        name: 'LocationList',
+        hidden: true,
+        meta: { title: '拍摄地列表', icon: 'location' }
+      },
+      {
+        path: 'index/:id',
+        component: () => import('@/views/location/detail'),
+        name: 'LocationTable',
+        hidden: true,
+        meta: { title: '拍摄地表单', icon: 'location' }
+      }
+    ]
+  },
+  {
+    path: '/dataStatistic',
+    name: 'dataStatistic',
+    component: Layout,
+    redirect: '/dataStatistic/index',
+    meta: { title: '数据统计', icon: 'user' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/dataStatistic/index'),
+        name: 'DataStatistic',
+        meta: { title: '数据统计', icon: 'dataStatistic' }
+      },
+      {
+        path: 'index/:id',
+        component: () => import('@/views/dataStatistic/detail'),
+        name: 'DataStatisticTable',
+        hidden: true,
+        meta: { title: '数据统计表单', icon: 'location' }
       }
     ]
   },

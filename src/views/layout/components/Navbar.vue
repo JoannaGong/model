@@ -2,9 +2,6 @@
   <div class="navbar">
     <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
     <breadcrumb />
-    <div class="user-name">
-      <span>{{userName}}</span>
-    </div>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
@@ -12,12 +9,12 @@
       </div>
       <el-dropdown-menu slot="dropdown" class="user-dropdown">
         <router-link class="inlineBlock" to="/">
-          <el-dropdown-item align="center">
-            首页
+          <el-dropdown-item>
+            Home
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
-          <span style="display:block;" @click="logout">退出登录</span>
+          <span style="display:block;" @click="logout">LogOut</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -28,7 +25,7 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import { getInfo } from '@/api/login'
+
 export default {
   components: {
     Breadcrumb,
@@ -40,32 +37,13 @@ export default {
       'avatar'
     ])
   },
-  data(){
-    return {
-      userName: ''
-    }
-  },
-  created(){
-    this.getUserInfo()
-  },
   methods: {
-    getUserInfo () {
-      getInfo({
-        token: sessionStorage.getItem('token')
-      })
-        .then(res => {
-          if (res.code === 101) {
-            this.userName = res.data.userInfo.userName
-            this.avatarUrl = res.data.userInfo.headUrl
-          }
-        })
-    },
     toggleSideBar() {
       this.$store.dispatch('ToggleSideBar')
     },
     logout() {
       this.$store.dispatch('LogOut').then(() => {
-        location.reload()
+        location.reload() // 为了重新实例化vue-router对象 避免bug
       })
     }
   }
@@ -73,20 +51,6 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.user-name{
-  display: inline-block;
-  position: absolute;
-  right: 130px;
-}
-.notice{
-  display: inline-block;
-  position: absolute;
-  right: 100px;
-  font-size: 22px;
-  line-height: 22px;
-  margin-top: 14px;
-  cursor: pointer;
-}
 .navbar {
   height: 50px;
   line-height: 50px;
