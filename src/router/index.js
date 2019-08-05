@@ -27,7 +27,6 @@ import Layout from '../views/layout/Layout'
 **/
 
 export const constantRouterMap = [
-  // { path: '/test', component: () => import('@/views/test/index'), hidden: true },
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
 
@@ -130,21 +129,29 @@ export const constantRouterMap = [
   //     }
   //   ]
   // },
-  // {
-  //   path: '/dataDict',
-  //   name: 'dataDict',
-  //   component: Layout,
-  //   redirect: '/role/index',
-  //   meta: { title: '数据字典', icon: 'user' },
-  //   children: [
-  //     {
-  //       path: 'dataDict',
-  //       component: () => import('@/views/role/index'),
-  //       name: 'DataDict',
-  //       meta: { title: '数据字典', icon: 'dataDict' }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/dataDict',
+    name: 'dataDict',
+    component: Layout,
+    redirect: '/dataDict/index',
+    meta: { title: '数据字典', icon: 'dataDict' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/dataDict/index'),
+        name: 'DataDict',
+        hidden: true,
+        meta: { title: '数据字典列表' }
+      },
+      {
+        path: 'index/:id',
+        component: () => import('@/views/dataDict/detail'),
+        name: 'dataDictTable',
+        hidden: true,
+        meta: { title: '数据字典表单' }
+      }
+    ]
+  },
   // {
   //   path: '/afterSales',
   //   name: 'afterSales',
@@ -258,6 +265,47 @@ export const constantRouterMap = [
   //     }
   //   ]
   // },
+  {
+    path: '/setup',
+    name: 'setup',
+    component: Layout,
+    redirect: '/setup/account/index',
+    meta: { title: '设置', icon: 'setUp' },
+    children: [
+      {
+        path: 'account',
+        component: () => import('@/views/setup/account/index'),
+        name: 'Account',
+        meta: { title: '账号管理', icon: 'account' }
+      },
+      {
+        path: 'account/:id',
+        component: () => import('@/views/setup/account/detail'),
+        name: 'AccountTable',
+        hidden: true,
+        meta: { title: '账号管理表单', icon: 'account' }
+      },
+      {
+        path: 'auth',
+        component: () => import('@/views/setup/auth/index'),
+        name: 'Auth',
+        meta: { title: '角色管理', icon: 'auth' }
+      },
+      {
+        path: 'auth/:id',
+        component: () => import('@/views/setup/auth/detail'),
+        name: 'AuthTable',
+        hidden: true,
+        meta: { title: '角色管理表单', icon: 'account' }
+      },
+      {
+        path: 'person',
+        component: () => import('@/views/setup/person/index'),
+        name: 'Setup',
+        meta: { title: '个人信息', icon: 'user' }
+      }
+    ]
+  },
 
   { path: '*', redirect: '/404', hidden: true }
 ]

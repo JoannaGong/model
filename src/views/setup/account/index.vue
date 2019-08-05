@@ -1,18 +1,8 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      <div class="search">
-        <el-input
-          v-model="listQuery.queryString"
-          placeholder="请输入名称、城市进行搜索"
-          @keyup.enter.native="handleFilter"
-          style="width: 200px;"
-          class="filter-item"
-        />
-        <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
-      </div>
+    <div class="filter-container"  style="float: right;">
       <div class="handle-create">
-        <el-button type="primary" @click="showInfo(0)">新建拍摄地</el-button>
+        <el-button type="primary" @click="showInfo(0)">新增用户</el-button>
       </div>
     </div>
     <el-table
@@ -28,25 +18,25 @@
       <el-table-column align="center" label="序号" width="80">
         <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
       </el-table-column>
-      <el-table-column align="center" label="拍摄地名称">
-        <template slot-scope="scope">{{ scope.row.address }}</template>
-      </el-table-column>
-      <el-table-column align="center" label="城市" width="180">
-        <template slot-scope="scope">{{ scope.row.areaId }}</template>
-      </el-table-column>
-      <el-table-column align="center" label="是否推荐" width="100">
+      <el-table-column align="center" label="头像">
         <template slot-scope="scope">
-          <span v-if="scope.row.recommendedFlug == '0'">不推荐</span>
-          <span v-if="scope.row.recommendedFlug == '1'">推荐</span>
+          <img :src="scope.row.headUrl" style="width: 50px;" />
         </template>
+      </el-table-column>
+      <el-table-column align="center" label="用户名">
+        <template slot-scope="scope">{{ scope.row.userName }}</template>
+      </el-table-column>
+      <el-table-column align="center" label="真实姓名">
+        <template slot-scope="scope">{{ scope.row.name }}</template>
       </el-table-column>
       <el-table-column align="center" label="创建时间" width="190">
         <template slot-scope="scope">{{ scope.row.updatedTime === null ? scope.row.createdTime : scope.row.updatedTime }}</template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="操作" width="200">
+      <el-table-column align="center" label="操作" width="300">
         <template slot-scope="scope">
-          <el-button type="default" size="mini" @click="showInfo(scope.row.id)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="del(scope.row.id)">删除</el-button>
+          <el-button size="mini" type="default" @click="showInfo(scope.row.id)">编辑</el-button>
+          <el-button size="mini" type="primary" @click="editRole(scope.row.permissionsId)">修改角色</el-button>
+          <el-button size="mini" type="danger" @click="del(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -62,17 +52,51 @@
         @current-change="currentChange"
       />
     </div>
+
+    <el-dialog
+      title="修改角色"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <el-form
+        :model="permissionsForm"
+        status-icon
+        :rules="rules"
+        ref="form"
+        label-width="100px"
+        class="demo-personForm"
+      >
+        <el-form-item label="角色显示名称：">
+          <el-input v-model="permissionsForm.displayName" disabled />
+        </el-form-item>
+        <el-form-item label="所属角色：">
+          <el-select v-model="permissionsForm.name" placeholder="请选择所属角色">
+            <el-option
+              v-for="item in options"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="submitForm('permissionsForm')">确定</el-button>
+          <el-button @click="back()">取消</el-button>
+        </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getLocation, delLocation } from "@/api/table";
+import { getUser, delUser, getRoleInfo, updateRole, getRoleList } from "@/api/table";
 import { getToken } from "@/utils/auth";
-import { constants } from 'fs';
 
 export default {
   data() {
     return {
+      dialogVisible: false,
       tableKey: 0,
       total: 0,
       list: [],
@@ -82,6 +106,12 @@ export default {
         limit: 10,
         pageNum: 1,
         keyword: "",
+      },
+      options: [],
+      permissionsName: "",
+      permissionsForm: {},
+      rules: {
+
       }
     };
   },
@@ -98,21 +128,43 @@ export default {
         this.listQuery.page = 1;
       }
       this.listLoading = true;
-      getLocation(this.listQuery).then(response => {
+      getUser(this.listQuery).then(response => {
         // console.log(response)
         this.list = response.data.pageInfo.list
         this.pageTotal = response.data.pageInfo.total
         this.listLoading = false
+      })      
+    },
+    showInfo(id) {
+      this.$router.push({
+        path: '/setup/account/' + id,
+        query: {
+          pageNum: this.listQuery.pageNum
+        }
       })
     },
+    editRole(id){
+      this.dialogVisible = true
+      getRoleList().then(res => {
+        // console.log(res)
+        this.options = res.data.permissionList
+      })
+      getRoleInfo({ id: id }).then(res => {
+        // console.log(res)
+        this.permissionsForm = res.data.permission
+      })
+    },
+    handleClose(done) {
+      done();
+    },
     del(id) {
-      this.$confirm("此操作将删除该拍摄地, 是否继续?", "提示", {
+      this.$confirm("此操作将删除该用户, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          delLocation({id: id}).then(response => {
+          delUser({id: id}).then(response => {
             if (response.code === 101) {
               this.$message({
                 message: "删除成功",
@@ -127,14 +179,6 @@ export default {
         .catch(err => {
           this.$message.warning("已取消删除！");
         });
-    },
-    showInfo(id) {
-      this.$router.push({
-        path: '/location/index/' + id,
-        query: {
-          pageNum: this.listQuery.pageNum
-        }
-      })
     },
     handleFilter() {
       this.listQuery.pageNum = 1;
@@ -161,9 +205,18 @@ export default {
   }
 };
 </script>
+
 <style lang="scss" scoped>
-.filter-container {
-  display: flex;
-  justify-content: space-between;
+/deep/ .el-dialog {
+  width: 33% !important;
+  .is-disabled {
+    width: 65%;
+  }
+}
+/deep/ .el-dialog .el-form-item__content {
+  margin-left: 110px !important;
+}
+/deep/ .el-form-item__label {
+  width: 110px !important;
 }
 </style>

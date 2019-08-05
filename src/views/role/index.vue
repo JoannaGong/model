@@ -36,7 +36,7 @@
       highlight-current-row
       @sort-change="sortChange"
     >
-      <el-table-column align="center" label="序号" width="95">
+      <el-table-column align="center" label="序号" width="80">
         <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.page - 1) + 1 }}</template>
       </el-table-column>
       <el-table-column align="center" label="会员昵称">

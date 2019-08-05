@@ -25,3 +25,12 @@ export function logout() {
     method: 'post'
   })
 }
+
+// 修改当前登录用户密码
+export function updatePassword(params) {
+  return request({
+    url: '/loginController/updatePass',
+    method: 'post',
+    data: params
+  })
+}

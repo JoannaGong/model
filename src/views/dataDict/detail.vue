@@ -37,9 +37,9 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="是否推荐：" >
-            <el-radio-group v-model="form.recommendedFlug">
-              <el-radio label="0">不推荐</el-radio>
-              <el-radio label="1">推荐</el-radio>
+            <el-radio-group v-model="form.score">
+              <el-radio :label="0">推荐</el-radio>
+              <el-radio :label="1">不推荐</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>

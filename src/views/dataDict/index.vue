@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      <div class="search">
+    <div class="filter-container"  style="float: right;">
+      <!-- <div class="search">
         <el-input
           v-model="listQuery.queryString"
           placeholder="请输入名称、城市进行搜索"
@@ -10,9 +10,9 @@
           class="filter-item"
         />
         <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
-      </div>
+      </div> -->
       <div class="handle-create">
-        <el-button type="primary" @click="showInfo(0)">新建拍摄地</el-button>
+        <el-button type="primary" @click="showInfo(0)">新建</el-button>
       </div>
     </div>
     <el-table
@@ -28,23 +28,18 @@
       <el-table-column align="center" label="序号" width="80">
         <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
       </el-table-column>
-      <el-table-column align="center" label="拍摄地名称">
+      <el-table-column align="center" label="名称">
         <template slot-scope="scope">{{ scope.row.address }}</template>
       </el-table-column>
-      <el-table-column align="center" label="城市" width="180">
+      <el-table-column align="center" label="类型">
         <template slot-scope="scope">{{ scope.row.areaId }}</template>
       </el-table-column>
-      <el-table-column align="center" label="是否推荐" width="100">
-        <template slot-scope="scope">
-          <span v-if="scope.row.recommendedFlug == '0'">不推荐</span>
-          <span v-if="scope.row.recommendedFlug == '1'">推荐</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="创建时间" width="190">
+      <el-table-column align="center" label="创建时间">
         <template slot-scope="scope">{{ scope.row.updatedTime === null ? scope.row.createdTime : scope.row.updatedTime }}</template>
       </el-table-column>
       <el-table-column align="center" prop="created_at" label="操作" width="200">
         <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="showInfo(scope.row.id)">查看</el-button>
           <el-button type="default" size="mini" @click="showInfo(scope.row.id)">编辑</el-button>
           <el-button type="danger" size="mini" @click="del(scope.row.id)">删除</el-button>
         </template>
@@ -62,15 +57,19 @@
         @current-change="currentChange"
       />
     </div>
+    <form-dialog v-if="form.formTag" :showId="form.showId" @close="form.formTag=false"/>
   </div>
 </template>
 
 <script>
-import { getLocation, delLocation } from "@/api/table";
+import { getDataDict, delDataDict } from "@/api/table";
 import { getToken } from "@/utils/auth";
 import { constants } from 'fs';
 
 export default {
+  components: {
+    formDialog: () => import('./dialog.vue')
+  },
   data() {
     return {
       tableKey: 0,
@@ -82,7 +81,12 @@ export default {
         limit: 10,
         pageNum: 1,
         keyword: "",
-      }
+      },
+      form: {
+        formTag: false,
+        showId: 0,
+        dialogTag: false
+      },
     };
   },
   created() {
@@ -98,10 +102,10 @@ export default {
         this.listQuery.page = 1;
       }
       this.listLoading = true;
-      getLocation(this.listQuery).then(response => {
-        // console.log(response)
-        this.list = response.data.pageInfo.list
-        this.pageTotal = response.data.pageInfo.total
+      getDataDict(this.listQuery).then(response => {
+        console.log(response)
+        // this.list = response.data.pageInfo.list
+        // this.pageTotal = response.data.pageInfo.total
         this.listLoading = false
       })
     },
@@ -112,7 +116,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          delLocation({id: id}).then(response => {
+          delDataDict({id: id}).then(response => {
             if (response.code === 101) {
               this.$message({
                 message: "删除成功",
