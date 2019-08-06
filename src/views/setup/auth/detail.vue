@@ -8,7 +8,7 @@
         <el-input v-model="form.displayName" placeholder="请输入角色显示名称" />
       </el-form-item>
       <el-form-item label="权限设置:">
-        <el-tree :data="roleName" show-checkbox node-key="id" ref="tree"></el-tree>
+        <el-tree :data="treeList" show-checkbox node-key="id" ref="tree"></el-tree>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('form')">保存</el-button>
@@ -34,9 +34,9 @@ export default {
   data() {
     return {
       form: {
-        roleId: []
+        permissionId: []
       },
-      roleName: [],
+      treeList: [],
       rules: {
         name: [
           { required: true, message: "请输入角色名称", trigger: "blur" }
@@ -53,16 +53,65 @@ export default {
       getRoleInfo({ id: this.$route.params.id }).then(res => {
         // console.log(res)
         this.form = res.data.permission;
+        let data = res.data.permission;
+        var tempArr = data.permissionRoleList;
+        data.permissionId = [];
+        tempArr.forEach(item => {
+          if (item.isOpen === 1) {
+            data.permissionId.push({
+              id: item.id,
+              label: item.roleName,
+              key: item.roleKey
+            });
+          }
+        });
+        this.$refs.tree.setCheckedNodes(this.form.permissionId)
       });
     }
     getPermissionList().then(res => {
-      console.log(res);
+      // console.log(res);
+      for(let x in res.data.roleDetailsList){
+        let tempData = {}
+        tempData.id = res.data.roleDetailsList[x].id
+        tempData.label = res.data.roleDetailsList[x].groupName
+        tempData.children = []
+        tempData.children.push({
+          id: res.data.roleDetailsList[x].id,
+          label: res.data.roleDetailsList[x].roleName,
+          key: res.data.roleDetailsList[x].roleKey
+        })
+        this.treeList.push(tempData)
+      }
+
+      for(let x=0; x<this.treeList.length; x++){
+        for(let y=x+1; y<this.treeList.length; y++){
+          if(this.treeList[x].label === this.treeList[y].label){
+            this.treeList[y].children.forEach(item => {
+              this.treeList[x].children.push({
+                id: item.id,
+                label: item.label,
+              })
+            })
+            this.treeList.splice(y, 1)
+            y--
+          }
+        }
+      }
     });
   },
   methods: {
     submitForm(formName) {
+      let permissionList = this.$refs.tree.getCheckedNodes()
+      this.form.permissionId = []
+      permissionList.forEach(item => {
+        if(!item.hasOwnProperty('children')){
+          this.form.permissionRoleList.push(item.id)
+        }
+      })
+      // this.form.permissionId = this.form.permissionId.join("@@");
       this.$refs[formName].validate(valid => {
         if (valid) {
+          console.log(this.form)
           if (this.$route.params.id == 0) {
             addRole(this.form).then(res => {
               if (res.code === 101) {
@@ -94,7 +143,7 @@ export default {
                 });
                 setTimeout(() => {
                   this.$router.push({
-                    path: "/setup/auth/index",
+                    path: "/setup/auth",
                     query: {
                       pageNum: this.$route.query.pageNum
                     }

@@ -37,7 +37,7 @@
       @sort-change="sortChange"
     >
       <el-table-column align="center" label="序号" width="80">
-        <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.page - 1) + 1 }}</template>
+        <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
       </el-table-column>
       <el-table-column align="center" label="会员昵称">
         <template slot-scope="scope">{{ scope.row.userName }}</template>
@@ -68,7 +68,7 @@
 
     <div class="pagination-container">
       <el-pagination
-        :current-page="listQuery.page"
+        :current-page="listQuery.pageNum"
         :page-size="listQuery.limit"
         :total="pageTotal"
         align="center"
@@ -116,7 +116,7 @@ export default {
       pageTotal: 0,
       listQuery: {
         limit: 10,
-        page: 1,
+        pageNum: 1,
         keyword: "",
       }
     };
@@ -130,7 +130,7 @@ export default {
   methods: {
     fetchData(tag) {
       if (tag === "init") {
-        this.listQuery.page = 1;
+        this.listQuery.pageNum = 1;
       }
       this.listLoading = true;
       getMemberList(this.listQuery).then(response => {
@@ -143,7 +143,7 @@ export default {
       this.$router.push({ path: 'role/' + id + '/info' })
     },
     handleFilter() {
-      this.listQuery.page = 1;
+      this.listQuery.pageNum = 1;
       this.fetchData();
     },
     sortChange(data) {
@@ -161,7 +161,7 @@ export default {
       this.handleFilter();
     },
     currentChange(val) {
-      this.listQuery.page = val;
+      this.listQuery.pageNum = val;
       this.fetchData();
     }
   }

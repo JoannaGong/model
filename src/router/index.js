@@ -200,7 +200,7 @@ export const constantRouterMap = [
       },
       {
         path: 'index/:id',
-        component: () => import('@/views/dataDict/detail'),
+        component: () => import('@/views/certification/detail'),
         name: 'CertificationTable',
         hidden: true,
         meta: { title: '认证管理表单' }

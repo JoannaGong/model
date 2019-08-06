@@ -39,17 +39,7 @@ export default {
 .el-tag + .el-tag {
   margin-left: 10px;
 }
-.model-pics {
-  width: 150px;
-  height: 200px;
-  margin: 0 10px 10px 0;
-  float: left;
-  overflow: hidden;
 
-  img {
-    width: 100%;
-  }
-}
 .clearfix::before, .clearfix::after {
   display: block;
   content: '';

@@ -65,6 +65,7 @@ export function delRole(params) { return request({ url: '/permissionController/p
 export function getRole(params) { return request({ url: '/permissionController/permission', method: 'get', params }) }
 // 新增角色
 export function addRole(params) { return request({ url: '/permissionController/permission', method: 'post', data: params }) }
+
 // 获取团队会员列表
 export function getRoleList(params) { return request({ url: '/permissionController/permissionForAjax', method: 'get', params }) }
 // 获取城市列表
@@ -94,3 +95,8 @@ export function getAnnoucement(params) { return request({ url: '/merchantsRecrui
 export function updateAnnoucement(params) { return request({ url: '/merchantsRecruitingController/merchantsRecruiting/' + params.id, method: 'put', data: params }) }
 // 获取单个通告详情
 export function getAnnoucementInfo(params) { return request({ url: '/merchantsRecruitingController/merchantsRecruiting/' + params.id, method: 'get', params }) }
+
+// 用户认证材料提交
+export function updateMaterial(params) { return request({ url: '/userController/userCertificationInfo/' + params.id, method: 'put', data: params }) }
+// 用户认证材料审核结果提交
+export function updateCertification(params) { return request({ url: '/userController/userCertificationResult/' + params.id, method: 'put', data: params }) }
