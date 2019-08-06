@@ -199,7 +199,7 @@ export default {
       this.$router.push({
         path: "/location/index",
         query: {
-          page: this.$route.query.page
+          pageNum: this.$route.query.pageNum
         }
       });
     },

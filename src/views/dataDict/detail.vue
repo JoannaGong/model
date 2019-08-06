@@ -128,7 +128,7 @@ export default {
       this.$router.push({
         path: "/dataDict/index",
         query: {
-          page: this.$route.query.page
+          pageNum: this.$route.query.pageNum
         }
       });
     },

@@ -4,15 +4,12 @@
       <div class="search">
         <el-input
           v-model="listQuery.queryString"
-          placeholder="请输入名称、城市进行搜索"
+          placeholder="请输入下单人昵称进行搜索"
           @keyup.enter.native="handleFilter"
           style="width: 200px;"
           class="filter-item"
         />
         <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
-      </div>
-      <div class="handle-create">
-        <el-button type="primary" @click="showInfo(0)">新建拍摄地</el-button>
       </div>
     </div>
     <el-table
@@ -28,25 +25,28 @@
       <el-table-column align="center" label="序号" width="80">
         <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
       </el-table-column>
-      <el-table-column align="center" label="拍摄地名称">
-        <template slot-scope="scope">{{ scope.row.address }}</template>
+      <el-table-column align="center" label="项目名称">
+        <template slot-scope="scope">{{ scope.row.name }}</template>
       </el-table-column>
-      <el-table-column align="center" label="城市" width="180">
-        <template slot-scope="scope">{{ scope.row.areaId }}</template>
+      <el-table-column align="center" label="下单用户" width="120">
+        <template slot-scope="scope">{{ scope.row.createdUser }}</template>
       </el-table-column>
-      <el-table-column align="center" label="是否推荐" width="100">
+      <el-table-column align="center" label="金额" width="100">
+        <template slot-scope="scope">{{ scope.row.price  }}</template>
+      </el-table-column>
+      <el-table-column align="center" label="服务状态" width="120">
         <template slot-scope="scope">
-          <span v-if="scope.row.recommendedFlug == '0'">不推荐</span>
-          <span v-if="scope.row.recommendedFlug == '1'">推荐</span>
+          <span v-if="scope.row.recommendedFlug == '0'">进行中</span>
+          <span v-if="scope.row.recommendedFlug == '1'">已完成</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="创建时间" width="190">
+      <el-table-column align="center" label="购买时间" width="190">
         <template slot-scope="scope">{{ scope.row.updatedTime === null ? scope.row.createdTime : scope.row.updatedTime }}</template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="操作" width="200">
+      <el-table-column align="center" prop="created_at" label="操作" width="120">
         <template slot-scope="scope">
-          <el-button type="default" size="mini" @click="showInfo(scope.row.id)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="del(scope.row.id)">删除</el-button>
+          <el-button type="default" size="mini" @click="showInfo(scope.row.id)">查看</el-button>
+          <!-- <el-button type="danger" size="mini" @click="del(scope.row.id)">删除</el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -66,9 +66,8 @@
 </template>
 
 <script>
-import { getLocation, delLocation } from "@/api/table";
+import { getService } from "@/api/table";
 import { getToken } from "@/utils/auth";
-import { constants } from 'fs';
 
 export default {
   data() {
@@ -98,7 +97,7 @@ export default {
         this.listQuery.page = 1;
       }
       this.listLoading = true;
-      getLocation(this.listQuery).then(response => {
+      getService(this.listQuery).then(response => {
         // console.log(response)
         this.list = response.data.pageInfo.list
         this.pageTotal = response.data.pageInfo.total
@@ -106,7 +105,7 @@ export default {
       })
     },
     del(id) {
-      this.$confirm("此操作将删除该拍摄地, 是否继续?", "提示", {
+      this.$confirm("此操作将删除该服务, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -130,7 +129,7 @@ export default {
     },
     showInfo(id) {
       this.$router.push({
-        path: '/location/index/' + id,
+        path: '/service/index/' + id,
         query: {
           pageNum: this.listQuery.pageNum
         }
