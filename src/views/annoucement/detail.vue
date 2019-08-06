@@ -2,71 +2,85 @@
   <div class="app-container">
     <el-form :model="form" ref="form" label-width="90px" :rules="rules" class="demo-form">
       <h3>基础信息</h3>
-      <el-row :gutter="100">
-        <el-col :span="9">
-          <el-form-item label="拍摄地名称：" prop="name">
-            <el-input v-model="form.name" placeholder="请输入拍摄地名称" />
-          </el-form-item>
+      <el-row :gutter="30">
+        <el-col :span="11">
+          <el-form-item label="通告名称：">{{ form.name }}</el-form-item>
         </el-col>
-        <el-col :span="9">
-          <el-form-item label="所属地区：" prop="areaId">
-            <el-input v-model="form.areaId" placeholder="请输入所属地区" />
-          </el-form-item>
+        <el-col :span="11">
+          <el-form-item label="工作类型：">{{ form.merchantsRecruitingWorkList }}</el-form-item>
         </el-col>
-        <el-col :span="9">
-          <el-form-item label="详细地址：" prop="address">
-            <el-input v-model="form.address" placeholder="请输入详细地址" />
-          </el-form-item>
+        <el-col :span="11">
+          <el-form-item label="工作标签：">{{ form.merchantsRecruitingLableList }}</el-form-item>
         </el-col>
-        <el-col :span="9">
-          <el-form-item label="所属类型：" prop="shootingPlaceLableList">
-            <el-select v-model="form.shootingPlaceLableList" multiple placeholder="请选择所属类型">
-              <el-option
-                v-for="item in form.shootingPlaceLableList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
+        <el-col :span="11">
+          <el-form-item label="工作时间：">{{ form.startTime }} - {{ form.stopTime }}</el-form-item>
         </el-col>
-        <el-col :span="9">
-          <el-form-item label="评分：" prop="score">
-            <el-input type="number" v-model="form.score" placeholder="请输入评分" />
-          </el-form-item>
+        <el-col :span="11">
+          <el-form-item label="工作地点：">{{ form.areaId }}</el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="是否推荐：" >
-            <el-radio-group v-model="form.recommendedFlug">
-              <el-radio label="0">不推荐</el-radio>
-              <el-radio label="1">推荐</el-radio>
-            </el-radio-group>
-          </el-form-item>
+        <el-col :span="11">
+          <el-form-item label="详细地址：">{{ form.address }}</el-form-item>
+        </el-col>
+        <el-col :span="11">
+          <el-form-item label="发布人：">{{ form.name }}</el-form-item>
+        </el-col>
+        <el-col :span="11">
+          <el-form-item label="人均预算：">{{ form.peopleBudget }}</el-form-item>
+        </el-col>
+        <el-col :span="11">
+          <el-form-item label="人数：">{{ form.peopleCount }}</el-form-item>
+        </el-col>
+        <el-col :span="11">
+          <el-form-item label="通告金额：">{{ form.name }}</el-form-item>
+        </el-col>
+        <el-col :span="11">
+          <el-form-item label="服务费：">{{ form.name }}</el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="详细内容：">{{ form.content }}</el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="封面展示：" prop="coverPicUrl">
-        <el-upload
-          class="avatar-uploader"
-          :action="fileUrl()"
-          :headers="urlHeaders"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-        >
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
+      <el-form-item label="参考样图：">
+        <viewer :images="imgs">
+          <div class="model-pics clearfix" v-for="(src, index) in imgs" :key="index" >
+            <img :src="src" />
+          </div>
+        </viewer>
       </el-form-item>
-      <h3>拍摄地介绍</h3>
-      <el-form-item prop="introduce">
-        <vue-ueditor-wrap
-          ref="ueditor"
-          v-model="form.introduce"
-          :destroy="false"
-          :config="config"
-          style="line-height:20px"
-        ></vue-ueditor-wrap>
-      </el-form-item>
+      <h3>申请的模特</h3>
+      <el-row>
+        <el-col :span="8" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0">
+          <el-card :body-style="{ padding: '5px' }">
+            <ul class="card-style">
+              <li>
+                <div>
+                  <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+                </div>
+              </li>
+              <li>
+                <p>好吃的汉堡</p>
+                <p><span>北京 | 女 | 模特</span></p>
+              </li>
+              <li>
+                <p>商户同意</p>
+              </li>
+            </ul>
+            <!-- <div>
+              <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+            </div>
+            <div>
+              <p>好吃的汉堡</p>
+              <p><span>北京 | 女 | 模特</span></p>
+            </div>
+            <div>
+              <p>商户同意</p>
+            </div> -->
+          </el-card>
+        </el-col>
+      </el-row>
+
+      <h3>通告流程</h3>
+  
       <el-form-item>
         <el-button type="primary" @click="submitForm('form')">保存</el-button>
         <el-button @click="back">取消</el-button>
@@ -75,7 +89,7 @@
   </div>
 </template>
 <script>
-import { addLocation, updateLocation, getLocationInfo } from "@/api/table";
+import { updateAnnoucement, getAnnoucementInfo } from "@/api/table";
 import { getToken } from "@/utils/auth";
 import VueUeditorWrap from "vue-ueditor-wrap";
 
@@ -88,34 +102,21 @@ export default {
       urlHeaders: { token: getToken() },
       imageUrl: "",
       options: [],
+      imgs: [],
       form: {},
       rules: {
         name: [{required: true, message: "请输入拍摄地名称", trigger: "blur"}],
         areaId: [{required: true, message: "请输入所属地区", trigger: "blur"}],
         address: [{required: true, message: "请输入详细地址", trigger: "blur"}],
         score: [{required: true, message: "请输入评分", trigger: "blur"}],
-        // shootingPlaceLableList: [{required: true, message: "请选择所属类型，可多选", trigger: "blur"}],
-        coverPicUrl: [{required: true, message: "请上传封面图片", trigger: "blur"}],
-        // introduce: [{required: true, message: "请输入拍摄地介绍", trigger: "blur"}],
       },
-      config: {
-        // 编辑器不自动被内容撑高
-        autoHeightEnabled: true,
-        // 初始容器高度
-        initialFrameHeight: 240,
-        // 初始容器宽度
-        initialFrameWidth: "100%",
-        // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
-        serverUrl: "https://kingwoodapi.zkong.me/jd_api/ueditorHandler/ueditorConfig"
-      }
     };
   },
   created() {
     if(this.$route.params.id != 0){
-      getLocationInfo({ id: this.$route.params.id }).then(res => {
+      getAnnoucementInfo({ id: this.$route.params.id }).then(res => {
         // console.log(res)
         this.form = res.data.shootingPlace;
-        this.imageUrl = res.data.shootingPlace.coverPicUrl
       });
     } 
   },
@@ -123,51 +124,27 @@ export default {
     submitForm(formName){
       this.$refs[formName].validate((valid) => {
         if(valid){
-          if(this.$route.params.id == 0){
-            addLocation(this.form).then(res => {
-              if(res.code === 101){
-                this.$message({
-                  message: "新增成功",
-                  type: "success"
+          updateAnnoucement(this.form).then(res => {
+            if(res.code === 101){
+              this.$message({
+                message: "修改成功",
+                type: "success"
+              });
+              setTimeout(() => {
+                this.$router.push({
+                  path: "/announcement/index",
+                  query: {
+                    pageNum: this.$route.query.pageNum
+                  }
                 });
-                setTimeout(() => {
-                  this.$router.push({
-                    path: "/location/index",
-                    query: {
-                      pageNum: this.$route.query.pageNum
-                    }
-                  });
-                }, 1000);
-              }else {
-                this.$message({
-                  message: res.msg,
-                  type: 'error'
-                })
-              }
-            })
-          }else{
-            updateLocation(this.form).then(res => {
-              if(res.code === 101){
-                this.$message({
-                  message: "修改成功",
-                  type: "success"
-                });
-                setTimeout(() => {
-                  this.$router.push({
-                    path: "/location/index",
-                    query: {
-                      pageNum: this.$route.query.pageNum
-                    }
-                  });
-                }, 1000);
-              }else {
-                this.$message({
-                  message: res.msg,
-                  type: 'error'
-                })
-              }
-            })
-          }
+              }, 1000);
+            }else {
+              this.$message({
+                message: res.msg,
+                type: 'error'
+              })
+            }
+          })
         }else {
           console.log('error submit!!');
           return false;
@@ -197,7 +174,7 @@ export default {
     },
     back() {
       this.$router.push({
-        path: "/location/index",
+        path: "/announcement/index",
         query: {
           pageNum: this.$route.query.pageNum
         }
@@ -213,5 +190,24 @@ export default {
 }
 .demo-form .el-form-item{
   padding: 0 15px;
+}
+.time {
+  font-size: 13px;
+  color: #999;
+}
+.image {
+  width: 120px;
+}
+.card-style {
+  list-style: none;
+  position: relative;
+  
+  li {
+    // image {
+    //   position: absolute;
+    //   left: 5px;
+    //   top: 5px;
+    // }
+  }
 }
 </style>

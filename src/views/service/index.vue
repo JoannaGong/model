@@ -26,27 +26,25 @@
         <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
       </el-table-column>
       <el-table-column align="center" label="项目名称">
-        <template slot-scope="scope">{{ scope.row.name }}</template>
+        <template slot-scope="scope">{{ scope.row.professionalService.name }}</template>
       </el-table-column>
       <el-table-column align="center" label="下单用户" width="120">
-        <template slot-scope="scope">{{ scope.row.createdUser }}</template>
+        <template slot-scope="scope">{{ scope.row.user.name }}</template>
       </el-table-column>
       <el-table-column align="center" label="金额" width="100">
-        <template slot-scope="scope">{{ scope.row.price  }}</template>
+        <template slot-scope="scope">{{ scope.row.professionalService.price }}</template>
       </el-table-column>
       <el-table-column align="center" label="服务状态" width="120">
         <template slot-scope="scope">
-          <span v-if="scope.row.recommendedFlug == '0'">进行中</span>
-          <span v-if="scope.row.recommendedFlug == '1'">已完成</span>
+          <span>{{ scope.row.status === 0 ? "进行中" : "已完成" }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="购买时间" width="190">
-        <template slot-scope="scope">{{ scope.row.updatedTime === null ? scope.row.createdTime : scope.row.updatedTime }}</template>
+        <template slot-scope="scope">{{ scope.row.createdTime }}</template>
       </el-table-column>
       <el-table-column align="center" prop="created_at" label="操作" width="120">
         <template slot-scope="scope">
           <el-button type="default" size="mini" @click="showInfo(scope.row.id)">查看</el-button>
-          <!-- <el-button type="danger" size="mini" @click="del(scope.row.id)">删除</el-button> -->
         </template>
       </el-table-column>
     </el-table>

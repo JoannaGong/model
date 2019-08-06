@@ -2,39 +2,39 @@
   <div class="app-container">
     <el-form :model="form" ref="form" label-width="90px" class="demo-form">
       <el-row :gutter="100">
-        <el-col :span="9">
+        <el-col :span="11">
           <el-form-item label="项目名称：">
-            <span>{{form.name}}</span>
+            <span>{{projectForm.name}}</span>
           </el-form-item>
         </el-col>
-        <el-col :span="9">
+        <el-col :span="11">
           <el-form-item label="服务状态：">
-            <span>{{form.name}}</span>
+            <span>{{ form.status === 0 ? "进行中" : "已完成"}}</span>
           </el-form-item>
         </el-col>
-        <el-col :span="9">
+        <el-col :span="11">
           <el-form-item label="手机号：">
-             <span>{{form.name}}</span>
+             <span>{{ form.contactPhone }}</span>
           </el-form-item>
         </el-col>
-         <el-col :span="9">
+         <el-col :span="11">
           <el-form-item label="金额：">
-             <span>{{form.price}}</span>
+             <span>{{ projectForm.price}}</span>
           </el-form-item>
         </el-col>
-        <el-col :span="9">
+        <el-col :span="11">
           <el-form-item label="购买时间：">
-            <span>{{form.price}}</span>
+            <span>{{ form.createdTime }}</span>
           </el-form-item>
         </el-col>
-        <el-col :span="9">
+        <el-col :span="11">
           <el-form-item label="服务人员：">
-            <span>{{form.price}}</span>
+            <span>{{ form.contactName }}</span>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="服务内容：" >
-            <span>{{form.content}}</span>
+          <el-form-item label="服务内容："  v-if="form.status">
+            <span>{{ projectForm.content }}</span>
           </el-form-item>
         </el-col>
       </el-row>
@@ -45,24 +45,24 @@
     </el-form>
 
     <el-dialog
-      title="提示"
       :visible.sync="dialogVisible"
       width="30%"
       :before-close="handleClose"
     >
       <el-form
         :model="form"
+        label-position="top"
         status-icon
         :rules="rules"
         ref="form"
         label-width="100px"
         class="demo-personForm"
       >
-        <el-form-item label="您确认已完成服务，请填写服务内容：" prop="content">
-          <el-input type="textarea" v-model="form.content" placeholder="请输入服务内容" />
+        <el-form-item label="您确认已完成服务，请填写服务内容：">
+          <el-input type="textarea" v-model="projectForm.content" placeholder="请输入服务内容" />
         </el-form-item>
         <el-form-item label="服务人员姓名：">
-          <el-input v-model="form.displayName" />
+          <el-input v-model="form.updatedUser" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -79,9 +79,10 @@ import { getToken } from "@/utils/auth";
 export default {
   data() {
     return {
-      urlHeaders: { token: getToken() },
       dialogVisible: false,
       form: {},
+      userForm: {},
+      projectForm: {},
       rules: {
         content: [{ required: true, message: "请输入服务内容", trigger: "blur" }],
       }
@@ -90,13 +91,15 @@ export default {
   created() {
     getServiceInfo({ id: this.$route.params.id }).then(res => {
       // console.log(res)
-      this.form = res.data.shootingPlace;
+      this.form = res.data.professionalServiceRecord;
+      this.projectForm = res.data.professionalServiceRecord.professionalService
     });
   },
   methods: {
     submitForm(formName){
       this.$refs[formName].validate((valid) => {
         if(valid){
+          this.form.status = 1
           updateService(this.form).then(res => {
             if(res.code === 101){
               this.$message({
@@ -127,27 +130,6 @@ export default {
     handleClose(done) {
       done();
     },
-    fileUrl() {
-      return `${process.env.BASE_API}/uploadHandler/upload`;
-    },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-      this.form.coverPicUrl = res.data.url;
-    },
-    beforeAvatarUpload(file) {
-      const isJPG =
-        file.type === "image/png" ||
-        file.type === "image/jpeg" ||
-        file.type === "image/gif";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isJPG) {
-        this.$message.error("上传的图片只能是 jpg/png/jpeg/gif 格式!");
-      }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
-    },
     back() {
       this.$router.push({
         path: "/service/index",
@@ -160,23 +142,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-/deep/.el-form-item__label {
-  width: 106px !important;
-  margin-left: -16px;
-}
 .demo-form .el-form-item{
   padding: 0 15px;
-}
-/deep/ .el-dialog {
-  width: 33% !important;
-  .is-disabled {
-    width: 65%;
-  }
-}
-/deep/ .el-dialog .el-form-item__content {
-  margin-left: 110px !important;
-}
-/deep/ .el-form-item__label {
-  width: 110px !important;
 }
 </style>

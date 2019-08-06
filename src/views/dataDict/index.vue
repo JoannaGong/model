@@ -39,7 +39,7 @@
       </el-table-column>
       <el-table-column align="center" prop="created_at" label="操作" width="200">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="showInfo(scope.row.id)">查看</el-button>
+          <!-- <el-button type="primary" size="mini" @click="showInfo(scope.row.id)">查看</el-button> -->
           <el-button type="default" size="mini" @click="showInfo(scope.row.id)">编辑</el-button>
           <el-button type="danger" size="mini" @click="del(scope.row.id)">删除</el-button>
         </template>
@@ -72,25 +72,25 @@ export default {
       list: [],
       groupNameList: [{
         name: "风格标签",
-        value: "风格标签"
+        value: "fengge"
       },{
         name: "外貌标签",
-        value: "外貌标签"
+        value: "waimao"
       },{
         name: "体型标签",
-        value: "体型标签"
+        value: "tixing"
       },{
         name: "魅力标签",
-        value: "魅力标签"
+        value: "meili"
       },{
         name: "热门地区",
-        value: "热门地区"
+        value: "remen"
       },{
         name: "作品标签",
-        value: "作品标签"
+        value: "zuopin"
       },{
         name: "拍摄地标签",
-        value: "拍摄地标签"
+        value: "paishedi"
       }],
       listLoading: true,
       pageTotal: 0,
@@ -98,7 +98,7 @@ export default {
         limit: 10,
         pageNum: 1,
         keyword: "",
-        groupName: "风格标签"
+        groupName: "waimao"
       },
       form: {},
     };
@@ -117,14 +117,14 @@ export default {
       }
       this.listLoading = true;
       getDataDict(this.listQuery).then(response => {
-        console.log(response)
+        // console.log(response)
         this.list = response.data.pageInfo.list
         this.pageTotal = response.data.pageInfo.total
         this.listLoading = false
       })
     },
     del(id) {
-      this.$confirm("此操作将删除该拍摄地, 是否继续?", "提示", {
+      this.$confirm("此操作将删除该数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"

@@ -1,15 +1,18 @@
 <template>
   <div class="app-container">
     <el-form :model="form" ref="form" label-width="90px" :rules="rules" class="demo-form">
-      <el-form-item label="标签名称：" prop="dataValue">
-        <el-input class="label-name" v-model="form.dataValue" placeholder="请输入标签名称" />
+      <el-form-item label="数据名称：" prop="dataKey">
+        <el-input class="label-name" v-model="form.dataKey" placeholder="请输入数据名称" />
       </el-form-item>
-      <el-form-item label="标签类型：" prop="dataKey">
-        <el-select v-model="form.dataKey" placeholder="请选择标签类型">
+      <el-form-item label="数据值：" prop="dataValue">
+        <el-input class="label-name" v-model="form.dataValue" placeholder="请输入数据名称" />
+      </el-form-item>
+      <el-form-item label="数据类别：" prop="groupName">
+        <el-select v-model="form.groupName" placeholder="请选择数据类别">
           <el-option
             v-for="item in groupNameList"
             :key="item.value"
-            :label="item.label"
+            :label="item.name"
             :value="item.value"
           ></el-option>
         </el-select>
@@ -22,7 +25,7 @@
   </div>
 </template>
 <script>
-import { addDataDict, updateDataDict, getLocationInfo } from "@/api/table";
+import { addDataDict, updateDataDict, getDataDictInfo } from "@/api/table";
 import { getToken } from "@/utils/auth";
 import VueUeditorWrap from "vue-ueditor-wrap";
 
@@ -34,30 +37,31 @@ export default {
     return {
       groupNameList: [{
         name: "风格标签",
-        value: "风格标签"
+        value: "fengge"
       },{
         name: "外貌标签",
-        value: "外貌标签"
+        value: "waimao"
       },{
         name: "体型标签",
-        value: "体型标签"
+        value: "tixing"
       },{
         name: "魅力标签",
-        value: "魅力标签"
+        value: "meili"
       },{
         name: "热门地区",
-        value: "热门地区"
+        value: "remen"
       },{
         name: "作品标签",
-        value: "作品标签"
+        value: "zuopin"
       },{
         name: "拍摄地标签",
-        value: "拍摄地标签"
+        value: "paishedi"
       }],
       form: {},
       rules: {
-        name: [{required: true, message: "请输入拍摄地名称", trigger: "blur"}],
-        areaId: [{required: true, message: "请输入所属地区", trigger: "blur"}],
+        dataKey: [{required: true, message: "请输入数据名称", trigger: "blur"}],
+        dataValue: [{required: true, message: "请输入数据值", trigger: "blur"}],
+        groupName: [{required: true, message: "请选择数据类别", trigger: "blur"}],
       },
     };
   },

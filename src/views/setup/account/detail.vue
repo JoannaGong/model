@@ -17,11 +17,6 @@
             <el-input v-model="form.password" type="password" placeholder="请输入真实姓名" />
           </el-form-item>
         </el-col>
-        <!-- <el-col :span="10">
-          <el-form-item label="确认密码：" prop="repassword">
-            <el-input v-model="form.repassword" type="password" placeholder="请输入真实姓名" />
-          </el-form-item>
-        </el-col> -->
         <el-col :span="10">
           <el-form-item label="城市：" prop="areaId">
             <el-select v-model="form.areaId" placeholder="请输入城市">
@@ -97,25 +92,6 @@ export default {
         }
       }, 500);
     };
-    var validatePass = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入密码"));
-      } else {
-        if (this.form.repassword !== "") {
-          this.$refs.form.validateField("repassword");
-        }
-        callback();
-      }
-    };
-    var validatePass2 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.accountForm.password) {
-        callback(new Error("两次输入密码不一致!"));
-      } else {
-        callback();
-      }
-    };
     return {
       urlHeaders: { token: getToken() },
       imageUrl: "",
@@ -139,14 +115,6 @@ export default {
           { required: true, message: "请上传头像图片", trigger: "blur" }
         ],
         email: [{ validator: checkEmail, trigger: "blur" }],
-        // password: [{ required: true, validator: validatePass, trigger: "blur" }],
-        // repassword: [
-        //   {
-        //     required: true,
-        //     validator: validatePass2,
-        //     trigger: "blur"
-        //   }
-        // ]
       }
     };
   },
@@ -183,7 +151,7 @@ export default {
                 });
                 setTimeout(() => {
                   this.$router.push({
-                    path: "/setup/account/index",
+                    path: "/setup/account",
                     query: {
                       pageNum: this.$route.query.pageNum
                     }
@@ -205,7 +173,7 @@ export default {
                 });
                 setTimeout(() => {
                   this.$router.push({
-                    path: "/setup/account/index",
+                    path: "/setup/account",
                     query: {
                       pageNum: this.$route.query.pageNum
                     }

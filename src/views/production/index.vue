@@ -32,18 +32,17 @@
         <template slot-scope="scope">{{ scope.row.name }}</template>
       </el-table-column>
       <el-table-column align="center" label="发布人" width="180">
-        <template slot-scope="scope">{{ scope.row.createdUser }}</template>
+        <template slot-scope="scope">{{ scope.row.user.name }}</template>
       </el-table-column>
       <el-table-column align="center" label="收费标准" width="100">
         <template slot-scope="scope">{{ scope.row.chargeFlag === 0 ? "不需要付费" : scope.row.chargeCount }}</template>
       </el-table-column>
       <el-table-column align="center" label="提交时间" width="190">
-        <template slot-scope="scope">{{ scope.row.updatedTime === null ? scope.row.createdTime : scope.row.updatedTime }}</template>
+        <template slot-scope="scope">{{ scope.row.createdTime }}</template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="操作" width="200">
+      <el-table-column align="center" prop="created_at" label="操作" width="100">
         <template slot-scope="scope">
-          <el-button type="default" size="mini" @click="showInfo(scope.row.id)">查看</el-button>
-          <!-- <el-button type="danger" size="mini" @click="del(scope.row.id)">删除</el-button> -->
+          <el-button type="primary" size="mini" @click="showInfo(scope.row.id)">查看</el-button>
         </template>
       </el-table-column>
     </el-table>

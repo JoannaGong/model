@@ -73,11 +73,11 @@ export function getAreaList(params) { return request({ url: '/areaController/are
 export function getPermissionList(params) { return request({ url: '/roleDetailsController/roleDetailsForAjax', method: 'get', params }) }
 
 // 获取服务列表（分页）
-export function getService(params) { return request({ url: '/professionalServiceController/professionalService', method: 'get', params }) }
+export function getService(params) { return request({ url: '/professionalServiceRecordController/professionalServiceRecord', method: 'get', params }) }
 // 修改服务
-export function updateService(params) { return request({ url: '/professionalServiceController/professionalService/' + params.id, method: 'put', data: params }) }
+export function updateService(params) { return request({ url: '/professionalServiceRecordController/professionalServiceRecord/' + params.id, method: 'put', data: params }) }
 // 获取单个服务详情
-export function getServiceInfo(params) { return request({ url: '/professionalServiceController/professionalService/' + params.id, method: 'get', params }) }
+export function getServiceInfo(params) { return request({ url: '/professionalServiceRecordController/professionalServiceRecord/' + params.id, method: 'get', params }) }
 // 获取团队会员列表
 export function getServiceList(params) { return request({ url: '/professionalServiceRecordController/professionalServiceRecordForAjax', method: 'get', params }) }
 
@@ -87,3 +87,10 @@ export function getWork(params) { return request({ url: '/worksController/works'
 export function updateWork(params) { return request({ url: '/worksController/works/' + params.id, method: 'put', data: params }) }
 // 获取单个作品详情
 export function getWorkInfo(params) { return request({ url: '/worksController/works/' + params.id, method: 'get', params }) }
+
+// 获取通告列表（分页）
+export function getAnnoucement(params) { return request({ url: '/merchantsRecruitingController/merchantsRecruiting', method: 'get', params }) }
+// 修改通告
+export function updateAnnoucement(params) { return request({ url: '/merchantsRecruitingController/merchantsRecruiting/' + params.id, method: 'put', data: params }) }
+// 获取单个通告详情
+export function getAnnoucementInfo(params) { return request({ url: '/merchantsRecruitingController/merchantsRecruiting/' + params.id, method: 'get', params }) }
