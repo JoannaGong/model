@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       form: {
-        permissionId: []
+        
       },
       treeList: [],
       rules: {
@@ -55,30 +55,23 @@ export default {
         this.form = res.data.permission;
         let data = res.data.permission;
         var tempArr = data.permissionRoleList;
-        data.permissionId = [];
         tempArr.forEach(item => {
-          if (item.isOpen === 1) {
-            data.permissionId.push({
-              id: item.id,
-              label: item.roleName,
-              key: item.roleKey
-            });
-          }
+          item.id = item.roleId
+          item.label = item.roleDetails.roleName
         });
-        this.$refs.tree.setCheckedNodes(this.form.permissionId)
+        this.$refs.tree.setCheckedNodes(tempArr)
       });
     }
     getPermissionList().then(res => {
       // console.log(res);
       for(let x in res.data.roleDetailsList){
         let tempData = {}
-        tempData.id = res.data.roleDetailsList[x].id
+        tempData.id = res.data.roleDetailsList[x].roleId
         tempData.label = res.data.roleDetailsList[x].groupName
         tempData.children = []
         tempData.children.push({
           id: res.data.roleDetailsList[x].id,
           label: res.data.roleDetailsList[x].roleName,
-          key: res.data.roleDetailsList[x].roleKey
         })
         this.treeList.push(tempData)
       }
@@ -102,16 +95,16 @@ export default {
   methods: {
     submitForm(formName) {
       let permissionList = this.$refs.tree.getCheckedNodes()
-      this.form.permissionId = []
+      this.form.permissionRoleList = []
       permissionList.forEach(item => {
         if(!item.hasOwnProperty('children')){
-          this.form.permissionRoleList.push(item.id)
+          this.form.permissionRoleList.push({
+            roleId: item.id
+          })
         }
       })
-      // this.form.permissionId = this.form.permissionId.join("@@");
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log(this.form)
           if (this.$route.params.id == 0) {
             addRole(this.form).then(res => {
               if (res.code === 101) {

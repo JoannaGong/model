@@ -106,7 +106,7 @@ export default {
       listQuery: {
         limit: 10,
         pageNum: 1,
-        keyword: "",
+        queryRoleName: 0,
       },
       options: [],
       permissionsName: "",

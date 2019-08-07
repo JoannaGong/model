@@ -33,6 +33,12 @@
       </el-table-column>
       <el-table-column align="center" label="认证类型">
         <template slot-scope="scope">
+          <span v-if="scope.row.certificationSonType == 0">个人</span>
+          <span v-if="scope.row.certificationSonType == 1">企业</span>
+          <span v-if="scope.row.certificationSonType == 2">男模</span>
+          <span v-if="scope.row.certificationSonType == 3">女模</span>
+          <span v-if="scope.row.certificationSonType == 4">童星</span>
+          &nbsp;
           <span v-if="scope.row.certificationType == 0">商户</span>
           <span v-if="scope.row.certificationType == 1">艺人</span>
           <span v-if="scope.row.certificationType == 2">其他职业</span>
@@ -86,6 +92,7 @@ export default {
         limit: 10,
         page: 1,
         queryString: "",
+        roleName: 1
       }
     };
   },

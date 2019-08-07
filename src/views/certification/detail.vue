@@ -22,7 +22,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <person-form></person-form>
+      <person-form v-if="form.certificationType === 0"></person-form>
       <company-form></company-form>
       <model-form></model-form>
       <model-company></model-company>
