@@ -42,9 +42,6 @@
       <el-table-column align="center" label="会员昵称">
         <template slot-scope="scope">{{ scope.row.userName }}</template>
       </el-table-column>
-      <el-table-column align="center" label="id">
-        <template slot-scope="scope">{{ scope.row.id }}</template>
-      </el-table-column>
       <el-table-column align="center" label="身份类型">
         <template slot-scope="scope">
           <span v-if="scope.row.roleName == 0">后台用户</span>

@@ -100,3 +100,34 @@ export function getAnnoucementInfo(params) { return request({ url: '/merchantsRe
 export function updateMaterial(params) { return request({ url: '/userController/userCertificationInfo/' + params.id, method: 'put', data: params }) }
 // 用户认证材料审核结果提交
 export function updateCertification(params) { return request({ url: '/userController/userCertificationResult/' + params.id, method: 'put', data: params }) }
+
+// 获取投诉列表（分页）
+export function getComplaint(params) { return request({ url: '/complaintsController/complaintsController', method: 'get', params }) }
+// 修改投诉
+export function updateComplaint(params) { return request({ url: '/complaintsController/complaints/' + params.id, method: 'put', data: params }) }
+// 获取单个投诉详情
+export function getComplaintInfo(params) { return request({ url: '/complaintsController/complaints/' + params.id, method: 'get', params }) }
+
+// 修改banner
+export function updateBanner(params) { return request({ url: '/bannerController/banner/' + params.id, method: 'put', data: params }) }
+// 获取单个banner
+export function getBannerInfo(params) { return request({ url: '/bannerController/banner/' + params.id, method: 'get', params }) }
+// 删除banner
+export function delBanner(params) { return request({ url: '/bannerController/banner/' + params.id, method: 'delete', params }) }
+// 获取banner列表（分页）
+export function getBanner(params) { return request({ url: '/bannerController/banner', method: 'get', params }) }
+// 新增banner
+export function addBanner(params) { return request({ url: '/bannerController/banner', method: 'post', data: params }) }
+
+// 修改活动
+export function updateActivity(params) { return request({ url: '/activityController/activity/' + params.id, method: 'put', data: params }) }
+// 获取单个活动
+export function getActivityInfo(params) { return request({ url: '/activityController/activity/' + params.id, method: 'get', params }) }
+// 删除活动
+export function delActivity(params) { return request({ url: '/activityController/activity/' + params.id, method: 'delete', params }) }
+// 获取活动列表（分页）
+export function getActivity(params) { return request({ url: '/activityController/activity', method: 'get', params }) }
+// 新增活动
+export function addActivity(params) { return request({ url: '/activityController/activity', method: 'post', data: params }) }
+// 活动报名成员表
+export function getActivityForm(params) { return request({ url: '/activityGuestController/activityGuest', method: 'get', params }) }

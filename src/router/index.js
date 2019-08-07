@@ -231,6 +231,29 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/complaint',
+    name: 'complaint',
+    component: Layout,
+    redirect: '/complaint/index',
+    meta: { title: '投诉管理', icon: 'complaint' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/complaint/index'),
+        name: 'Complaint',
+        hidden: true,
+        meta: { title: '投诉管理列表' }
+      },
+      {
+        path: 'index/:id',
+        component: () => import('@/views/complaint/detail'),
+        name: 'complaintTable',
+        hidden: true,
+        meta: { title: '投诉管理表单' }
+      }
+    ]
+  },
+  {
     path: '/afterSales',
     name: 'afterSales',
     component: Layout,
@@ -330,6 +353,13 @@ export const constantRouterMap = [
         component: () => import('@/views/activity/index'),
         name: 'Activity',
         meta: { title: '活动管理', icon: 'activity' }
+      },
+      {
+        path: 'activityForm/:id',
+        component: () => import('@/views/activity/activityForm'),
+        name: 'activityDetail',
+        hidden: true,
+        meta: { title: '活动管理表单', icon: 'activity' }
       },
       {
         path: 'index/:id',
