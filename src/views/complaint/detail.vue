@@ -3,16 +3,16 @@
     <el-form :model="form" ref="form" label-width="90px" :rules="rules" class="demo-form">
       <el-row :gutter="100">
         <el-col :span="11">
-          <el-form-item label="投诉人昵称：">{{ form.name }}</el-form-item>
+          <el-form-item label="投诉人昵称：">{{ userForm.name }}</el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="投诉人手机号:">{{ form.name }}</el-form-item>
+          <el-form-item label="投诉人手机号:">{{ userForm.name }}</el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="投诉商户：">{{ form.name }}</el-form-item>
+          <el-form-item label="被投诉商户：">{{ complaintForm.name }}</el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="商户手机号：">{{ complaintForm.phone }}</el-form-item>
+          <el-form-item label="商户手机号:">{{ complaintForm.phone }}</el-form-item>
         </el-col>
         <el-col :span="11">
           <el-form-item label="投诉理由：">{{ form.reason }}</el-form-item>
@@ -47,9 +47,10 @@ export default {
   },
   created() {
     getComplaintInfo({ id: this.$route.params.id }).then(res => {
-      console.log(res)
-      // this.form = res.data.shootingPlace;
-      // this.complaintForm = res.data.complaintsUser
+      // console.log(res)
+      this.complaintForm = res.data.complaints.complaintsUser;
+      this.form = res.data.complaints
+      this.userForm = res.data.complaints.user
     });
   },
   methods: {

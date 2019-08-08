@@ -91,8 +91,24 @@ export default {
         }
       }
     });
+    this.fetchData()
   },
   methods: {
+    fetchData(){
+      if (this.$route.params.id != 0) {
+        getRoleInfo({ id: this.$route.params.id }).then(res => {
+          // console.log(res)
+          this.form = res.data.permission;
+          let data = res.data.permission;
+          var tempArr = data.permissionRoleList;
+          tempArr.forEach(item => {
+            item.id = item.roleId
+            item.label = item.roleDetails.roleName
+          });
+          this.$refs.tree.setCheckedNodes(tempArr)
+        });
+      }
+    },
     submitForm(formName) {
       let permissionList = this.$refs.tree.getCheckedNodes()
       this.form.permissionRoleList = []

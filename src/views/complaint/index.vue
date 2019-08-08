@@ -26,19 +26,19 @@
         <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
       </el-table-column>
       <el-table-column align="center" label="投诉人呢称">
-        <template slot-scope="scope">{{ scope.row.address }}</template>
+        <template slot-scope="scope">{{ scope.row.user.userName }}</template>
       </el-table-column>
-      <el-table-column align="center" label="投诉商户" width="180">
-        <template slot-scope="scope">{{ scope.row.areaId }}</template>
+      <el-table-column align="center" label="被投诉商户" width="180">
+        <template slot-scope="scope">{{ scope.row.complaintsUser.name }}</template>
       </el-table-column>
       <el-table-column align="center" label="投诉状态" width="100">
         <template slot-scope="scope">
-          <span v-if="scope.row.recommendedFlug == '0'">不推荐</span>
-          <span v-if="scope.row.recommendedFlug == '1'">推荐</span>
+          <span v-if="scope.row.dealStatus == 0">未处理</span>
+          <span v-if="scope.row.dealStatus == 1">已处理</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="提交时间" width="190">
-        <template slot-scope="scope">{{ scope.row.updatedTime === null ? scope.row.createdTime : scope.row.updatedTime }}</template>
+        <template slot-scope="scope">{{ scope.row.createdTime }}</template>
       </el-table-column>
       <el-table-column align="center" prop="created_at" label="操作" width="100">
         <template slot-scope="scope">
@@ -95,7 +95,7 @@ export default {
       }
       this.listLoading = true;
       getComplaint(this.listQuery).then(response => {
-        console.log(response)
+        // console.log(response)
         this.list = response.data.pageInfo.list
         this.pageTotal = response.data.pageInfo.total
         this.listLoading = false

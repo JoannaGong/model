@@ -102,7 +102,7 @@ export function updateMaterial(params) { return request({ url: '/userController/
 export function updateCertification(params) { return request({ url: '/userController/userCertificationResult/' + params.id, method: 'put', data: params }) }
 
 // 获取投诉列表（分页）
-export function getComplaint(params) { return request({ url: '/complaintsController/complaintsController', method: 'get', params }) }
+export function getComplaint(params) { return request({ url: '/complaintsController/complaints', method: 'get', params }) }
 // 修改投诉
 export function updateComplaint(params) { return request({ url: '/complaintsController/complaints/' + params.id, method: 'put', data: params }) }
 // 获取单个投诉详情
@@ -131,3 +131,5 @@ export function getActivity(params) { return request({ url: '/activityController
 export function addActivity(params) { return request({ url: '/activityController/activity', method: 'post', data: params }) }
 // 活动报名成员表
 export function getActivityForm(params) { return request({ url: '/activityGuestController/activityGuest', method: 'get', params }) }
+// /activityGuestController/downloadActivityGuestXlsForBytes
+export function getForm(params) { return request({ url: '/activityGuestController/downloadActivityGuestXlsForBytes', method: 'get', params }) }

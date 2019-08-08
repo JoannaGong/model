@@ -28,9 +28,6 @@
       <el-table-column align="center" label="申请人昵称">
         <template slot-scope="scope">{{ scope.row.userName }}</template>
       </el-table-column>
-      <el-table-column align="center" label="申请人id">
-        <template slot-scope="scope">{{ scope.row.id }}</template>
-      </el-table-column>
       <el-table-column align="center" label="认证类型">
         <template slot-scope="scope">
           <span v-if="scope.row.certificationSonType == 0">个人</span>
@@ -106,7 +103,7 @@ export default {
       }
       this.listLoading = true;
       getMemberList(this.listQuery).then(response => {
-        console.log(response)
+        // console.log(response)
         this.list = response.data.pageInfo.list
         this.pageTotal = response.data.pageInfo.total
         this.listLoading = false

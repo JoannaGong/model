@@ -32,7 +32,13 @@
         <template slot-scope="scope">{{ scope.row.name }}</template>
       </el-table-column>
       <el-table-column align="center" label="活动状态" width="180">
-        <template slot-scope="scope">{{ scope.row.areaId }}</template>
+        <template slot-scope="scope">
+          <span v-if="scope.row.status === 0">未开始报名</span>
+          <span v-if="scope.row.status === 1">报名进行中</span>
+          <span v-if="scope.row.status === 2">报名截止活动未开始</span>
+          <span v-if="scope.row.status === 3">活动进行中</span>
+          <span v-if="scope.row.status === 4">活动结束</span>
+        </template>
       </el-table-column>
       <el-table-column align="center" label="报名开始时间" width="190">
         <template slot-scope="scope">{{ scope.row.signStartTime }}</template>

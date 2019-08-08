@@ -20,9 +20,9 @@
             </viewer>
           </el-form-item>
         </el-col>
-        <el-col :span="24">
-          <el-form-item label="公司简介：">{{ form.certificationType }}</el-form-item>
-        </el-col>
+        <!-- <el-col :span="24">
+          <el-form-item label="公司简介：">{{ form.certificationText }}</el-form-item>
+        </el-col> -->
         <div style="margin-bottom: 10px;">
           <span class="el-dialog__title" style="font-size: 15px;">公司相册</span>
         </div>

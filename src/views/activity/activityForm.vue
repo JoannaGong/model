@@ -18,7 +18,16 @@
           <el-form-item label="活动时间：">{{ form.activityStartTime }} - {{ form.activityStopTime }}</el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="100">
+      <el-row :gutter="100"> 
+        <el-col :span="11">
+          <el-form-item label="活动状态：">
+            <span v-if="form.status === 0">未开始报名</span>
+            <span v-if="form.status === 1">报名进行中</span>
+            <span v-if="form.status === 2">报名截止活动未开始</span>
+            <span v-if="form.status === 3">活动进行中</span>
+            <span v-if="form.status === 4">活动结束</span>
+          </el-form-item>
+        </el-col>
         <el-col :span="11">
           <el-form-item label="报名费：">{{ form.applicationPrice }}</el-form-item>
         </el-col>
@@ -82,7 +91,7 @@
 </template>
 
 <script>
-import { getActivityInfo, getActivityForm } from "@/api/table";
+import { getActivityInfo, getActivityForm, getForm } from "@/api/table";
 import { getToken } from "@/utils/auth";
 import VueUeditorWrap from "vue-ueditor-wrap";
 
@@ -134,9 +143,10 @@ export default {
   },
   methods: {
     exportActivityForm() {
-        alert(process.env.BASE_API +
-        "activityGuestController/downloadActivityGuestXls?activityId=" +
-        this.$route.params.id)
+      // getForm({ activityId: this.$route.params.id }).then(res => {
+      //   console.log(res)
+      // })
+      
       window.location.href =
         process.env.BASE_API +
         "activityGuestController/downloadActivityGuestXls?activityId=" +

@@ -3,13 +3,13 @@
     <el-form :model="form" ref="form" label-width="90px" class="demo-form">
       <el-row :gutter="100">
         <el-col :span="11">
-          <el-form-item label="企业名称：">{{ form.name }}</el-form-item>
+          <el-form-item label="企业名称：">{{ form.certificationName }}</el-form-item>
         </el-col>
         <el-col :span="11">
           <el-form-item label="组织机构代码：">{{ form.certificationIdcard }}</el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="认证信息：">{{ form.certificationType }}</el-form-item>
+          <el-form-item label="认证信息：">{{ form.certificationText }}</el-form-item>
         </el-col>
         <el-col :span="24">
           <el-form-item label="认证材料：">
