@@ -1,12 +1,20 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :model="form" label-width="80px" class="demo-form">
-      <el-form-item label="用户名:">
-        <el-input v-model="form.userName" :disabled="true"></el-input>
-      </el-form-item>
-      <el-form-item label="真实姓名:">
-        <el-input v-model="form.name" :disabled="true"></el-input>
-      </el-form-item>
+      <el-row>
+        <el-col :span="7">
+          <el-form-item label="用户名:">
+            <el-input v-model="form.userName" :disabled="true"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="7">
+          <el-form-item label="真实姓名:">
+            <el-input v-model="form.name" :disabled="true"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
       <el-form-item label="角色名称:">
         <span v-if="form.roleName == 0">后台用户</span>
         <span v-if="form.roleName == 1">未认证用户</span>
@@ -16,23 +24,12 @@
         <span v-if="form.roleName == 5">其他职业(摄影师化妆师等)</span>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary"  @click="dialogVisible = true">修改密码</el-button>
-        <el-button type="danger"  @click="logout">退出登录</el-button>
+        <el-button type="primary" @click="dialogVisible = true">修改密码</el-button>
+        <el-button type="danger" @click="logout">退出登录</el-button>
       </el-form-item>
     </el-form>
-    <el-dialog
-      title="修改密码"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <el-form
-        :model="form"
-        status-icon
-        :rules="rules"
-        ref="form"
-        label-width="100px"
-      >
+    <el-dialog title="修改密码" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+      <el-form :model="form" status-icon :rules="rules" ref="form" label-width="100px">
         <el-form-item label="旧密码" prop="oldPassword">
           <el-input type="password" v-model="form.oldPassword"></el-input>
         </el-form-item>
@@ -88,8 +85,12 @@ export default {
         oldPassword: [
           { required: true, message: "请输入旧密码", trigger: "blur" }
         ],
-        password: [{required: true, validator: validatePass, trigger: "blur" }],
-        checkPassword: [{required: true, validator: validatePass2, trigger: "change" }]
+        password: [
+          { required: true, validator: validatePass, trigger: "blur" }
+        ],
+        checkPassword: [
+          { validator: validatePass2, trigger: "blur" }
+        ]
       }
     };
   },
@@ -99,7 +100,7 @@ export default {
   methods: {
     fetchData() {
       getInfo().then(response => {
-        console.log(response)
+        console.log(response);
         this.form = response.data.userInfo;
       });
     },
@@ -112,36 +113,38 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          updatePassword(this.form).then(response => {
-            console.log(response)
-            if (response.code === 101) {
-              this.$message({
-                message: "修改成功",
-                type: "success"
-              });
-              setTimeout(() => {
-                this.dialogVisible = false
-              }, 1000);
-            } else {
-              this.$message({
-                message: "修改失败",
-                type: "error"
-              })
-            }
-          }).catch( err => {
-            this.$message.error('旧密码输入错误，请重新输入！')
-          });
+          updatePassword(this.form)
+            .then(response => {
+              console.log(response);
+              if (response.code === 101) {
+                this.$message({
+                  message: "修改成功",
+                  type: "success"
+                });
+                setTimeout(() => {
+                  this.dialogVisible = false;
+                }, 1000);
+              } else {
+                this.$message({
+                  message: "修改失败",
+                  type: "error"
+                });
+              }
+            })
+            .catch(err => {
+              this.$message.error("旧密码输入错误，请重新输入！");
+            });
         } else {
           console.log("error submit!!");
           return false;
-        }  
+        }
       });
     },
     logout() {
-      this.$store.dispatch('LogOut').then(() => {
-        location.reload()
-      })
-    }   
+      this.$store.dispatch("LogOut").then(() => {
+        location.reload();
+      });
+    }
   }
 };
 </script>
@@ -150,7 +153,7 @@ export default {
 /deep/ .el-dialog__body {
   padding: 30px 50px 0 20px;
 }
-/deep/ .demo-form {
-  width: 30%;
-}
+// /deep/ .demo-form {
+//   width: 50%;
+// }
 </style>

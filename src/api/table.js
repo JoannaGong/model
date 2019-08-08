@@ -133,3 +133,10 @@ export function addActivity(params) { return request({ url: '/activityController
 export function getActivityForm(params) { return request({ url: '/activityGuestController/activityGuest', method: 'get', params }) }
 // /activityGuestController/downloadActivityGuestXlsForBytes
 export function getForm(params) { return request({ url: '/activityGuestController/downloadActivityGuestXlsForBytes', method: 'get', params }) }
+
+// 获取售后列表（分页）
+export function getAfterSales(params) { return request({ url: '/merchantsRecruitingAfterSaleController/merchantsRecruitingAfterSale', method: 'get', params }) }
+// 修改售后(后台用户处理售后请求)
+export function updateAfterSales(params) { return request({ url: '/merchantsRecruitingAfterSaleController/backUserDealAfterSale/' + params.id, method: 'put', data: params }) }
+// 获取单个售后详情
+export function getAfterSalesInfo(params) { return request({ url: '/merchantsRecruitingAfterSaleController/area/' + params.id, method: 'get', params }) }
