@@ -31,6 +31,9 @@
         <el-col :span="11">
           <el-form-item label="报名费：">{{ form.applicationPrice }}</el-form-item>
         </el-col>
+        <el-col :span="11">
+          <el-form-item label="报名人数：">{{ form.activityGuestCount }}</el-form-item>
+        </el-col>
       </el-row>
       <el-form-item label="封面展示：" prop="coverPicUrl">
         <img :src="form.coverPicUrl" style="width: 150px; height: 200px;" />

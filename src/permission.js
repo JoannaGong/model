@@ -17,7 +17,7 @@ router.beforeEach((to, from, next) => {
     } else {
       if (store.getters.roles.length === 0) {
         store.dispatch('GetInfo').then(res => { // 拉取用户信息
-          const roles = res.data.roles
+          const roles = res.data.permissions
           store.dispatch('GenerateRoutes', { roles }).then(accessRoutes => {
             // 根据roles权限生成可访问的路由表
             router.addRoutes(accessRoutes) // 动态添加可访问路由表
@@ -26,7 +26,7 @@ router.beforeEach((to, from, next) => {
           // next()
         }).catch((err) => {
           store.dispatch('FedLogOut').then(() => {
-            Message.error(err || 'Verification failed, please login again')
+            Message.error(err || '验证失败，请重新登录')
             next({ path: '/' })
           })
         })

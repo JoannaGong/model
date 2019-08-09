@@ -41,7 +41,8 @@ export const constantRouterMap = [
         path: 'role',
         component: () => import('@/views/role/index'),
         name: 'RoleList',
-        meta: { title: '会员列表', icon: 'user' }
+        meta: { title: '会员管理', icon: 'user' },
+        permission: '会员管理'
       },
       {
         path: 'role/:id/',
@@ -68,7 +69,8 @@ export const constantRouterMap = [
         path: 'financeFlow',
         component: () => import('@/views/finance/financeFlow/index'),
         name: 'FinanceFlow',
-        meta: { title: '财务流水记录', icon: 'financeFlow' }
+        meta: { title: '财务流水记录', icon: 'financeFlow' },
+        permission: '财务流水记录'
       },
       // {
       //   path: 'financeFlow/:id',
@@ -81,14 +83,16 @@ export const constantRouterMap = [
         path: 'financeStatistic',
         component: () => import('@/views/finance/financeStatistic/index'),
         name: 'FinanceStatistic',
-        meta: { title: '财务统计', icon: 'financeStatistic' }
+        meta: { title: '财务统计', icon: 'financeStatistic' },
+        permission: '财务统计'
       },
       {
         path: 'withdrawAudit',
         component: () => import('@/views/finance/withdrawAudit/index'),
         name: 'WithdrawAudit',
-        meta: { title: '提现审核', icon: 'withdrawAudit' }
-      },
+        meta: { title: '提现审核', icon: 'withdrawAudit' },
+        permission: '提现审核'
+      }
       // {
       //   path: 'withdrawAudit/:id',
       //   component: () => import('@/views/finance/withdrawAudit/detail'),
@@ -110,7 +114,8 @@ export const constantRouterMap = [
         path: 'account',
         component: () => import('@/views/setup/account/index'),
         name: 'Account',
-        meta: { title: '账号管理', icon: 'account' }
+        meta: { title: '账号管理', icon: 'account' },
+        permission: '账号管理'
       },
       {
         path: 'account/:id',
@@ -123,7 +128,8 @@ export const constantRouterMap = [
         path: 'auth',
         component: () => import('@/views/setup/auth/index'),
         name: 'Auth',
-        meta: { title: '角色管理', icon: 'auth' }
+        meta: { title: '角色管理', icon: 'auth' },
+        permission: '角色管理'
       },
       {
         path: 'auth/:id',
@@ -136,7 +142,8 @@ export const constantRouterMap = [
         path: 'person',
         component: () => import('@/views/setup/person/index'),
         name: 'Setup',
-        meta: { title: '个人信息', icon: 'user' }
+        meta: { title: '个人信息', icon: 'user' },
+        permission: '个人信息'
       }
     ]
   },
@@ -152,7 +159,8 @@ export const constantRouterMap = [
         path: 'index',
         component: () => import('@/views/annoucement/index'),
         name: 'Annoucement',
-        meta: { title: '通告管理', icon: 'annoucement' }
+        meta: { title: '通告管理', icon: 'annoucement' },
+        permission: '通告管理'
       },
       {
         path: 'index/:id',
@@ -174,7 +182,8 @@ export const constantRouterMap = [
         path: 'index',
         component: () => import('@/views/production/index'),
         name: 'Production',
-        meta: { title: '作品管理', icon: 'production' }
+        meta: { title: '作品管理', icon: 'production' },
+        permission: '作品管理'
       },
       {
         path: 'index/:id',
@@ -196,7 +205,8 @@ export const constantRouterMap = [
         path: 'index',
         component: () => import('@/views/certification/index'),
         name: 'Certification',
-        meta: { title: '认证管理', icon: 'certification' }
+        meta: { title: '认证管理', icon: 'certification' },
+        permission: '认证管理'
       },
       {
         path: 'index/:id',
@@ -207,6 +217,45 @@ export const constantRouterMap = [
       }
     ]
   },
+
+  {
+    path: '/type',
+    name: 'type',
+    component: Layout,
+    redirect: '/type/city',
+    meta: { title: '类目管理', icon: 'list' },
+    children: [
+      {
+        path: 'city',
+        component: () => import('@/views/type/city/index'),
+        name: 'City',
+        meta: { title: '地区管理', icon: 'region' },
+        permission: '地区管理'
+      },
+      {
+        path: 'city/:id',
+        component: () => import('@/views/type/city/detail'),
+        name: 'CityTable',
+        hidden: true,
+        meta: { title: '地区管理表单', icon: 'region' }
+      },
+      {
+        path: 'label',
+        component: () => import('@/views/type/label/index'),
+        name: 'Label',
+        meta: { title: '标签管理', icon: 'label' },
+        permission: '标签管理'
+      },
+      {
+        path: 'label/:id',
+        component: () => import('@/views/type/label/detail'),
+        name: 'LabelTable',
+        hidden: true,
+        meta: { title: '标签管理表单', icon: 'label' }
+      }
+    ]
+  },
+
   {
     path: '/dataDict',
     name: 'dataDict',
@@ -219,7 +268,8 @@ export const constantRouterMap = [
         component: () => import('@/views/dataDict/index'),
         name: 'DataDict',
         hidden: true,
-        meta: { title: '数据字典列表' }
+        meta: { title: '数据字典列表' },
+        permission: '数据字典'
       },
       {
         path: 'index/:id',
@@ -229,7 +279,7 @@ export const constantRouterMap = [
         meta: { title: '数据字典表单' }
       }
     ]
-  },
+  }, // 投诉、拍摄地、
   {
     path: '/complaint',
     name: 'complaint',
@@ -241,8 +291,8 @@ export const constantRouterMap = [
         path: 'index',
         component: () => import('@/views/complaint/index'),
         name: 'Complaint',
-        hidden: true,
-        meta: { title: '投诉管理列表' }
+        meta: { title: '投诉管理' },
+        permission: '投诉管理'
       },
       {
         path: 'index/:id',
@@ -264,7 +314,8 @@ export const constantRouterMap = [
         path: 'index',
         component: () => import('@/views/afterSales/index'),
         name: 'AfterSales',
-        meta: { title: '售后管理', icon: 'afterSales' }
+        meta: { title: '售后管理', icon: 'afterSales' },
+        permission: '售后管理'
       },
       {
         path: 'index/:id',
@@ -286,7 +337,8 @@ export const constantRouterMap = [
         path: 'index',
         component: () => import('@/views/service/index'),
         name: 'Service',
-        meta: { title: '服务管理', icon: 'service' }
+        meta: { title: '服务管理', icon: 'service' },
+        permission: '服务管理'
       },
       {
         path: 'index/:id',
@@ -308,7 +360,8 @@ export const constantRouterMap = [
         path: 'index',
         component: () => import('@/views/banner/index'),
         name: 'Banner',
-        meta: { title: 'banner管理', icon: 'banner' }
+        meta: { title: 'banner管理', icon: 'banner' },
+        permission: 'banner管理'
       },
       {
         path: 'index/:id',
@@ -330,7 +383,8 @@ export const constantRouterMap = [
         path: 'index',
         component: () => import('@/views/module/index'),
         name: 'Module',
-        meta: { title: '首页模块管理', icon: 'module' }
+        meta: { title: '首页模块管理', icon: 'module' },
+        permission: '首页模块管理'
       },
       {
         path: 'index/:id',
@@ -352,7 +406,8 @@ export const constantRouterMap = [
         path: 'index',
         component: () => import('@/views/activity/index'),
         name: 'Activity',
-        meta: { title: '活动管理', icon: 'activity' }
+        meta: { title: '活动管理', icon: 'activity' },
+        permission: '活动管理'
       },
       {
         path: 'activityForm/:id',
@@ -381,8 +436,8 @@ export const constantRouterMap = [
         path: 'index',
         component: () => import('@/views/location/index'),
         name: 'LocationList',
-        hidden: true,
-        meta: { title: '拍摄地列表', icon: 'location' }
+        meta: { title: '拍摄地管理', icon: 'location' },
+        permission: '拍摄地管理'
       },
       {
         path: 'index/:id',
@@ -404,7 +459,8 @@ export const constantRouterMap = [
         path: 'index',
         component: () => import('@/views/dataStatistic/index'),
         name: 'DataStatistic',
-        meta: { title: '数据统计', icon: 'dataStatistic' }
+        meta: { title: '数据统计', icon: 'dataStatistic' },
+        permission: '数据统计'
       },
       {
         path: 'index/:id',

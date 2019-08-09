@@ -41,34 +41,34 @@ const permission = {
     SET_ROUTES: (state, routes) => {
       state.addRouters = routes
       state.routers = constantRouterMap.concat(routes)
-      // state.addRoutes = routes
-      // let tempData = JSON.parse(JSON.stringify(constantRouterMap))
-      // let permission = JSON.parse(sessionStorage.getItem('permission'))
-      // for (let x in tempData) {
-      //   if (tempData[x].hasOwnProperty('children')) {
-      //     for (let y in tempData[x].children) {
-      //       if (tempData[x].children[y].hasOwnProperty('permission')) {
-      //         if (permission.indexOf(tempData[x].children[y].permission) === -1) {
-      //           tempData[x].children[y].hidden = true
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
-      // for (let x in tempData) {
-      //   if (tempData[x].hasOwnProperty('children')) {
-      //     let hiddenNum = 0
-      //     for (let y in tempData[x].children) {
-      //       if (tempData[x].children[y].hasOwnProperty('hidden') && tempData[x].children[y].hidden === true) {
-      //         hiddenNum++
-      //       }
-      //     }
-      //     if (hiddenNum === tempData[x].children.length) {
-      //       tempData[x].hidden = true
-      //     }
-      //   }
-      // }
-      // state.routes = tempData.concat(routes)
+      state.addRoutes = routes
+      const tempData = JSON.parse(JSON.stringify(constantRouterMap))
+      const permission = JSON.parse(sessionStorage.getItem('permission'))
+      for (const x in tempData) {
+        if (tempData[x].hasOwnProperty('children')) {
+          for (const y in tempData[x].children) {
+            if (tempData[x].children[y].hasOwnProperty('permission')) {
+              if (permission.indexOf(tempData[x].children[y].permission) === -1) {
+                tempData[x].children[y].hidden = true
+              }
+            }
+          }
+        }
+      }
+      for (const x in tempData) {
+        if (tempData[x].hasOwnProperty('children')) {
+          let hiddenNum = 0
+          for (const y in tempData[x].children) {
+            if (tempData[x].children[y].hasOwnProperty('hidden') && tempData[x].children[y].hidden === true) {
+              hiddenNum++
+            }
+          }
+          if (hiddenNum === tempData[x].children.length) {
+            tempData[x].hidden = true
+          }
+        }
+      }
+      state.routes = tempData.concat(routes)
     }
   },
   actions: {

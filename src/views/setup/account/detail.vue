@@ -8,7 +8,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="10">
-          <el-form-item label="真实姓名：" prop="name">
+          <el-form-item label="真实姓名：">
             <el-input v-model="form.name" placeholder="请输入真实姓名" />
           </el-form-item>
         </el-col>
@@ -18,7 +18,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="10">
-          <el-form-item label="城市：" prop="areaId">
+          <el-form-item label="城市：">
             <el-select v-model="form.areaId" placeholder="请输入城市">
               <el-option v-for="item in areaOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
@@ -35,7 +35,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="10">
-          <el-form-item label="所属角色：">
+          <el-form-item label="所属角色：" prop="permissionsId">
             <el-select v-model="form.permissionsId" placeholder="请选择所属角色">
               <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
@@ -77,15 +77,8 @@ import { getToken } from "@/utils/auth";
 export default {
   data() {
     var checkEmail = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error("请输入邮箱"));
-      }
       setTimeout(() => {
-        if (
-          !/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(
-            value
-          )
-        ) {
+        if (!/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(value)) {
           callback(new Error("请输入正确格式的邮箱"));
         } else {
           callback();
@@ -100,7 +93,6 @@ export default {
       form: {
         password: "",
         canLogin: 0
-        // repassword: "",
       },
       options: [],
       rules: {
@@ -108,13 +100,16 @@ export default {
         userName: [
           { required: true, message: "请输入用户名", trigger: "blur" }
         ],
+        permissionsId: [{ required: true, message: "请选择所属角色", trigger: "blur" }],
         canLogin: [
           { required: true, message: "请选择能否登录", trigger: "blur" }
         ],
         headUrl: [
           { required: true, message: "请上传头像图片", trigger: "blur" }
         ],
-        email: [{ validator: checkEmail, trigger: "blur" }],
+        email: [{ required: true, validator: checkEmail, trigger: "blur" }],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+        phone: [{ required: true, message: "请输入手机/电话", trigger: "blur" }]
       }
     };
   },
@@ -179,6 +174,11 @@ export default {
                     }
                   });
                 }, 1000);
+              }else if(res.code === 102){
+                this.$message({
+                  message: res.data.errorMsg,
+                  type: "error"
+                });
               } else {
                 this.$message({
                   message: res.msg,

@@ -140,3 +140,25 @@ export function getAfterSales(params) { return request({ url: '/merchantsRecruit
 export function updateAfterSales(params) { return request({ url: '/merchantsRecruitingAfterSaleController/backUserDealAfterSale/' + params.id, method: 'put', data: params }) }
 // 获取单个售后详情
 export function getAfterSalesInfo(params) { return request({ url: '/merchantsRecruitingAfterSaleController/area/' + params.id, method: 'get', params }) }
+
+// 修改城市
+export function updateCity(params) { return request({ url: '/areaController/area/' + params.id, method: 'put', data: params }) }
+// 获取单个城市
+export function getCityInfo(params) { return request({ url: '/areaController/area/' + params.id, method: 'get', params }) }
+// 删除城市
+export function delCity(params) { return request({ url: '/areaController/area/' + params.id, method: 'delete', params }) }
+// 获取城市列表（分页）
+export function getCity(params) { return request({ url: '/areaController/area', method: 'get', params }) }
+// 新增城市
+export function addCity(params) { return request({ url: '/areaController/area', method: 'post', data: params }) }
+
+// 修改标签
+export function updateLabel(params) { return request({ url: '/lableController/lable/' + params.id, method: 'put', data: params }) }
+// 获取单个标签
+export function getLabelInfo(params) { return request({ url: '/lableController/lable/' + params.id, method: 'get', params }) }
+// 删除标签
+export function delLabel(params) { return request({ url: '/lableController/lable/' + params.id, method: 'delete', params }) }
+// 获取标签列表（分页）
+export function getLabelTable(params) { return request({ url: '/lableController/lable', method: 'get', params }) }
+// 新增标签
+export function addLabel(params) { return request({ url: '/lableController/lable', method: 'post', data: params }) }

@@ -62,7 +62,7 @@
           <el-input type="textarea" v-model="projectForm.content" placeholder="请输入服务内容" />
         </el-form-item>
         <el-form-item label="服务人员姓名：">
-          <el-input v-model="form.updatedUser" />
+          <el-input v-model="form.dealUserName" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">

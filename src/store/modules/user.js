@@ -49,15 +49,19 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo(state.token).then(response => {
           const data = response.data
+          data.permissions = []
+          data.userInfo.permissionRoleList.forEach(item => {
+            data.permissions.push(item.roleDetails.roleName)
+          })
           sessionStorage.setItem('permission', JSON.stringify(data.permissions))
           data.roles = ['admin']
-          if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+          if (data.userInfo.permissionRoleList && data.userInfo.permissionRoleList.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', data.roles)
           } else {
             reject('getInfo: roles 必须为一个不为空的数组!')
           }
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
+          commit('SET_NAME', data.userInfo.userName)
+          commit('SET_AVATAR', data.userInfo.headUrl)
           resolve(response)
         }).catch(error => {
           reject(error)

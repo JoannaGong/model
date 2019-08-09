@@ -94,9 +94,7 @@ export default {
         areaId: [{required: true, message: "请输入所属地区", trigger: "blur"}],
         address: [{required: true, message: "请输入详细地址", trigger: "blur"}],
         score: [{required: true, message: "请输入评分", trigger: "blur"}],
-        // shootingPlaceLableList: [{required: true, message: "请选择所属类型，可多选", trigger: "blur"}],
         coverPicUrl: [{required: true, message: "请上传封面图片", trigger: "blur"}],
-        // introduce: [{required: true, message: "请输入拍摄地介绍", trigger: "blur"}],
       },
       config: {
         // 编辑器不自动被内容撑高
