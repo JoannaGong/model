@@ -11,7 +11,7 @@
           ></el-option>
         </el-select>
       </div>
-      <div class="filter">
+      <div class="filter" style="margin: 0 10px;">
         <el-select @change="fetchData('init')" v-model="listQuery.groupName" placeholder="选择通告状态">
           <el-option
             v-for="(item, index) in announceList"
@@ -174,8 +174,8 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.filter-container {
-  display: flex;
-  justify-content: space-between;
-}
+// .filter-container {
+//   display: flex;
+//   justify-content: space-between;
+// }
 </style>

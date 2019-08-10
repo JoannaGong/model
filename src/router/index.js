@@ -72,13 +72,6 @@ export const constantRouterMap = [
         meta: { title: '财务流水记录', icon: 'financeFlow' },
         permission: '财务流水记录'
       },
-      // {
-      //   path: 'financeFlow/:id',
-      //   component: () => import('@/views/finance/financeFlow/detail'),
-      //   name: 'FinanceFlowTable',
-      //   hidden: true,
-      //   meta: { title: '财务流水记录表单', icon: 'financeFlow' }
-      // },
       {
         path: 'financeStatistic',
         component: () => import('@/views/finance/financeStatistic/index'),
@@ -92,14 +85,14 @@ export const constantRouterMap = [
         name: 'WithdrawAudit',
         meta: { title: '提现审核', icon: 'withdrawAudit' },
         permission: '提现审核'
+      },
+      {
+        path: 'withdrawAudit/:id',
+        component: () => import('@/views/finance/withdrawAudit/detail'),
+        name: 'WithdrawAuditTable',
+        hidden: true,
+        meta: { title: '财务流水记录表单', icon: 'withdrawAudit' }
       }
-      // {
-      //   path: 'withdrawAudit/:id',
-      //   component: () => import('@/views/finance/withdrawAudit/detail'),
-      //   name: 'WithdrawAuditTable',
-      //   hidden: true,
-      //   meta: { title: '财务流水记录表单', icon: 'withdrawAudit' }
-      // }
     ]
   },
 
@@ -279,7 +272,7 @@ export const constantRouterMap = [
         meta: { title: '数据字典表单' }
       }
     ]
-  }, // 投诉、拍摄地、
+  },
   {
     path: '/complaint',
     name: 'complaint',

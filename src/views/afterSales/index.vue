@@ -84,7 +84,7 @@ export default {
       }
       this.listLoading = true;
       getAfterSales(this.listQuery).then(response => {
-        console.log(response)
+        // console.log(response)
         this.list = response.data.pageInfo.list
         this.pageTotal = response.data.pageInfo.total
         this.listLoading = false

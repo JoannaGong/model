@@ -29,7 +29,7 @@
       </el-table-column>
       <el-table-column align="center" prop="created_at" label="操作" width="200">
         <template slot-scope="scope">
-          <el-button type="default" size="mini" @click="showInfo(scope.row.id)">编辑</el-button>
+          <el-button type="primary" size="mini" @click="showInfo(scope.row.id)">编辑</el-button>
           <el-button type="danger" size="mini" @click="del(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>

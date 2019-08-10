@@ -4,48 +4,50 @@
       <h3>通告内容</h3>
       <el-row :gutter="100">
         <el-col :span="11">
-          <el-form-item label="通告名称：">{{ form.name }}</el-form-item>
+          <el-form-item label="通告名称：">{{ announceForm.name }}</el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="工作类型：">{{ form.name }}</el-form-item>
-        </el-col>
-        <el-col :span="11">
-          <el-form-item label="工作标签：">
-            <el-tag :key="tag" v-for="tag in form.tags">{{tag}}</el-tag>
+          <el-form-item label="工作类型：" v-for="work in announceForm.merchantsRecruitingWorkList" :key="work">
+            <span>{{ work }} </span>
           </el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="工作时间：">{{ form.name }}</el-form-item>
+          <el-form-item label="工作标签：">
+            <el-tag :key="tag" v-for="tag in announceForm.merchantsRecruitingLableList">{{ tag.lable }}</el-tag>
+          </el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="工作地点：">{{ form.name }}</el-form-item>
+          <el-form-item label="工作时间：">{{ announceForm.name }}</el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="详细地址：">{{ form.name }}</el-form-item>
+          <el-form-item label="工作地点：">{{ announceForm.areaId }}</el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="发布人：">{{ form.name }}</el-form-item>
+          <el-form-item label="详细地址：">{{ announceForm.address }}</el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="人均预算：">{{ form.name }}</el-form-item>
+          <el-form-item label="发布人：">{{ announceForm.createdUser }}</el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="人数：">{{ form.name }}</el-form-item>
+          <el-form-item label="人均预算：">{{ announceForm.peopleBudget }}</el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="通告金额：">{{ form.name }}</el-form-item>
+          <el-form-item label="人数：">{{ announceForm.peopleCount }}</el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="服务费：">{{ form.name }}</el-form-item>
+          <el-form-item label="通告金额：">{{ announceForm.peopleCount * announceForm.peopleBudget }}</el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="详细内容：">{{ form.content }}</el-form-item>
+          <el-form-item label="服务费：">{{ announceForm.allCost - announceForm.peopleCount * announceForm.peopleBudget }}</el-form-item>
+        </el-col>
+        <el-col :span="11">
+          <el-form-item label="详细内容：">{{ announceForm.content }}</el-form-item>
         </el-col>
       </el-row>
       <el-form-item label="参考样图：">
-        <viewer :images="imgs">
-          <div class="model-pics clearfix" v-for="src in imgs" :key="src">
-            <img :src="src" />
+        <viewer :images="announceForm.merchantsRecruitingPicsList">
+          <div class="model-pics clearfix" v-for="src in announceForm.merchantsRecruitingPicsList" :key="src">
+            <img :src="src.resourceUrl" />
           </div>
         </viewer>
       </el-form-item>
@@ -99,7 +101,7 @@
         </el-col>
       </el-row>
       <el-button type="primary" @click="submitForm('form')">处理通告</el-button>
-      <el-button @click="back">更改通告状态</el-button>
+      <el-button @click="changeStatus('form')">更改通告状态</el-button>
     </el-form>
   </div>
 </template>
@@ -112,14 +114,17 @@ export default {
     return {
       urlHeaders: { token: getToken() },
       imgs: [],
-      form: {}
+      form: {},
+      announceForm: {},
     };
   },
   created() {
     if (this.$route.params.id != 0) {
       getAfterSalesInfo({ id: this.$route.params.id }).then(res => {
         console.log(res);
-        this.form = res.data.shootingPlace;
+        this.form = res.data.shootingPlace
+        this.announceForm = res.data.shootingPlace.merchantsRecruiting 
+
         this.imageUrl = res.data.shootingPlace.coverPicUrl;
       });
     }

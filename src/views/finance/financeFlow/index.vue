@@ -37,7 +37,7 @@
       @sort-change="sortChange"
     >
       <el-table-column align="center" label="序号" width="95">
-        <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.page - 1) + 1 }}</template>
+        <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
       </el-table-column>
       <el-table-column align="center" label="用户昵称">
         <template slot-scope="scope">{{ scope.row.nickname }}</template>
@@ -61,7 +61,7 @@
 
     <div class="pagination-container">
       <el-pagination
-        :current-page="listQuery.page"
+        :current-page="listQuery.pageNum"
         :page-size="listQuery.limit"
         :total="pageTotal"
         align="center"
@@ -82,7 +82,6 @@ export default {
   data() {
     return {
       tableKey: 0,
-      total: 0,
       list: null,
       listLoading: true,
       selectList: [
@@ -120,14 +119,11 @@ export default {
         }
       ],
       form: {
-        formTag: false,
-        showId: 0,
-        dialogTag: false
       },
       pageTotal: 0,
       listQuery: {
         limit: 10,
-        page: 1,
+        pageNum: 1,
         keyword: "",
         
       }
@@ -135,24 +131,22 @@ export default {
   },
   created() {
     this.fetchData();
-    if (this.$route.params.id) {
-      this.showInfo(this.$route.params.id)
-    }
   },
   methods: {
     fetchData(tag) {
       if (tag && tag === "init") {
-        this.listQuery.page = 1;
+        this.listQuery.pageNum = 1;
       }
       this.listLoading = true;
       getMemberList(this.listQuery).then(response => {
-        this.list = response.data
-        this.pageTotal = response.count
+        console.log(response)
+        this.list = response.data.pageInfo.list
+        this.pageTotal = response.data.pageInfo.total
         this.listLoading = false
       })
     },
     handleFilter() {
-      this.listQuery.page = 1;
+      this.listQuery.pageNum = 1;
       this.fetchData();
     },
     sortChange(data) {
@@ -170,7 +164,7 @@ export default {
       this.handleFilter();
     },
     currentChange(val) {
-      this.listQuery.page = val;
+      this.listQuery.pageNum = val;
       this.fetchData();
     },
     handleSizeChange(val) {

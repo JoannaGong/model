@@ -5,7 +5,7 @@
         <el-select
           @change="fetchData('init')"
           v-model="listQuery.activityStatus"
-          placeholder="请选择身份类型"
+          placeholder="提现状态筛选"
         >
           <el-option
             v-for="(item, index) in selectList"
@@ -18,7 +18,7 @@
       <div class="search">
         <el-input
           v-model="listQuery.queryString"
-          placeholder="请输入模特昵称/ID/通告编号进行搜索"
+          placeholder="请输入昵称进行搜索"
           @keyup.enter.native="handleFilter"
           style="width: 200px;"
           class="filter-item"
@@ -37,37 +37,41 @@
       @sort-change="sortChange"
     >
       <el-table-column align="center" label="序号" width="95">
-        <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.page - 1) + 1 }}</template>
+        <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
       </el-table-column>
-      <el-table-column align="center" label="会员昵称">
+      <el-table-column align="center" label="用户昵称">
         <template slot-scope="scope">{{ scope.row.nickname }}</template>
       </el-table-column>
-      <el-table-column align="center" label="id">
+      <el-table-column align="center" label="提现类型">
         <template slot-scope="scope">{{ scope.row.member_no }}</template>
       </el-table-column>
-      <el-table-column align="center" label="身份类型">
+      <el-table-column align="center" label="提现金额">
         <template slot-scope="scope">{{ scope.row.total_integral }}</template>
       </el-table-column>
-      <el-table-column align="center" label="手机号">
+      <el-table-column align="center" label="提现状态">
         <template slot-scope="scope">{{ scope.row.available_integral }}</template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="操作" width="200">
+      <el-table-column align="center" label="提现账户">
+        <template slot-scope="scope">{{ scope.row.available_integral }}</template>
+      </el-table-column>
+      <el-table-column align="center" label="提现时间">
+        <template slot-scope="scope">{{ scope.row.available_integral }}</template>
+      </el-table-column>
+      <el-table-column align="center" prop="created_at" label="操作" width="100">
         <template slot-scope="scope">
-          <el-button type="default" size="mini" @click="showInfo(scope.row.id)">查看</el-button>
-          <el-button type="primary" size="mini" @click="pushModel(scope.row.id)">推送</el-button>
+          <el-button type="primary" size="mini" @click="showInfo(scope.row.id)">查看</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <div class="pagination-container">
       <el-pagination
-        :current-page="listQuery.page"
+        :current-page="listQuery.pageNum"
         :page-size="listQuery.limit"
         :total="pageTotal"
         align="center"
         background
         layout="total, prev, pager, next, jumper"
-        @size-change="handleSizeChange"
         @current-change="currentChange"
       />
     </div>
@@ -79,9 +83,6 @@ import { getMemberList } from "@/api/table";
 import { getToken } from "@/utils/auth";
 
 export default {
-  components: {
-    modelDetail: () => import("./detail.vue")
-  },
   data() {
     return {
       tableKey: 0,
@@ -107,14 +108,11 @@ export default {
         }
       ],
       form: {
-        formTag: false,
-        showId: 0,
-        dialogTag: false
       },
       pageTotal: 0,
       listQuery: {
         limit: 10,
-        page: 1,
+        pageNum: 1,
         keyword: "",
         
       }
@@ -129,21 +127,26 @@ export default {
   methods: {
     fetchData(tag) {
       if (tag && tag === "init") {
-        this.listQuery.page = 1;
+        this.listQuery.pageNum = 1;
       }
       this.listLoading = true;
       getMemberList(this.listQuery).then(response => {
-        this.list = response.data
-        this.pageTotal = response.count
+        console.log(response)
+        this.list = response.data.pageInfo.list
+        this.pageTotal = response.data.pageInfo.total
         this.listLoading = false
       })
     },
     showInfo(id) {
-      this.form.showId = id
-      this.$router.push({ path: 'role/' + id + '/info' })
+      this.$router.push({
+        path: '/finance/withdrawAudit/' + id,
+        query: {
+          pageNum: this.listQuery.pageNum
+        }
+      })
     },
     handleFilter() {
-      this.listQuery.page = 1;
+      this.listQuery.pageNum = 1;
       this.fetchData();
     },
     sortChange(data) {
@@ -161,7 +164,7 @@ export default {
       this.handleFilter();
     },
     currentChange(val) {
-      this.listQuery.page = val;
+      this.listQuery.pageNum = val;
       this.fetchData();
     },
     handleSizeChange(val) {

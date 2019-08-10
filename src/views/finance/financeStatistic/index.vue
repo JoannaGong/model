@@ -50,35 +50,35 @@ export default {
       listLoading: true,
       selectList: [
         {
-          name: "提现",
+          name: "1月份",
           value: 1
         },
         {
-          name: "充值",
+          name: "2月份",
           value: 2
         },
         {
-          name: "购买服务",
+          name: "3月份",
           value: 3
         },
         {
-          name: "发布通告",
+          name: "4月份",
           value: 4
         },
         {
-          name: "通告退款",
+          name: "5月份",
           value: 5
         },
         {
-          name: "完成通告",
+          name: "6月份",
           value: 6
         },
         {
-          name: "模特抽成",
+          name: "7月份",
           value: 7
         },
         {
-          name: "提供服务",
+          name: "8月份",
           value: 8
         }
       ],
@@ -154,47 +154,47 @@ export default {
       this.chart = echarts.init(document.getElementById("chart"))
       const xData = (function() {
         const data = []
-        for (let i = 1; i < 13; i++) {
-          data.push(i + 'month')
+        for (let i = 1; i < 31; i++) {
+          data.push(i)
         }
         return data
       }())
       this.chart.setOption({
         backgroundColor: '#fff',   // 背景色
-        title: {
-          text: 'statistics',
-          x: '20',
-          top: '20',
-          textStyle: {
-            color: '#fff',
-            fontSize: '22'
-          },
-          subtextStyle: {
-            color: '#90979c',
-            fontSize: '16'
-          }
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            textStyle: {
-              color: '#fff'
-            }
-          }
-        },
+        // title: {
+        //   text: 'statistics',
+        //   x: '20',
+        //   top: '0',
+        //   textStyle: {
+        //     color: '#fff',
+        //     fontSize: '22'
+        //   },
+        //   subtextStyle: {
+        //     color: '#90979c',
+        //     fontSize: '16'
+        //   }
+        // },
+        // tooltip: {
+        //   trigger: 'axis',
+        //   axisPointer: {
+        //     textStyle: {
+        //       color: '#fff'
+        //     }
+        //   }
+        // },
         grid: {
           left: '5%',
           right: '5%',
           borderWidth: 0,
-          top: 150,
-          bottom: 95,
+          top: 50,
+          bottom: 20,
           textStyle: {
             color: '#fff'
           }
         },
         legend: {
-          x: '5%',
-          top: '10%',
+          x: '8%',
+          top: '1%',
           textStyle: {
             color: '#90979c'
           },
@@ -355,9 +355,9 @@ export default {
 p, h3 {
   text-align: center;
 }
-.chart-container{
-  position: relative;
-  width: 100%;
-  height: calc(100vh - 84px);
-}
+// .chart-container{
+//   position: relative;
+//   width: 100%;
+//   height: calc(100vh - 84px);
+// }
 </style>

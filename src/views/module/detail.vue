@@ -1,26 +1,15 @@
 <template>
   <div class="app-container">
     <el-form :model="form" ref="form" label-width="90px" :rules="rules" class="demo-form">
-      <h3>基础信息</h3>
       <el-row :gutter="100">
-        <el-col :span="9">
-          <el-form-item label="拍摄地名称：" prop="name">
-            <el-input v-model="form.name" placeholder="请输入拍摄地名称" />
+        <el-col :span="11">
+          <el-form-item label="banner标题:" prop="name">
+            <el-input v-model="form.name" placeholder="请输入banner标题" />
           </el-form-item>
         </el-col>
-        <el-col :span="9">
-          <el-form-item label="所属地区：" prop="areaId">
-            <el-input v-model="form.areaId" placeholder="请输入所属地区" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="9">
-          <el-form-item label="详细地址：" prop="address">
-            <el-input v-model="form.address" placeholder="请输入详细地址" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="9">
-          <el-form-item label="所属类型：" prop="shootingPlaceLableList">
-            <el-select v-model="form.shootingPlaceLableList" multiple placeholder="请选择所属类型">
+        <el-col :span="11">
+          <el-form-item label="身份类型：" prop="shootingPlaceLableList">
+            <el-select v-model="form.shootingPlaceLableList" placeholder="请选择身份类型">
               <el-option
                 v-for="item in form.shootingPlaceLableList"
                 :key="item.value"
@@ -30,21 +19,13 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="9">
-          <el-form-item label="评分：" prop="score">
-            <el-input type="number" v-model="form.score" placeholder="请输入评分" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="是否推荐：" >
-            <el-radio-group v-model="form.recommendedFlug">
-              <el-radio label="0">不推荐</el-radio>
-              <el-radio label="1">推荐</el-radio>
-            </el-radio-group>
+        <el-col :span="11">
+          <el-form-item label="页面地址：" prop="score">
+            <el-input v-model="form.score" placeholder="请输入页面地址" />
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="封面展示：" prop="coverPicUrl">
+      <el-form-item label="模块icon：" prop="coverPicUrl">
         <el-upload
           class="avatar-uploader"
           :action="fileUrl()"
@@ -57,16 +38,6 @@
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
-      <h3>拍摄地介绍</h3>
-      <el-form-item prop="introduce">
-        <vue-ueditor-wrap
-          ref="ueditor"
-          v-model="form.introduce"
-          :destroy="false"
-          :config="config"
-          style="line-height:20px"
-        ></vue-ueditor-wrap>
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('form')">保存</el-button>
         <el-button @click="back">取消</el-button>
@@ -77,12 +48,8 @@
 <script>
 import { addLocation, updateLocation, getLocationInfo } from "@/api/table";
 import { getToken } from "@/utils/auth";
-import VueUeditorWrap from "vue-ueditor-wrap";
 
 export default {
-  components: {
-    VueUeditorWrap
-  },
   data() {
     return {
       urlHeaders: { token: getToken() },
@@ -94,20 +61,8 @@ export default {
         areaId: [{required: true, message: "请输入所属地区", trigger: "blur"}],
         address: [{required: true, message: "请输入详细地址", trigger: "blur"}],
         score: [{required: true, message: "请输入评分", trigger: "blur"}],
-        // shootingPlaceLableList: [{required: true, message: "请选择所属类型，可多选", trigger: "blur"}],
-        coverPicUrl: [{required: true, message: "请上传封面图片", trigger: "blur"}],
-        // introduce: [{required: true, message: "请输入拍摄地介绍", trigger: "blur"}],
+        coverPicUrl: [{required: true, message: "请上传封面图片", trigger: "blur"}]
       },
-      config: {
-        // 编辑器不自动被内容撑高
-        autoHeightEnabled: true,
-        // 初始容器高度
-        initialFrameHeight: 240,
-        // 初始容器宽度
-        initialFrameWidth: "100%",
-        // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
-        serverUrl: "https://kingwoodapi.zkong.me/jd_api/ueditorHandler/ueditorConfig"
-      }
     };
   },
   created() {
@@ -132,7 +87,7 @@ export default {
                 });
                 setTimeout(() => {
                   this.$router.push({
-                    path: "/location/index",
+                    path: "/module/index",
                     query: {
                       pageNum: this.$route.query.pageNum
                     }
@@ -154,7 +109,7 @@ export default {
                 });
                 setTimeout(() => {
                   this.$router.push({
-                    path: "/location/index",
+                    path: "/module/index",
                     query: {
                       pageNum: this.$route.query.pageNum
                     }
@@ -197,7 +152,7 @@ export default {
     },
     back() {
       this.$router.push({
-        path: "/location/index",
+        path: "/module/index",
         query: {
           pageNum: this.$route.query.pageNum
         }

@@ -34,7 +34,7 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="180">
         <template slot-scope="scope">
-          <el-button size="mini" type="default" @click="showInfo(scope.row.id)">编辑</el-button>
+          <el-button size="mini" type="primary" @click="showInfo(scope.row.id)">编辑</el-button>
           <!-- <el-button size="mini" type="primary" @click="editRole(scope.row.permissionsId)">修改角色</el-button> -->
           <el-button size="mini" type="danger" @click="del(scope.row.id)">删除</el-button>
         </template>

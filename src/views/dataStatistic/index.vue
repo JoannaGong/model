@@ -1,143 +1,131 @@
 <template>
-  <div class="app-container">
-    <div class="filter-container">
-      <div class="search">
-        <el-input
-          v-model="listQuery.queryString"
-          placeholder="请输入名称、城市进行搜索"
-          @keyup.enter.native="handleFilter"
-          style="width: 200px;"
-          class="filter-item"
-        />
-        <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
-      </div>
-      <div class="handle-create">
-        <el-button type="primary" @click="showInfo(0)">新建拍摄地</el-button>
-      </div>
-    </div>
-    <el-table
-      v-loading="listLoading"
-      :key="tableKey"
-      :data="list"
-      empty-text="暂无数据"
-      border
-      fit
-      highlight-current-row
-      @sort-change="sortChange"
-    >
-      <el-table-column align="center" label="序号" width="80">
-        <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
-      </el-table-column>
-      <el-table-column align="center" label="拍摄地名称">
-        <template slot-scope="scope">{{ scope.row.address }}</template>
-      </el-table-column>
-      <el-table-column align="center" label="城市" width="180">
-        <template slot-scope="scope">{{ scope.row.areaId }}</template>
-      </el-table-column>
-      <el-table-column align="center" label="是否推荐" width="100">
-        <template slot-scope="scope">
-          <span v-if="scope.row.recommendedFlug == '0'">不推荐</span>
-          <span v-if="scope.row.recommendedFlug == '1'">推荐</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="创建时间" width="190">
-        <template slot-scope="scope">{{ scope.row.updatedTime === null ? scope.row.createdTime : scope.row.updatedTime }}</template>
-      </el-table-column>
-      <el-table-column align="center" prop="created_at" label="操作" width="200">
-        <template slot-scope="scope">
-          <el-button type="default" size="mini" @click="showInfo(scope.row.id)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="del(scope.row.id)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+  <div class="app-container" >
+    <el-row :gutter="20">
+      <el-col :span="8">
+        <p>当日收入</p>
+        <h3>2000</h3>
+      </el-col>
+      <el-col :span="8">
+        <p>当日提现</p>
+        <h3>999</h3>
+      </el-col>
+      <el-col :span="8">
+        <p>累计收入</p>
+        <h3>1111</h3>
+      </el-col>
+    </el-row>
 
-    <div class="pagination-container">
-      <el-pagination
-        :current-page="listQuery.pageNum"
-        :page-size="listQuery.limit"
-        :total="pageTotal"
-        align="center"
-        background
-        layout="total, prev, pager, next, jumper"
-        @current-change="currentChange"
-      />
+    <div class="filter-container">
+      <div class="filter" style="margin: 30px 10px 0">
+        <el-select
+          @change="fetchData('init')"
+          v-model="listQuery.activityStatus"
+          placeholder="请选择年月"
+        >
+          <el-option
+            v-for="(item, index) in selectList"
+            :key="index"
+            :label="item.name"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+      </div>
     </div>
+    <div id="chart" style="width: 100%; height: calc(100vh - 280px);"></div>
   </div>
 </template>
 
 <script>
-import { getLocation, delLocation } from "@/api/table";
+import echarts from 'echarts'
+import { getMemberList } from "@/api/table";
 import { getToken } from "@/utils/auth";
-import { constants } from 'fs';
 
 export default {
   data() {
     return {
+      chart: null,
       tableKey: 0,
       total: 0,
-      list: [],
+      list: null,
       listLoading: true,
+      selectList: [
+        {
+          name: "1月份",
+          value: 1
+        },
+        {
+          name: "2月份",
+          value: 2
+        },
+        {
+          name: "3月份",
+          value: 3
+        },
+        {
+          name: "4月份",
+          value: 4
+        },
+        {
+          name: "5月份",
+          value: 5
+        },
+        {
+          name: "6月份",
+          value: 6
+        },
+        {
+          name: "7月份",
+          value: 7
+        },
+        {
+          name: "8月份",
+          value: 8
+        }
+      ],
+      form: {
+        formTag: false,
+        showId: 0,
+        dialogTag: false
+      },
       pageTotal: 0,
       listQuery: {
         limit: 10,
-        pageNum: 1,
-        keyword: "",
+        page: 1,
+        keyword: ""
       }
     };
   },
   created() {
     this.fetchData();
-    if (this.$route.query.pageNum) {
-      this.listQuery.pageNum = parseInt(this.$route.query.pageNum)
-      this.$route.query.pageNum = null
+    if (this.$route.params.id) {
+      this.showInfo(this.$route.params.id);
     }
+  },
+  mounted() {
+    this.initChart()
+  },
+  beforeDestroy() {
+    if (!this.chart) {
+      return
+    }
+    this.chart.dispose()
+    this.chart = null
   },
   methods: {
     fetchData(tag) {
-      if (tag === "init") {
+      if (tag && tag === "init") {
         this.listQuery.page = 1;
       }
       this.listLoading = true;
-      getLocation(this.listQuery).then(response => {
-        // console.log(response)
-        this.list = response.data.pageInfo.list
-        this.pageTotal = response.data.pageInfo.total
-        this.listLoading = false
-      })
+      getMemberList(this.listQuery).then(response => {
+        this.list = response.data;
+        this.pageTotal = response.count;
+        this.listLoading = false;
+      });
     },
-    del(id) {
-      this.$confirm("此操作将删除该拍摄地, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          delLocation({id: id}).then(response => {
-            if (response.code === 101) {
-              this.$message({
-                message: "删除成功",
-                type: "success"
-              });
-              this.fetchData();
-            } else {
-              this.$message.error(response.msg);
-            }
-          });
-        })
-        .catch(err => {
-          this.$message.warning("已取消删除！");
-        });
-    },
-    showInfo(id) {
-      this.$router.push({
-        path: '/location/index/' + id,
-        query: {
-          pageNum: this.listQuery.pageNum
-        }
-      })
-    },
+    
     handleFilter() {
-      this.listQuery.pageNum = 1;
+      this.listQuery.page = 1;
       this.fetchData();
     },
     sortChange(data) {
@@ -155,15 +143,221 @@ export default {
       this.handleFilter();
     },
     currentChange(val) {
-      this.listQuery.pageNum = val;
+      this.listQuery.page = val;
       this.fetchData();
+    },
+    handleSizeChange(val) {
+      this.listQuery.limit = val;
+      this.fetchData();
+    },
+    initChart() {
+      this.chart = echarts.init(document.getElementById("chart"))
+      const xData = (function() {
+        const data = []
+        for (let i = 1; i < 31; i++) {
+          data.push(i)
+        }
+        return data
+      }())
+      this.chart.setOption({
+        backgroundColor: '#fff',   // 背景色
+        // title: {
+        //   text: 'statistics',
+        //   x: '20',
+        //   top: '0',
+        //   textStyle: {
+        //     color: '#fff',
+        //     fontSize: '22'
+        //   },
+        //   subtextStyle: {
+        //     color: '#90979c',
+        //     fontSize: '16'
+        //   }
+        // },
+        // tooltip: {
+        //   trigger: 'axis',
+        //   axisPointer: {
+        //     textStyle: {
+        //       color: '#fff'
+        //     }
+        //   }
+        // },
+        grid: {
+          left: '5%',
+          right: '5%',
+          borderWidth: 0,
+          top: 50,
+          bottom: 20,
+          textStyle: {
+            color: '#fff'
+          }
+        },
+        legend: {
+          x: '8%',
+          top: '1%',
+          textStyle: {
+            color: '#90979c'
+          },
+          data: ['female', 'male', 'average']
+        },
+        calculable: true,
+        xAxis: [{
+          type: 'category',
+          axisLine: {
+            lineStyle: {
+              color: '#90979c'
+            }
+          },
+          splitLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
+          splitArea: {
+            show: false
+          },
+          axisLabel: {
+            interval: 0
+
+          },
+          data: xData
+        }],
+        yAxis: [{
+          type: 'value',
+          splitLine: {
+            show: false
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#90979c'  // 灰色
+            }
+          },
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            interval: 0
+          },
+          splitArea: {
+            show: false
+          }
+        }],
+        series: [{
+          name: 'female',
+          type: 'bar',
+          stack: 'total',
+          barMaxWidth: 35,
+          barGap: '10%',
+          itemStyle: {
+            normal: {
+              color: 'rgba(255,144,128,1)',  //橙色
+              label: {
+                show: true,
+                textStyle: {
+                  color: '#fff'
+                },
+                position: 'insideTop',
+                formatter(p) {
+                  return p.value > 0 ? p.value : ''
+                }
+              }
+            }
+          },
+          data: [
+            709,
+            1917,
+            2455,
+            2610,
+            1719,
+            1433,
+            1544,
+            3285,
+            5208,
+            3372,
+            2484,
+            4078
+          ]
+        },
+
+        {
+          name: 'male',
+          type: 'bar',
+          stack: 'total',
+          itemStyle: {
+            normal: {
+              color: 'rgba(0,191,183,1)',   // 亮绿色
+              barBorderRadius: 0,
+              label: {
+                show: true,
+                position: 'top',
+                formatter(p) {
+                  return p.value > 0 ? p.value : ''
+                }
+              }
+            }
+          },
+          data: [
+            327,
+            1776,
+            507,
+            1200,
+            800,
+            482,
+            204,
+            1390,
+            1001,
+            951,
+            381,
+            220
+          ]
+        }, {
+          name: 'average',
+          type: 'line',
+          stack: 'total',
+          symbolSize: 10,
+          symbol: 'circle',
+          itemStyle: {
+            normal: {
+              color: 'rgba(252,230,48,1)',   // 黄色
+              barBorderRadius: 0,
+              label: {
+                show: true,
+                position: 'top',
+                formatter(p) {
+                  return p.value > 0 ? p.value : ''
+                }
+              }
+            }
+          },
+          data: [
+            1036,
+            3693,
+            2962,
+            3810,
+            2519,
+            1915,
+            1748,
+            4675,
+            6209,
+            4323,
+            2865,
+            4298
+          ]
+        }
+        ]
+      })
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-.filter-container {
-  display: flex;
-  justify-content: space-between;
+p, h3 {
+  text-align: center;
 }
+// .chart-container{
+//   position: relative;
+//   width: 100%;
+//   height: calc(100vh - 84px);
+// }
 </style>

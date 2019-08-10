@@ -6,7 +6,7 @@
         </div>
         <div class="form-item">
           <el-row :gutter="20">
-            <div label="头像" class="avatar clearfix">
+            <div label="头像" class="avatarPic clearfix">
               <img :src="form.headUrl" style="width: 100px; height: 100px;" />
             </div>
             <el-col :span="10">
@@ -99,7 +99,7 @@ export default {
 .form-dialog {
   margin-top: -30px;
 }
-.el-row .avatar {
+.el-row .avatarPic {
   float: right;
   margin-right: 100px;
 }
