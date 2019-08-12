@@ -79,7 +79,7 @@ export default {
   },
   created() {
     getMemberInfo({ id: this.$route.params.id }).then(res => {
-      console.log(res)
+      // console.log(res)
       this.form = res.data.user
     });
     getPhotoInfo({ id: this.$route.params.id }).then(res => {
@@ -87,7 +87,7 @@ export default {
       this.imgs = res.data.userPhotoAlbumList
     })
     getLabel({ id: this.$route.params.id }).then(res => {
-      console.log(res)
+      // console.log(res)
     })
   },
   methods: {

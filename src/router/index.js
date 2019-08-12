@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import modelInfo from '../views/role/modelDetail/modelInfo'
-import artist from '../views/role/modelDetail/artist'
-import serviceRecord from '../views/role/modelDetail/serviceRecord'
+import modelInfo from '../views/role/modelDetail/info'
+import modelArtist from '../views/role/modelDetail/artist'
+import modelServiceRecord from '../views/role/modelDetail/serviceRecord'
+import companyInfo from '../views/role/companyDetail/info'
+import companyArtist from '../views/role/companyDetail/artist'
+import companyServiceRecord from '../views/role/companyDetail/serviceRecord'
 
 // in development-env not use lazy-loading, because lazy-loading too many pages will cause webpack hot update too slow. so only in production use lazy-loading;
 // detail: https://panjiachen.github.io/vue-element-admin-site/#/lazy-loading
@@ -51,9 +54,12 @@ export const constantRouterMap = [
         hidden: true,
         meta: { title: '查看' },
         children: [
-          { path: 'info', component: modelInfo, hidden: true },
-          { path: 'artist', component: artist, hidden: true },
-          { path: 'record', component: serviceRecord, hidden: true }
+          { path: 'modelInfo', component: modelInfo, hidden: true },
+          { path: 'modelArtist', component: modelArtist, hidden: true },
+          { path: 'modelServiceRecord', component: modelServiceRecord, hidden: true },
+          { path: 'companyInfo', component: companyInfo, hidden: true },
+          { path: 'companyArtist', component: companyArtist, hidden: true },
+          { path: 'companyServiceRecord', component: companyServiceRecord, hidden: true }
         ]
       }
     ]

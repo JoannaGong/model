@@ -44,7 +44,6 @@
       </el-table-column>
       <el-table-column align="center" label="身份类型">
         <template slot-scope="scope">
-          <span v-if="scope.row.roleName == 0">后台用户</span>
           <span v-if="scope.row.roleName == 1">未认证用户</span>
           <span v-if="scope.row.roleName == 2">模特</span>
           <span v-if="scope.row.roleName == 3">经纪公司</span>
@@ -140,7 +139,12 @@ export default {
       })
     },
     showInfo(id) {
-      this.$router.push({ path: 'role/' + id + '/info' })
+      this.$router.push({
+        path: 'role/' + id + '/info',
+        query: {
+          pageNum: this.listQuery.pageNum
+        }
+      })
     },
     handleFilter() {
       this.listQuery.pageNum = 1;
