@@ -6,6 +6,7 @@ import modelServiceRecord from '../views/role/modelDetail/serviceRecord'
 import companyInfo from '../views/role/companyDetail/info'
 import companyArtist from '../views/role/companyDetail/artist'
 import companyServiceRecord from '../views/role/companyDetail/serviceRecord'
+import merchantInfo from '../views/role/mechant/info'
 
 // in development-env not use lazy-loading, because lazy-loading too many pages will cause webpack hot update too slow. so only in production use lazy-loading;
 // detail: https://panjiachen.github.io/vue-element-admin-site/#/lazy-loading
@@ -59,7 +60,8 @@ export const constantRouterMap = [
           { path: 'modelServiceRecord', component: modelServiceRecord, hidden: true },
           { path: 'companyInfo', component: companyInfo, hidden: true },
           { path: 'companyArtist', component: companyArtist, hidden: true },
-          { path: 'companyServiceRecord', component: companyServiceRecord, hidden: true }
+          { path: 'companyServiceRecord', component: companyServiceRecord, hidden: true },
+          { path: 'merchantInfo', component: merchantInfo, hidden: true }
         ]
       }
     ]

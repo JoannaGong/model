@@ -32,17 +32,25 @@
           <span class="el-dialog__title" style="font-size: 15px;">个人标签</span>
         </div>
         <el-form-item label="风格标签：">
-          <el-tag :key="tag" v-for="tag in tags">{{ tag }}</el-tag>
+          <div v-for="label in form.userLableList" :key="label.id">
+            <el-tag v-if="label.labelType === 0">{{ label.lable.name }}</el-tag>
+          </div>
         </el-form-item>
         <el-form-item label="外貌标签：">
-          <el-tag :key="tag" v-for="tag in tags">{{ tag }}</el-tag>
+          <div v-for="label in form.userLableList" :key="label.id">
+            <el-tag v-if="label.labelType === 1">{{ label.lable.name }}</el-tag>
+          </div>
         </el-form-item>
         <el-form-item label="体型标签：">
-          <el-tag :key="tag" v-for="tag in tags">{{ tag }}</el-tag>
+          <div v-for="label in form.userLableList" :key="label.id">
+            <el-tag v-if="label.labelType === 2">{{ label.lable.name }}</el-tag>
+          </div>
         </el-form-item>
         <el-form-item label="魅力标签：">
-          <el-tag :key="tag" v-for="tag in tags">{{ tag }}</el-tag>
-        </el-form-item>
+          <div v-for="label in form.userLableList" :key="label.id">
+            <el-tag v-if="label.labelType === 3">{{ label.lable.name }}</el-tag>
+          </div>
+        </el-form-item> 
         <div style="float: left; padding-top: 8px;">
           <span class="el-dialog__title" style="font-size: 15px;">工作经验</span>
         </div>
@@ -50,14 +58,14 @@
         <div style="float: left; padding-top: 8px;">
           <span class="el-dialog__title" style="font-size: 15px;">服务报价</span>
         </div>
-        <el-form-item>平面 &nbsp; {{form.serviceOffers}} &nbsp; 元/天</el-form-item>
+        <el-form-item>{{form.serviceOffers}}</el-form-item>
         <div style="margin-bottom: 10px;">
           <span class="el-dialog__title" style="font-size: 15px;">相册</span>
         </div>
         <el-form-item>
           <viewer :images="imgs">
             <div class="model-pics clearfix" v-for="(src, index) in imgs" :key="index" >
-              <img :src="src" />
+              <img :src="src.photoUrl" />
             </div>
           </viewer>
         </el-form-item>
@@ -67,11 +75,10 @@
 </template>
 
 <script>
-import { getMemberInfo, getPhotoInfo, getLabel } from "@/api/table";
+import { getMemberInfo, getPhotoInfo } from "@/api/table";
 export default {
   data() {
     return {
-      tags: ["标签一", "标签二", "标签三"],
       imgs: [],
       form: {
       }
@@ -82,18 +89,13 @@ export default {
       // console.log(res)
       this.form = res.data.user
     });
-    getPhotoInfo({ id: this.$route.params.id }).then(res => {
+    getPhotoInfo({ userId: this.$route.params.id }).then(res => {
       // console.log(res)
       this.imgs = res.data.userPhotoAlbumList
     })
-    getLabel({ id: this.$route.params.id }).then(res => {
-      // console.log(res)
-    })
   },
   methods: {
-    beforeClose(done) {
-      this.$emit("close");
-    }
+    
   }
 };
 </script>

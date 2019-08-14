@@ -16,11 +16,13 @@ export function getGroupMemberList(params) { return request({ url: '/userControl
 // 获取相册列表
 export function getPhotoList(params) { return request({ url: '/userPhotoAlbumController/areaForAjax', method: 'get', params }) }
 // 获取相册详情
-export function getPhotoInfo(params) { return request({ url: '/userPhotoAlbumController/area/' + params.id, method: 'get', params }) }
+export function getPhotoInfo(params) { return request({ url: '/userPhotoAlbumController/userPhotoAlbumForAjax', method: 'get', params }) }
 // 获取标签详情
 export function getLabel(params) { return request({ url: '/lableController/lable/' + params.id, method: 'get', params }) }
-// 获取模特作品详情
-export function getWorks(params) { return request({ url: '/worksController/works/' + params.id, method: 'get', params }) }
+// 获取模特作品列表（分页)
+export function getWorks(params) { return request({ url: '/worksController/works', method: 'get', params }) }
+// 获取经纪公司下属模特列表（分页）
+export function getModellist(params) { return request({ url: '/brokerageModelController/brokerageModel', method: 'get', params }) }
 
 // 获取拍摄地列表（分页）
 export function getLocation(params) { return request({ url: '/shootingPlaceController/shootingPlace', method: 'get', params }) }

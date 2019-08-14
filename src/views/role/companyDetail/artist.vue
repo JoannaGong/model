@@ -10,7 +10,7 @@
       highlight-current-row
     >
       <el-table-column align="center" label="序号" width="60">
-        <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.page - 1) + 1 }}</template>
+        <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
       </el-table-column>
       <el-table-column align="center" label="作品名称">
         <template slot-scope="scope">{{ scope.row.name }}</template>
@@ -30,7 +30,7 @@
 
     <div class="pagination-container">
       <el-pagination
-        :current-page="listQuery.page"
+        :current-page="listQuery.pageNum"
         :page-size="listQuery.limit"
         :total="pageTotal"
         align="center"
@@ -61,15 +61,11 @@ export default {
       total: 0,
       list: null,
       listLoading: true,
-      form: {
-        formTag: false,
-        showId: 0,
-        dialogTag: false
-      },
+      form: {},
       pageTotal: 0,
       listQuery: {
         limit: 10,
-        page: 1,
+        pageNum: 1,
         keyword: "",
         
       }
@@ -84,29 +80,21 @@ export default {
   methods: {
     fetchData(tag) {
       if (tag && tag === "init") {
-        this.listQuery.page = 1;
+        this.listQuery.pageNum = 1;
       }
       this.listLoading = true;
-      // getMemberList(this.listQuery).then(response => {
-      //   this.list = response.data
-      //   this.pageTotal = response.count
-      //   this.listLoading = false
-      // })
-      getWorks({id: this.$route.params.id}).then(response => {
-        console.log(response)
-        this.list = response.data.worksDetailsList
+      getWorks({userId: this.$route.params.id}).then(response => {
+        // console.log(response)
+        this.list = response.data.pageInfo.list
+        this.pageTotal = response.data.pageInfo.total
+        this.listLoading = false
       })
     },
     showInfo(id) {
-      this.form.showId = id
-      this.form.formTag = true
-    },
-    appHandle() {
-      this.form.formTag = false;
-      this.fetchData();
+      
     },
     currentChange(val) {
-      this.listQuery.page = val;
+      this.listQuery.pageNum = val;
       this.fetchData();
     },
   }

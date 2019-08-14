@@ -11,17 +11,19 @@
             </div>
             <el-col :span="10">
               <el-form-item label="会员昵称：">
-                {{ form.userName }}
+                {{ form.name }}
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="性别：">
-                {{ form.certificationSex }}
+                <span v-if="form.certificationSex === 0">男</span>
+                <span v-if="form.certificationSex === 1">女</span>
+                <span v-if="form.certificationSex === 2">未知</span>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="职业：">
-                {{ form.organization_name }}
+                {{ form.professional }}
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -67,9 +69,9 @@
         <div v-if="form.roleName === 2">
           <el-header>
             <el-menu :default-active="routePath" router active-text-color="#409EFF" class="el-menu-demo" mode="horizontal">
-              <el-menu-item index="info">模特信息</el-menu-item>
-              <el-menu-item index="artist">作品</el-menu-item>
-              <el-menu-item index="record">服务记录</el-menu-item>
+              <el-menu-item index="modelInfo">模特信息</el-menu-item>
+              <el-menu-item index="modelArtist">作品</el-menu-item>
+              <el-menu-item index="modelServiceRecord">服务记录</el-menu-item>
             </el-menu>
           </el-header>
           <el-main>
@@ -79,9 +81,19 @@
         <div v-if="form.roleName === 3">
           <el-header>
             <el-menu :default-active="routePath" router active-text-color="#409EFF" class="el-menu-demo" mode="horizontal">
-              <el-menu-item index="info">公司信息</el-menu-item>
-              <el-menu-item index="artist">作品</el-menu-item>
-              <el-menu-item index="record">服务记录</el-menu-item>
+              <el-menu-item index="companyInfo">公司信息</el-menu-item>
+              <el-menu-item index="companyArtist">作品</el-menu-item>
+              <el-menu-item index="companyServiceRecord">服务记录</el-menu-item>
+            </el-menu>
+          </el-header>
+          <el-main>
+            <router-view></router-view>
+          </el-main>
+        </div>
+        <div v-if="form.roleName === 4">
+          <el-header>
+            <el-menu :default-active="routePath" router active-text-color="#409EFF" class="el-menu-demo" mode="horizontal">
+              <el-menu-item index="merchantInfo">通告记录</el-menu-item>
             </el-menu>
           </el-header>
           <el-main>

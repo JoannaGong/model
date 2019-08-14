@@ -46,31 +46,17 @@ import { getMemberList } from "@/api/table";
 import { getToken } from "@/utils/auth";
 
 export default {
-  props: {
-    showId: {
-      type: Number,
-      default() {
-        return 0
-      }
-    }
-  },
   data() {
     return {
       tableKey: 0,
-      total: 0,
       list: null,
       listLoading: true,
       form: {
-        formTag: false,
-        showId: 0,
-        dialogTag: false
       },
       pageTotal: 0,
       listQuery: {
         limit: 10,
-        page: 1,
-        keyword: "",
-        
+        pageNum: 1
       }
     };
   },
@@ -82,27 +68,19 @@ export default {
   },
   methods: {
     fetchData(tag) {
-      if (tag && tag === "init") {
-        this.listQuery.page = 1;
-      }
       this.listLoading = true;
       getMemberList(this.listQuery).then(response => {
-        this.list = response.data
-        this.pageTotal = response.count
+        this.list = response.data.pageInfo.list
+        this.pageTotal = response.data.pageInfo.total
         this.listLoading = false
       })
     },
 
     showInfo(id) {
-      this.form.showId = id
-      this.form.formTag = true
-    },
-    appHandle() {
-      this.form.formTag = false;
-      this.fetchData();
+      
     },
     currentChange(val) {
-      this.listQuery.page = val;
+      this.listQuery.pageNum = val;
       this.fetchData();
     },
     handleSizeChange(val) {

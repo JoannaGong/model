@@ -1,5 +1,5 @@
 <template>
-  <div class="artist">
+  <div class="modelInfo">
     <el-table
       v-loading="listLoading"
       :key="tableKey"
@@ -10,16 +10,22 @@
       highlight-current-row
     >
       <el-table-column align="center" label="序号" width="60">
-        <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
+        <template
+          slot-scope="scope"
+        >{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
       </el-table-column>
       <el-table-column align="center" label="作品名称">
         <template slot-scope="scope">{{ scope.row.name }}</template>
       </el-table-column>
       <el-table-column align="center" label="收费价格(￥)" width="160">
-        <template slot-scope="scope">{{ scope.row.chargeFlag === 0 ? "不需要付费" : scope.row.chargeCount }}</template>
+        <template
+          slot-scope="scope"
+        >{{ scope.row.chargeFlag === 0 ? "不需要付费" : scope.row.chargeCount }}</template>
       </el-table-column>
       <el-table-column align="center" label="创建时间" width="200">
-        <template slot-scope="scope">{{ scope.row.updatedTime === null ? scope.row.createdTime : scope.row.updatedTime }}</template>
+        <template
+          slot-scope="scope"
+        >{{ scope.row.updatedTime === null ? scope.row.createdTime : scope.row.updatedTime }}</template>
       </el-table-column>
       <el-table-column align="center" prop="created_at" label="操作" width="100">
         <template slot-scope="scope">
@@ -43,56 +49,37 @@
 </template>
 
 <script>
-import { getMemberList, getWorks } from "@/api/table";
-import { getToken } from "@/utils/auth";
-
+import { getMemberInfo, getPhotoInfo } from "@/api/table";
 export default {
-  props: {
-    showId: {
-      type: Number,
-      default() {
-        return 0
-      }
-    }
-  },
   data() {
     return {
-      tableKey: 0,
-      list: null,
-      listLoading: true,
-      form: {},
-      pageTotal: 0,
-      listQuery: {
-        limit: 10,
-        pageNum: 1
-      }
+      imgs: [],
+      form: {}
     };
   },
   created() {
-    this.fetchData();
+    getMemberInfo({ id: this.$route.params.id }).then(res => {
+      // console.log(res)
+      this.form = res.data.user;
+    });
   },
-  methods: {
-    fetchData(tag) {
-      this.listLoading = true;
-      getWorks({userId: this.$route.params.id}).then(response => {
-        // console.log(response)
-        this.list = response.data.pageInfo.list
-        this.pageTotal = response.data.pageInfo.total
-        this.listLoading = false
-      })
-    },
-    showInfo(id) {
-      
-    },
-    currentChange(val) {
-      this.listQuery.pageNum = val;
-      this.fetchData();
-    },
-  }
-}
+  methods: {}
+};
 </script>
 <style lang="scss" scoped>
 .form-dialog {
   margin-top: -30px;
 }
+.model-pics {
+  width: 150px;
+  height: 200px;
+  margin: 0 10px 10px 0;
+  float: left;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+  }
+}
 </style>
+

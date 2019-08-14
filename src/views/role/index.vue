@@ -59,7 +59,7 @@
       </el-table-column>
       <el-table-column align="center" prop="created_at" label="操作" width="200">
         <template slot-scope="scope">
-          <el-button type="default" size="mini" @click="showInfo(scope.row.id)">查看</el-button>
+          <el-button type="default" size="mini" @click="showInfo(scope.row)">查看</el-button>
           <el-button type="primary" size="mini" @click="pushModel(scope.row.id)">推送</el-button>
         </template>
       </el-table-column>
@@ -96,20 +96,24 @@ export default {
       listLoading: true,
       selectList: [
         {
-          name: "模特",
+          name: "未认证用户",
           value: 1
         },
         {
-          name: "经纪公司",
+          name: "模特",
           value: 2
         },
         {
-          name: "个人商户",
+          name: "经纪公司",
           value: 3
         },
         {
-          name: "企业商户",
+          name: "商户",
           value: 4
+        },
+        {
+          name: "其他职业(摄影师化妆师等)",
+          value: 5
         }
       ],
       pageTotal: 0,
@@ -138,13 +142,38 @@ export default {
         this.listLoading = false
       })
     },
-    showInfo(id) {
-      this.$router.push({
-        path: 'role/' + id + '/info',
-        query: {
-          pageNum: this.listQuery.pageNum
-        }
-      })
+    showInfo(val) {
+      // console.log(val)
+      if(val.roleName === 2){
+        this.$router.push({
+          path: 'role/' + val.id + '/modelInfo',
+          query: {
+            pageNum: this.listQuery.pageNum
+          }
+        })
+      }else if(val.roleName === 3){
+        this.$router.push({
+          path: 'role/' + val.id + '/companyInfo',
+          query: {
+            pageNum: this.listQuery.pageNum
+          }
+        })
+      }else if(val.roleName === 1){
+        this.$router.push({
+          path: 'role/' + val.id,
+          query: {
+            pageNum: this.listQuery.pageNum
+          }
+        })
+      }else if(val.roleName === 4){
+        this.$router.push({
+          path: 'role/' + val.id + '/merchantInfo',
+          query: {
+            pageNum: this.listQuery.pageNum
+          }
+        })
+      }
+      
     },
     handleFilter() {
       this.listQuery.pageNum = 1;
