@@ -61,7 +61,7 @@
             </el-col>            
             <el-col :span="10">
               <el-form-item label="认证信息：">
-                <el-button type="text">点击去查看</el-button>
+                <el-button type="text"  @click="Detail(form.id)">点击去查看</el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -131,8 +131,10 @@ export default {
     })
   },
   methods: {
-    beforeClose (done) {
-      this.$emit('close')
+    Detail(id){
+      this.$router.push({
+        path: '/certification/index/' + id
+      })
     }
   }
 }

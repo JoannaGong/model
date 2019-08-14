@@ -14,15 +14,16 @@
           slot-scope="scope"
         >{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
       </el-table-column>
-      <el-table-column align="center" label="作品名称">
+      <el-table-column align="center" label="通告名称">
         <template slot-scope="scope">{{ scope.row.name }}</template>
       </el-table-column>
-      <el-table-column align="center" label="收费价格(￥)" width="160">
-        <template
-          slot-scope="scope"
-        >{{ scope.row.chargeFlag === 0 ? "不需要付费" : scope.row.chargeCount }}</template>
+      <el-table-column align="center" label="工作类型">
+        <template slot-scope="scope">{{ scope.row.name }}</template>
       </el-table-column>
-      <el-table-column align="center" label="创建时间" width="200">
+      <el-table-column align="center" label="通告状态">
+        <template slot-scope="scope">{{ scope.row.name }}</template>
+      </el-table-column>
+      <el-table-column align="center" label="创建时间" width="100">
         <template
           slot-scope="scope"
         >{{ scope.row.updatedTime === null ? scope.row.createdTime : scope.row.updatedTime }}</template>
@@ -49,21 +50,37 @@
 </template>
 
 <script>
-import { getMemberInfo, getPhotoInfo } from "@/api/table";
+import { getMemberInfo, getAnnoucement } from "@/api/table";
 export default {
   data() {
     return {
       imgs: [],
-      form: {}
+      form: {},
+      tableKey: 0,
+      list: null,
+      listLoading: true,
+      pageTotal: 0,
+      listQuery: {
+        limit: 10,
+        pageNum: 1
+      }
     };
   },
   created() {
-    getMemberInfo({ id: this.$route.params.id }).then(res => {
+    this.listLoading = true;
+    getAnnoucement({ id: this.$route.params.id }).then(res => {
       // console.log(res)
-      this.form = res.data.user;
+      this.list = res.data.pageInfo.list
+      this.pageTotal = res.data.pageInfo.total
+      this.listLoading = false
     });
   },
-  methods: {}
+  methods: {
+    currentChange(val) {
+      this.listQuery.pageNum = val;
+      this.fetchData();
+    },
+  }
 };
 </script>
 <style lang="scss" scoped>

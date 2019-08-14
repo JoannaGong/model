@@ -23,7 +23,7 @@
       @sort-change="sortChange"
     >
       <el-table-column align="center" label="序号" width="80">
-        <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.page - 1) + 1 }}</template>
+        <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
       </el-table-column>
       <el-table-column align="center" label="申请人昵称">
         <template slot-scope="scope">{{ scope.row.userName }}</template>
@@ -81,13 +81,12 @@ export default {
   data() {
     return {
       tableKey: 0,
-      total: 0,
       list: [],
       listLoading: true,
       pageTotal: 0,
       listQuery: {
         limit: 10,
-        page: 1,
+        pageNum: 1,
         queryString: "",
         roleName: 1
       }

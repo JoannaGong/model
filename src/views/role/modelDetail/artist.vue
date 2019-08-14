@@ -47,14 +47,6 @@ import { getMemberList, getWorks } from "@/api/table";
 import { getToken } from "@/utils/auth";
 
 export default {
-  props: {
-    showId: {
-      type: Number,
-      default() {
-        return 0
-      }
-    }
-  },
   data() {
     return {
       tableKey: 0,
@@ -72,7 +64,7 @@ export default {
     this.fetchData();
   },
   methods: {
-    fetchData(tag) {
+    fetchData() {
       this.listLoading = true;
       getWorks({userId: this.$route.params.id}).then(response => {
         // console.log(response)
@@ -82,7 +74,9 @@ export default {
       })
     },
     showInfo(id) {
-      
+      this.$router.push({
+        path: '/production/index/' + id
+      })
     },
     currentChange(val) {
       this.listQuery.pageNum = val;

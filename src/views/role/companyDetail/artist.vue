@@ -47,18 +47,9 @@ import { getMemberList, getWorks } from "@/api/table";
 import { getToken } from "@/utils/auth";
 
 export default {
-  props: {
-    showId: {
-      type: Number,
-      default() {
-        return 0
-      }
-    }
-  },
   data() {
     return {
       tableKey: 0,
-      total: 0,
       list: null,
       listLoading: true,
       form: {},
@@ -66,22 +57,14 @@ export default {
       listQuery: {
         limit: 10,
         pageNum: 1,
-        keyword: "",
-        
       }
     };
   },
   created() {
     this.fetchData();
-    if (this.$route.params.id) {
-      this.showInfo(this.$route.params.id)
-    }
   },
   methods: {
-    fetchData(tag) {
-      if (tag && tag === "init") {
-        this.listQuery.pageNum = 1;
-      }
+    fetchData() {
       this.listLoading = true;
       getWorks({userId: this.$route.params.id}).then(response => {
         // console.log(response)
@@ -91,7 +74,9 @@ export default {
       })
     },
     showInfo(id) {
-      
+      this.$router.push({
+        path: '/production/index/' + id
+      })
     },
     currentChange(val) {
       this.listQuery.pageNum = val;

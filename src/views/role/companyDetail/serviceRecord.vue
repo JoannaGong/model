@@ -10,7 +10,7 @@
       highlight-current-row
     >
       <el-table-column align="center" label="序号" width="60">
-        <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.page - 1) + 1 }}</template>
+        <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
       </el-table-column>
       <el-table-column align="center" label="通告名称">
         <template slot-scope="scope">{{ scope.row.nickname }}</template>
@@ -62,12 +62,9 @@ export default {
   },
   created() {
     this.fetchData();
-    if (this.$route.params.id) {
-      this.showInfo(this.$route.params.id)
-    }
   },
   methods: {
-    fetchData(tag) {
+    fetchData() {
       this.listLoading = true;
       getMemberList(this.listQuery).then(response => {
         this.list = response.data.pageInfo.list
@@ -75,16 +72,11 @@ export default {
         this.listLoading = false
       })
     },
-
     showInfo(id) {
       
     },
     currentChange(val) {
       this.listQuery.pageNum = val;
-      this.fetchData();
-    },
-    handleSizeChange(val) {
-      this.listQuery.limit = val;
       this.fetchData();
     }
   }
