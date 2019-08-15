@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="form" ref="form" label-width="90px" :rules="rules" class="demo-form">
+    <el-form :model="form" ref="form" label-width="90px" class="demo-form">
       <h3>基础信息</h3>
       <el-row :gutter="100">
         <el-col :span="11">
@@ -56,32 +56,15 @@
           </div>
         </viewer>
       </el-form-item>
-
-      <el-header>
-        <el-menu default-active="model" router active-text-color="#409EFF" class="el-menu-demo" mode="horizontal">
-          <el-menu-item index="model">申请的模特</el-menu-item>
-        </el-menu>
-      </el-header>
-      <el-main>
-        <router-view></router-view>
-      </el-main>
-
-      <el-header>
-        <el-menu default-active="model" router active-text-color="#409EFF" class="el-menu-demo" mode="horizontal">
-          <el-menu-item index="model">已接单模特</el-menu-item>
-        </el-menu>
-      </el-header>
-      <el-main>
-        <router-view></router-view>
-      </el-main>
-
+      <model />
+      <ordered-model />
       <h3>通告流程</h3>
       <div class="block">
         <light-timeline :items='items'></light-timeline>
       </div>
       
       <el-form-item>
-        <el-button type="primary" @click="submitForm('form')" :disabled="form.checkStatus != 0">审核通告</el-button>
+        <el-button type="primary" @click="submitForm('form')" :disabled="form.checkStatus != 0">审核通告</el-button>  <!--  -->
         <el-button @click="back">取消</el-button>
       </el-form-item>
     </el-form>
@@ -89,19 +72,24 @@
 </template>
 <script>
 import { updateAnnoucement, getAnnoucementInfo, checkAnnoucement } from "@/api/table";
+import model from './model'
+import orderedModel from './orderedModel'
 
 export default {
+  components: {
+    model,
+    orderedModel
+  },
   data() {
     return {
       imgs: [],
       form: {},
-      rules: {
-        name: [{required: true, message: "请输入拍摄地名称", trigger: "blur"}],
-      },
       items: [{
         color: '#dcdcdc',
-        content: '通告待审核'
-      }]
+        content: '通告待审核',
+        index: 0
+      }],
+      options:['通告待审核', '审核通过', '审核驳回', '无人申请，商户撤销通告', '有人申请，商户撤销通告', '已确立订单关系，商户撤销通告', '商户申请售后', '订单确认人满', '订单商户未确认完成', '商户确认订单完成', '商户申请售后，订单完成']
     };
   },
   created() {
@@ -111,43 +99,41 @@ export default {
     fetchData(){
       getAnnoucementInfo({ id: this.$route.params.id }).then(res => {
         // console.log(res)
-        // 0:待审核，1:审核通过，2:审核驳回，3:无人申请商户撤销通告，4:有人申请商户撤销通告，5:已确立订单关系商户撤销通告，6:商户申请售后，7:订单确认人满，8:订单商户未确认完成，9:商户确认订单完成，10:商户申请售后后订单完成',
         this.form = res.data.merchantsRecruiting;
         this.imgs = res.data.merchantsRecruiting.merchantsRecruitingPicsList
         let data = res.data.merchantsRecruiting.merchantsRecruitingRecordList
-        // 0 1 3
-        // 0 1 4
-        // 0 1 5
-        // 0 1 
+        let temp = []
+        this.items[0].tag = this.form.createdTime
         data.forEach(item => {
-          // if(item.)
+          this.items.push({
+            tag: item.createdTime,
+            color: '#dcdcdc',
+            content: this.options[item.newRecruitingStatus],
+            index: item.newRecruitingStatus
+          })
         })
-        if(this.form.checkStatus === 2){
-          this.items.push({
-            color: '#dcdcdc',
-            content: '审核驳回'
-          })
-        }else if(this.form.checkStatus === 1){
-          this.items.push({
-            color: '#dcdcdc',
-            content: '审核通过'
-          })
-        }
-          
-        
+        this.items = this.items.sort(this.compare('index'))
       })
+    },
+    compare(property){
+      return function(obj1,obj2){
+        var value1 = obj1[property];
+        var value2 = obj2[property];
+        return value1 - value2;     // 升序
+      }
     },
     submitForm(formName){
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$confirm("是否审核通过该通告?", "确认信息", {
+          this.$prompt("是否审核通过该通告？请填写审核意见", "确认信息", {
             distinguishCancelAndClose: true,
             confirmButtonText: "通过",
-            cancelButtonText: "不通过",
-            type: "warning"
+            cancelButtonText: "不通过"
           })
-          .then(() => {
+          .then(val => {
+            console.log(value)
             this.form.checkStatus = 1;
+            this.form.checkOption = val.value
             checkAnnoucement(this.form).then(res => {
               if (res.code === 101) {
                 this.$set(this.form, "checkStatus", 1)

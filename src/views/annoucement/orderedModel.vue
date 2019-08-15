@@ -1,10 +1,7 @@
 <template>
   <div class="container">
     <el-form :model="form" ref="form" label-width="30px" class="demo-form clearfix">
-    <div style="display: flex; ">
-      <h3>申请的模特</h3>
-      <el-button type="primary" size="mini" style="height: 30px; margin:15px 0 0 150px;">推送模特</el-button> 
-    </div>
+    <h3>已接单模特</h3>
       <el-row>
         <el-col :span="6" v-for="(item, index) in list" :key="index">
           <el-form-item>
@@ -55,36 +52,36 @@ export default {
     return {
       options: [
         {
-          label: "定向预约待模特同意",
-          value: 0
+          label: "定向预约模特同意",
+          value: 1
         },
         {
-          label: "定向预约模特拒绝",
-          value: 2
+          label: "模特向商家申请商家同意",
+          value: 4
         },
         {
-          label: "模特向商家申请待确认",
-          value: 3
+          label: "工作中",
+          value: 6
         },
         {
-          label: "模特向商家申请商家拒绝",
-          value: 5
+          label: "结束工作商家未确认",
+          value: 7
         },
         {
-          label: "商户未确认模特撤销申请",
-          value: 11
+          label: "结束工作商家确认",
+          value: 8
         },
         {
-          label: "商家已确认撤销申请",
-          value: 12
+          label: "商家确认待评论",
+          value: 9
         },
         {
-          label: "该通告售后处理中",
-          value: 13
+          label: "已评论",
+          value: 10
         },
         {
-          label: "商家撤销通告",
-          value: 15
+          label: "结束工作系统48小时自动确认",
+          value: 14
         }
       ],
       list: [],

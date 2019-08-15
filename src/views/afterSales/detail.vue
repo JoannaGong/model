@@ -76,25 +76,26 @@
       </el-row>
       <h3>已接单模特</h3>
       <el-row>
-        <el-col :span="8">
+        <el-col :span="6" v-for="(item, index) in list" :key="index">
           <el-form-item>
-            <el-card :body-style="{ padding: '8px' }">
+            <el-card :body-style="{ padding: '8px 0 8px 8px' }">
               <div>
-                <img
-                  src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                  class="image"
-                />
+                <img :src="item.user.headUrl" class="image" />
               </div>
-              <div style="margin: 0 20px;">
-                <div>好吃的汉堡</div>
+              <div style="margin: 0 8px; width: 33%;">
+                <div>{{item.user.name}}</div>
                 <div>
-                  <span>北京</span>|
-                  <span>女</span>|
+                  <span>{{ areaName }}</span>|
+                  <span v-if="item.user.certificationSex === 0">男</span>
+                  <span v-if="item.user.certificationSex === 1">女</span>
+                  <span v-if="item.user.certificationSex === 2">未知</span>|
                   <span>模特</span>
                 </div>
               </div>
-              <div style="height: 80px;">
-                <p>进行中</p>
+              <div style="height: 80px; width: 26%;">
+                <div v-for="ele in options" :key="ele.value">
+                  <span class="text" v-if="ele.value === item.recruitingStatus">{{ ele.label }}</span>
+                </div>
               </div>
             </el-card>
           </el-form-item>
@@ -112,7 +113,8 @@ import { getToken } from "@/utils/auth";
 export default {
   data() {
     return {
-      urlHeaders: { token: getToken() },
+      list: [],
+      options: [],
       imgs: [],
       form: {},
       announceForm: {},
