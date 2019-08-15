@@ -56,7 +56,7 @@
                 <span v-if="form.weiboAuthFlag === 1" style="margin-right: 10px;">微博认证</span>
                 <span v-if="form.qqAuthFlag === 1" style="margin-right: 10px;">QQ认证</span>
                 <span v-if="form.alipayAuthFlag === 1">支付宝认证</span>
-                <span v-if="!(form.alipayAuthFlag && form.wechatAuthFlag && form.weiboAuthFlag && form.qqAuthFlag)">未认证</span>
+                <span v-if="form.alipayAuthFlag===0 && form.wechatAuthFlag===0 && form.weiboAuthFlag===0 && form.qqAuthFlag===0">未认证</span>
               </el-form-item>
             </el-col>            
             <el-col :span="10">

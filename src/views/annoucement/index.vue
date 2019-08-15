@@ -46,15 +46,14 @@
         <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
       </el-table-column>
       <el-table-column align="center" label="通告编号" width="100">
-        <template slot-scope="scope">{{ scope.row.address }}</template>
+        <template slot-scope="scope">{{ scope.row.no }}</template>
       </el-table-column>
       <el-table-column align="center" label="通告名称" width="180">
-        <template slot-scope="scope">{{ scope.row.areaId }}</template>
+        <template slot-scope="scope">{{ scope.row.name }}</template>
       </el-table-column>
-      <el-table-column align="center" label="工作类型" width="100">
+      <el-table-column align="center" label="工作类型">
         <template slot-scope="scope">
-          <span v-if="scope.row.recommendedFlug == '0'">不推荐</span>
-          <span v-if="scope.row.recommendedFlug == '1'">推荐</span>
+          <span v-for="work in scope.row.merchantsRecruitingWorkList" :key="work.id" style="margin-right: 10px;">{{ work.lable.name }}</span>
         </template>
       </el-table-column>
        <el-table-column align="center" label="通告状态">
@@ -72,7 +71,7 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="发布人昵称" width="130">
-        <template slot-scope="scope">{{ scope.row.areaId }}</template>
+        <template slot-scope="scope">{{ scope.row.user.name }}</template>
       </el-table-column>
       <el-table-column align="center" label="创建时间" width="180">
         <template slot-scope="scope">{{ scope.row.updatedTime === null ? scope.row.createdTime : scope.row.updatedTime }}</template>
@@ -107,7 +106,6 @@ export default {
   data() {
     return {
       tableKey: 0,
-      total: 0,
       list: [],
       announceList: [],
       workList: [],
@@ -142,7 +140,7 @@ export default {
     },
     showInfo(id) {
       this.$router.push({
-        path: '/announcement/index/' + id,
+        path: '/annoucement/index/' + id + '/model',
         query: {
           pageNum: this.listQuery.pageNum
         }

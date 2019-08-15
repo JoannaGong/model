@@ -1,12 +1,12 @@
 <template>
-  <div class="app-container">
+  <div class="container">
     <el-form :model="form" ref="form" label-width="90px" class="demo-form">
       <el-row :gutter="100">
         <el-col :span="11">
           <el-form-item label="企业名称：">{{ form.certificationName }}</el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="组织机构代码：">{{ form.certificationIdcard }}</el-form-item>
+          <el-form-item label="组织机构代码：">{{ form.certificationOrganizationCode }}</el-form-item>
         </el-col>
         <el-col :span="11">
           <el-form-item label="认证信息：">{{ form.certificationText }}</el-form-item>
@@ -56,5 +56,15 @@ export default {
   img {
     width: 100%;
   }
+}
+// .container {
+//   padding: 0 20px;
+// }
+.demo-form .el-form-item {
+  padding: 0 15px;
+}
+/deep/.el-form-item__label {
+  width: 112px !important;
+  margin-left: -16px;
 }
 </style>

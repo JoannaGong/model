@@ -189,7 +189,5 @@ export default {
   .el-card__body {
     display: flex;
   }
-}
-
- 
+} 
 </style>

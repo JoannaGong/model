@@ -20,12 +20,18 @@
             </viewer>
           </el-form-item>
         </el-col>
-        <!-- <el-col :span="24">
-          <el-form-item label="公司简介：">{{ form.certificationText }}</el-form-item>
-        </el-col> -->
+        </el-row>
+        <el-form-item label="公司简介：">{{ form.certificationText }}</el-form-item>
         <div style="margin-bottom: 10px;">
-          <span class="el-dialog__title" style="font-size: 15px;">公司相册</span>
+          <span class="el-dialog__title clearfix" style="font-size: 15px;">公司相册</span>
         </div>
+        <el-form-item>
+          <viewer :images="photoList">
+            <div class="model-pics clearfix" v-for="(src, index) in photoList" :key="index" >
+              <img :src="src.photoUrl" />
+            </div>
+          </viewer>
+        </el-form-item>
         <el-form-item>
           <viewer :images="imgs">
             <div class="model-pics clearfix" v-for="(src, index) in imgs" :key="index" >
@@ -33,19 +39,19 @@
             </div>
           </viewer>
         </el-form-item>
-      </el-row>
     </el-form>
   </div>
 </template>
 <script>
-import { getMemberInfo } from "@/api/table";
+import { getMemberInfo, getPhotoInfo } from "@/api/table";
 import { getToken } from "@/utils/auth";
 
 export default {
   data() {
     return {
       form: {},
-      imgs: []
+      imgs: [],
+      photoList: [],
     };
   },
   created() {
@@ -53,7 +59,11 @@ export default {
       // console.log(res)
       this.form = res.data.user;
       this.imgs = [ this.form.certificationBusinessLicense ];
-    });
+    })
+    getPhotoInfo({ userId: this.$route.params.id }).then(res => {
+      // console.log(res)
+      this.photoList = res.data.userPhotoAlbumList
+    })
   },
   methods: {}
 };

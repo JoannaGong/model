@@ -43,7 +43,7 @@
         </el-col>
       </el-row>
       <el-form-item label="封面图：">
-        <img :src="form.coverUrl" style="width: 200px;" />
+        <img :src="form.coverUrl" style="width: 150px; height: 200px;" />
       </el-form-item>
       <el-form-item label="作品图集：">
         <viewer :images="imgs">

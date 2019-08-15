@@ -22,6 +22,9 @@ Viewer.setDefaults({
   Options: { 'inline': true, 'button': true, 'navbar': true, 'title': true, 'toolbar': true, 'tooltip': true, 'movable': true, 'zoomable': true, 'rotatable': true, 'scalable': true, 'transition': true, 'fullscreen': true, 'keyboard': true, 'url': 'data-source' }
 })
 
+// timeline 组件
+import LightTimeline from 'vue-light-timeline'
+Vue.use(LightTimeline)
 /**
  * This project originally used easy-mock to simulate data,
  * but its official service is very unstable,

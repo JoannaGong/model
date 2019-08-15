@@ -91,7 +91,6 @@ export default {
   data() {
     return {
       tableKey: 0,
-      total: 0,
       list: [],
       listLoading: true,
       selectList: [

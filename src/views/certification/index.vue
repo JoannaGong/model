@@ -88,7 +88,7 @@ export default {
         limit: 10,
         pageNum: 1,
         queryString: "",
-        roleName: 1
+        queryRoleName: 1
       }
     };
   },

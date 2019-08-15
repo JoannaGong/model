@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="container">
     <el-form :model="form" ref="form" label-width="90px" class="demo-form">
       <el-row :gutter="100">
         <el-col :span="11">
@@ -51,17 +51,25 @@
         <span class="el-dialog__title" style="font-size: 15px;">个人标签</span>
       </div>
       <el-form-item label="风格标签：">
-        <el-tag :key="tag" v-for="tag in tags">{{ tag }}</el-tag>
+        <div v-for="label in form.userLableList" :key="label.id">
+          <el-tag v-if="label.labelType === 0">{{ label.lable.name }}</el-tag>
+        </div>
       </el-form-item>
       <el-form-item label="外貌标签：">
-        <el-tag :key="tag" v-for="tag in tags">{{ tag }}</el-tag>
+        <div v-for="label in form.userLableList" :key="label.id">
+          <el-tag v-if="label.labelType === 1">{{ label.lable.name }}</el-tag>
+        </div>
       </el-form-item>
       <el-form-item label="体型标签：">
-        <el-tag :key="tag" v-for="tag in tags">{{ tag }}</el-tag>
+        <div v-for="label in form.userLableList" :key="label.id">
+          <el-tag v-if="label.labelType === 2">{{ label.lable.name }}</el-tag>
+        </div>
       </el-form-item>
       <el-form-item label="魅力标签：">
-        <el-tag :key="tag" v-for="tag in tags">{{ tag }}</el-tag>
-      </el-form-item>
+        <div v-for="label in form.userLableList" :key="label.id">
+          <el-tag v-if="label.labelType === 3">{{ label.lable.name }}</el-tag>
+        </div>
+      </el-form-item> 
       <div style="float: left; padding-top: 8px;">
         <span class="el-dialog__title" style="font-size: 15px;">工作经验</span>
       </div>
@@ -69,14 +77,14 @@
       <div style="float: left; padding-top: 8px;">
         <span class="el-dialog__title" style="font-size: 15px;">服务报价</span>
       </div>
-      <el-form-item>平面 &nbsp; {{form.serviceOffers}} &nbsp; 元/天</el-form-item>
+      <el-form-item>{{form.serviceOffers}}</el-form-item>
       <div style="margin-bottom: 10px;">
         <span class="el-dialog__title" style="font-size: 15px;">相册</span>
       </div>
       <el-form-item>
-        <viewer :images="imgs">
-          <div class="model-pics clearfix" v-for="(src, index) in imgs" :key="index" >
-            <img :src="src" />
+        <viewer :images="photoList">
+          <div class="model-pics clearfix" v-for="(src, index) in photoList" :key="index" >
+            <img :src="src.photoUrl" />
           </div>
         </viewer>
       </el-form-item>
@@ -84,7 +92,7 @@
   </div>
 </template>
 <script>
-import { getMemberInfo } from "@/api/table";
+import { getMemberInfo, getPhotoInfo } from "@/api/table";
 import { getToken } from "@/utils/auth";
 
 export default {
@@ -92,7 +100,7 @@ export default {
     return {
       form: {},
       imgs: [],
-      tags: ["标签一", "标签二", "标签三"],
+      photoList: [],
     };
   },
   created() {
@@ -104,7 +112,11 @@ export default {
         this.form.certificationIdcardPositive,
         this.form.certificationIdcardBack
       ];
-    });
+    })
+    getPhotoInfo({ userId: this.$route.params.id }).then(res => {
+      // console.log(res)
+      this.photoList = res.data.userPhotoAlbumList
+    })
   },
   methods: {}
 };
@@ -120,6 +132,9 @@ export default {
   img {
     width: 100%;
   }
+}
+.container {
+  padding: 0 20px;
 }
 </style>
 

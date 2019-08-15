@@ -2,18 +2,27 @@
   <div class="app-container">
     <el-form :model="form" ref="form" label-width="90px" :rules="rules" class="demo-form">
       <h3>基础信息</h3>
-      <el-row :gutter="30">
+      <el-row :gutter="100">
         <el-col :span="11">
           <el-form-item label="通告名称：">{{ form.name }}</el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="工作类型：">{{ form.merchantsRecruitingWorkList }}</el-form-item>
+          <el-form-item label="工作类型：">
+            <el-tag v-for="work in form.merchantsRecruitingWorkList" :key="work.id">{{ work.lable.name }}</el-tag>
+          </el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="工作标签：">{{ form.merchantsRecruitingLableList }}</el-form-item>
+          <el-form-item label="职业类型：">
+            <el-tag v-for="work in form.merchantsRecruitingProfessionalList" :key="work.id">{{ work.lable.name }}</el-tag>
+          </el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="工作时间：">{{ form.startTime }} - {{ form.stopTime }}</el-form-item>
+          <el-form-item label="工作标签：">
+            <el-tag v-for="work in form.merchantsRecruitingLableList" :key="work.id">{{ work.lable.name }}</el-tag>
+          </el-form-item>
+        </el-col>
+        <el-col :span="11">
+          <el-form-item label="工作时间：">{{ form.startTime }} -- {{ form.stopTime }}</el-form-item>
         </el-col>
         <el-col :span="11">
           <el-form-item label="工作地点：">{{ form.areaId }}</el-form-item>
@@ -43,134 +52,137 @@
       <el-form-item label="参考样图：">
         <viewer :images="imgs">
           <div class="model-pics clearfix" v-for="(src, index) in imgs" :key="index" >
-            <img :src="src" />
+            <img :src="src.resourceUrl" />
           </div>
         </viewer>
       </el-form-item>
-      <h3>申请的模特</h3>
-      <el-row>
-        <el-col :span="8" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0">
-          <el-card :body-style="{ padding: '5px' }">
-            <ul class="card-style">
-              <li>
-                <div>
-                  <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
-                </div>
-              </li>
-              <li>
-                <p>好吃的汉堡</p>
-                <p><span>北京 | 女 | 模特</span></p>
-              </li>
-              <li>
-                <p>商户同意</p>
-              </li>
-            </ul>
-            <!-- <div>
-              <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
-            </div>
-            <div>
-              <p>好吃的汉堡</p>
-              <p><span>北京 | 女 | 模特</span></p>
-            </div>
-            <div>
-              <p>商户同意</p>
-            </div> -->
-          </el-card>
-        </el-col>
-      </el-row>
+
+      <el-header>
+        <el-menu default-active="model" router active-text-color="#409EFF" class="el-menu-demo" mode="horizontal">
+          <el-menu-item index="model">申请的模特</el-menu-item>
+        </el-menu>
+      </el-header>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
+
+      <el-header>
+        <el-menu default-active="model" router active-text-color="#409EFF" class="el-menu-demo" mode="horizontal">
+          <el-menu-item index="model">已接单模特</el-menu-item>
+        </el-menu>
+      </el-header>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
 
       <h3>通告流程</h3>
-  
+      <div class="block">
+        <light-timeline :items='items'></light-timeline>
+      </div>
+      
       <el-form-item>
-        <el-button type="primary" @click="submitForm('form')">保存</el-button>
+        <el-button type="primary" @click="submitForm('form')" :disabled="form.checkStatus != 0">审核通告</el-button>
         <el-button @click="back">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
-import { updateAnnoucement, getAnnoucementInfo } from "@/api/table";
-import { getToken } from "@/utils/auth";
-import VueUeditorWrap from "vue-ueditor-wrap";
+import { updateAnnoucement, getAnnoucementInfo, checkAnnoucement } from "@/api/table";
 
 export default {
-  components: {
-    VueUeditorWrap
-  },
   data() {
     return {
-      urlHeaders: { token: getToken() },
-      imageUrl: "",
-      options: [],
       imgs: [],
       form: {},
       rules: {
         name: [{required: true, message: "请输入拍摄地名称", trigger: "blur"}],
-        areaId: [{required: true, message: "请输入所属地区", trigger: "blur"}],
-        address: [{required: true, message: "请输入详细地址", trigger: "blur"}],
-        score: [{required: true, message: "请输入评分", trigger: "blur"}],
       },
+      items: [{
+        color: '#dcdcdc',
+        content: '通告待审核'
+      }]
     };
   },
   created() {
-    if(this.$route.params.id != 0){
-      getAnnoucementInfo({ id: this.$route.params.id }).then(res => {
-        // console.log(res)
-        this.form = res.data.shootingPlace;
-      });
-    } 
+    this.fetchData()
   },
   methods: {
-    submitForm(formName){
-      this.$refs[formName].validate((valid) => {
-        if(valid){
-          updateAnnoucement(this.form).then(res => {
-            if(res.code === 101){
-              this.$message({
-                message: "修改成功",
-                type: "success"
-              });
-              setTimeout(() => {
-                this.$router.push({
-                  path: "/announcement/index",
-                  query: {
-                    pageNum: this.$route.query.pageNum
-                  }
-                });
-              }, 1000);
-            }else {
-              this.$message({
-                message: res.msg,
-                type: 'error'
-              })
-            }
+    fetchData(){
+      getAnnoucementInfo({ id: this.$route.params.id }).then(res => {
+        // console.log(res)
+        // 0:待审核，1:审核通过，2:审核驳回，3:无人申请商户撤销通告，4:有人申请商户撤销通告，5:已确立订单关系商户撤销通告，6:商户申请售后，7:订单确认人满，8:订单商户未确认完成，9:商户确认订单完成，10:商户申请售后后订单完成',
+        this.form = res.data.merchantsRecruiting;
+        this.imgs = res.data.merchantsRecruiting.merchantsRecruitingPicsList
+        let data = res.data.merchantsRecruiting.merchantsRecruitingRecordList
+        // 0 1 3
+        // 0 1 4
+        // 0 1 5
+        // 0 1 
+        data.forEach(item => {
+          // if(item.)
+        })
+        if(this.form.checkStatus === 2){
+          this.items.push({
+            color: '#dcdcdc',
+            content: '审核驳回'
           })
-        }else {
-          console.log('error submit!!');
-          return false;
+        }else if(this.form.checkStatus === 1){
+          this.items.push({
+            color: '#dcdcdc',
+            content: '审核通过'
+          })
         }
+          
+        
       })
     },
-    fileUrl() {
-      return `${process.env.BASE_API}/uploadHandler/upload`;
-    },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-      this.form.coverPicUrl = res.data.url;
-    },
-    beforeAvatarUpload(file) {
-      const isJPG =
-        file.type === "image/png" ||
-        file.type === "image/jpeg" ||
-        file.type === "image/gif";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isJPG) {
-        this.$message.error("上传的图片只能是 jpg/png/jpeg/gif 格式!");
-      }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
+    submitForm(formName){
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$confirm("是否审核通过该通告?", "确认信息", {
+            distinguishCancelAndClose: true,
+            confirmButtonText: "通过",
+            cancelButtonText: "不通过",
+            type: "warning"
+          })
+          .then(() => {
+            this.form.checkStatus = 1;
+            checkAnnoucement(this.form).then(res => {
+              if (res.code === 101) {
+                this.$set(this.form, "checkStatus", 1)
+                this.$message({
+                  message: "审核通过",
+                  type: "success"
+                });
+              } else {
+                this.$message.error(res.msg);
+              }
+            });
+          })
+          .catch(action => {
+            this.form.checkStatus = 2;
+            if (action === "cancel") {
+              checkAnnoucement(this.form).then(res => {
+                if (res.code === 101) {
+                  this.$set(this.form, "checkStatus", 2)
+                  this.$message({
+                    message: "审核不通过",
+                    type: "warning"
+                  });
+                } else {
+                  this.$message.error(res.msg);
+                }
+              })
+            } else if (action === "close") {
+              this.$message.info("放弃审核！");
+            }
+          });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
     },
     back() {
       this.$router.push({
@@ -188,26 +200,19 @@ export default {
   width: 106px !important;
   margin-left: -16px;
 }
-.demo-form .el-form-item{
+.demo-form .el-form-item {
   padding: 0 15px;
 }
-.time {
-  font-size: 13px;
-  color: #999;
-}
-.image {
-  width: 120px;
-}
-.card-style {
-  list-style: none;
-  position: relative;
-  
-  li {
-    // image {
-    //   position: absolute;
-    //   left: 5px;
-    //   top: 5px;
-    // }
+
+.model-pics {
+  width: 150px;
+  height: 200px;
+  margin: 0 10px 10px 0;
+  float: left;
+  overflow: hidden;
+
+  img {
+    width: 100%;
   }
 }
 </style>

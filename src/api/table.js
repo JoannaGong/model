@@ -93,6 +93,10 @@ export function getWorkInfo(params) { return request({ url: '/worksController/wo
 
 // 获取通告列表（分页）
 export function getAnnoucement(params) { return request({ url: '/merchantsRecruitingController/merchantsRecruiting', method: 'get', params }) }
+// 获取通告-申请模特列表（分页）
+export function getAnnoucementModel(params) { return request({ url: '/merchantsRecruitingModelController/merchantsRecruitingModel', method: 'get', params }) }
+// 后台用户审核通告结果提交
+export function checkAnnoucement(params) { return request({ url: '/merchantsRecruitingController/backUserCheckMerchantsRecruiting/' + params.id, method: 'put', data: params }) }
 // 修改通告
 export function updateAnnoucement(params) { return request({ url: '/merchantsRecruitingController/merchantsRecruiting/' + params.id, method: 'put', data: params }) }
 // 获取单个通告详情

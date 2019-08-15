@@ -7,6 +7,7 @@ import companyInfo from '../views/role/companyDetail/info'
 import companyArtist from '../views/role/companyDetail/artist'
 import companyServiceRecord from '../views/role/companyDetail/serviceRecord'
 import merchantInfo from '../views/role/mechant/info'
+import model from '../views/annoucement/model'
 
 // in development-env not use lazy-loading, because lazy-loading too many pages will cause webpack hot update too slow. so only in production use lazy-loading;
 // detail: https://panjiachen.github.io/vue-element-admin-site/#/lazy-loading
@@ -168,7 +169,10 @@ export const constantRouterMap = [
         component: () => import('@/views/annoucement/detail'),
         name: 'AnnoucementTable',
         hidden: true,
-        meta: { title: '通告管理表单' }
+        meta: { title: '通告管理表单' },
+        children: [
+          { path: 'model', component: model, hidden: true }
+        ]
       }
     ]
   },
