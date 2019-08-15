@@ -14,12 +14,12 @@
         <template slot-scope="scope">{{ scope.$index + listQuery.limit * (listQuery.pageNum - 1) + 1 }}</template>
       </el-table-column>
       <el-table-column align="center" label="通告名称">
-        <template slot-scope="scope">{{ scope.row.address }}</template>
+        <template slot-scope="scope">{{ scope.row.merchantsRecruiting.name }}</template>
       </el-table-column>
       <el-table-column align="center" label="申请商户" width="180">
         <template slot-scope="scope">{{ scope.row.contactName }}</template>
       </el-table-column>
-      <el-table-column align="center" label="售后状态" width="100">
+      <el-table-column align="center" label="售后状态" width="160">
         <template slot-scope="scope">
           <span v-if="scope.row.afterSaleStatus  === 0">待售后</span>
           <span v-if="scope.row.afterSaleStatus  === 1">售后结束通告</span>
@@ -30,7 +30,7 @@
       <el-table-column align="center" label="提交时间" width="190">
         <template slot-scope="scope">{{ scope.row.createdTime }}</template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="操作" width="200">
+      <el-table-column align="center" prop="created_at" label="操作" width="100">
         <template slot-scope="scope">
           <el-button type="default" size="mini" @click="showInfo(scope.row.id)">查看</el-button>
         </template>
